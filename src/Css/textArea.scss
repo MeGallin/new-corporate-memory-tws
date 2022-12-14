@@ -1,0 +1,28 @@
+textarea {
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin: 0;
+  outline: 0;
+  padding: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.6);
+  color: $main-font-colour;
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+}
+textarea.invalid {
+  border-left: $secondary-bg-colour 4px solid;
+  min-height: 50px;
+}
+textarea.entered {
+  border-left: greenyellow 4px solid;
+  min-height: 50px;
+}
+textarea:focus {
+  background-color: rgba(255, 255, 255, 1);
+  color: $main-font-colour;
+}

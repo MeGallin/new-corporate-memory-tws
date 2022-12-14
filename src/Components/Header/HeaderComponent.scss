@@ -1,0 +1,56 @@
+@import '../../index.scss';
+
+header {
+  border: 1px solid $border-colour;
+  text-transform: uppercase;
+  a {
+    color: $main-bg-colour;
+  }
+
+  nav {
+    height: clamp(1rem, $header-height, $header-height);
+    background-color: $main-font-colour;
+    color: $main-bg-colour;
+
+    span {
+      border: 1px solid $border-colour;
+      width: 100%;
+      text-align: center;
+    }
+
+    .login-wrapper {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    span {
+      a.active {
+        // border-top: 2px solid $rating-colour;
+        // border-bottom: 2px solid $rating-colour;
+        color: $main-font-colour;
+        background-color: $main-bg-colour;
+        display: flex;
+        justify-content: center;
+        background-image: linear-gradient(
+          -100deg,
+          rgba(225, 225, 225, 0.4),
+          rgba(240, 173, 78, 0.7) 95%
+        );
+      }
+      &:hover {
+        background: $border-colour-light;
+      }
+    }
+  }
+}
+/* Responsive layout */
+@media (max-width: 812px) {
+  header nav {
+    font-size: 0.9em;
+    padding: 6px 0;
+  }
+}

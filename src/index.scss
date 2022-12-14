@@ -1,13 +1,168 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+/* variable setup */
+$main-bg-colour: rgba(245, 245, 245, 1);
+$main-font-colour: rgba(12, 12, 12, 1);
+$secondary-bg-colour: hsl(23, 100%, 50%);
+$light-orange: rgba(236, 127, 55, 1);
+$burnt-orange: rgba(190, 79, 12, 1);
+$danger: crimson;
+$link-colour: lightblue;
+$success: rgba(92, 184, 92, 1);
+$warning: rgba(240, 173, 78, 1);
+$rating-colour: orange;
+$border-colour: rgba(200, 200, 200, 0.5);
+$border-colour-dark: hsla(0, 1%, 33%, 0.2);
+$border-colour-light: hsla(0, 0%, 78%, 0.2);
+$fieldSet-bg-colour: hsla(0, 0%, 45%, 0.1);
+$header-height: 28px;
+$footer-height: 82px;
+$image-shadow-colour: rgba(12, 12, 12, 0.4);
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Remove default padding */
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+/* Set core body defaults */
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: 'Signika', sans-serif;
+  font-family: 'Comfortaa', cursive;
+  background-color: $main-bg-colour;
+  color: $main-font-colour;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  font-size: 'min(18px, 4.2vw)';
+  margin: 0;
+  padding: 0.2em;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+a:link {
+  text-decoration: none;
+}
+a {
+  color: $main-font-colour;
+}
+
+/* Make images easier to work with */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Natural flow and rhythm in articles by default */
+article > * + * {
+  margin-top: 1em;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  // text-transform: uppercase;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding-bottom: 2px;
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 0.4em;
+}
+/* Responsive layout */
+@media (max-width: 812px) {
+  button {
+    font-size: 0.9em;
+    text-transform: uppercase;
+  }
+}
+
+@import './Css/fieldSet.scss';
+@import './Css/textArea.scss';
+@import './Css/scrollBar.scss';
+
+/* General global stye settings */
+.small-text {
+  font-size: 0.76em;
+  font-weight: bold;
+}
+
+hr.style-one {
+  margin: 0.5em 0;
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0)
+  );
+}
+
+.border-temp {
+  border: 2px solid green;
 }

@@ -1,0 +1,10 @@
+@import '../../index.scss';
+
+footer {
+  height: $footer-height;
+  font-size: 0.7em;
+  border: 1px solid $border-colour;
+  background-color: $main-font-colour;
+  color: $main-bg-colour;
+  padding: 4px 0;
+}

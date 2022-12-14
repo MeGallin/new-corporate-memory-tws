@@ -1,7 +1,14 @@
-import React from 'react';
+import DateTime from '../DateTime/DateTimeComponent';
+import './FooterComponent.scss';
 
-const FooterComponent = () => {
-  return <div>FooterComponent</div>;
+const Footer = () => {
+  return (
+    <footer>
+      <div>Developed by Gary Allin</div>
+      <div> YourCorporateMemory &copy;</div>
+      <DateTime />
+    </footer>
+  );
 };
 
-export default FooterComponent;
+export default Footer;

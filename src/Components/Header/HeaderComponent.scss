@@ -1,6 +1,8 @@
 @import '../../index.scss';
 
 header {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
   a {
     color: $main-bg-colour;
   }
@@ -21,6 +23,8 @@ header {
     }
   }
   .nav-wrapper {
+    border-right: 3px solid $main-font-colour;
+    border-left: 3px solid $main-font-colour;
     display: flex;
     justify-content: space-between;
     align-items: center;

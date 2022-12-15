@@ -13,14 +13,13 @@ textarea {
   color: $main-font-colour;
   -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+  min-height: 150px;
 }
 textarea.invalid {
   border-left: $secondary-bg-colour 4px solid;
-  min-height: 50px;
 }
 textarea.entered {
   border-left: greenyellow 4px solid;
-  min-height: 50px;
 }
 textarea:focus {
   background-color: rgba(255, 255, 255, 1);

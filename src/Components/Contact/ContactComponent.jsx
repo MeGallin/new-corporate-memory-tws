@@ -10,6 +10,7 @@ import TextAreaComponent from '../TextArea/TextAreaComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import SuccessComponent from '../Success/SuccessComponent';
 import ErrorComponent from '../Error/ErrorComponent';
+import AboutComponent from '../About/AboutComponent';
 
 const ContactComponent = () => {
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const ContactComponent = () => {
       {loading ? (
         <SpinnerComponent />
       ) : (
-        <div className="wrapper">
+        <div className="component-wrapper">
           <fieldset className="fieldSet">
             <legend>Get In Touch</legend>
             <div>
@@ -122,6 +123,8 @@ const ContactComponent = () => {
               </form>
             </div>
           </fieldset>
+
+          <AboutComponent />
         </div>
       )}
     </>

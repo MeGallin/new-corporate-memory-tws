@@ -1,7 +1,11 @@
 import './SpinnerComponent.scss';
 
 const SpinnerComponent = () => {
-  return <span className="loader"></span>;
+  return (
+    <div className="spinner-wrapper">
+      <span className="loader"></span>
+    </div>
+  );
 };
 
 export default SpinnerComponent;

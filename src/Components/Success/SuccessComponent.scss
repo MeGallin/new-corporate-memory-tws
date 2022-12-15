@@ -1,0 +1,13 @@
+@import '../../index.scss';
+.success-component {
+  width: 100%;
+  font-size: $notice-message-size;
+  background-color: $success;
+  color: $main-bg-colour;
+  padding: 0.2em;
+  border: none;
+  border-radius: 2px;
+}
+.clear {
+  display: none;
+}

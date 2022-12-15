@@ -1,0 +1,81 @@
+/* Button style */
+@import '../../index.scss';
+
+$btn-primary: #3b71ca;
+$btn-secondary: #9fa6b2;
+$btn-success: #14a44d;
+$btn-danger: crimson;
+$btn-warning: #e4a11b;
+$btn-info: #54b4d3;
+$btn-light: #fbfbfb;
+$btn-dark: #332d2d;
+
+button {
+  padding: 6px 9px;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: $main-font-colour;
+  box-shadow: 0 0 4px #999;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+  text-align: center;
+  width: max-content;
+  color: white;
+  border: none;
+  outline: 0.1rem solid white;
+  outline-offset: -0.3rem;
+  opacity: 0.8;
+  &:hover {
+    opacity: 1;
+    transition: opacity 0.8s;
+  }
+}
+
+button.primary {
+  background: $btn-primary;
+}
+button.secondary {
+  background: $btn-secondary;
+}
+button.success {
+  background: $btn-success;
+}
+button.danger {
+  background: $btn-danger;
+}
+button.warning {
+  background: $btn-warning;
+}
+button.info {
+  background: $btn-info;
+}
+button.light {
+  background: $btn-light;
+}
+button.dark {
+  background: $btn-dark;
+}
+
+/* Ripple effect */
+.ripple {
+  background-position: center;
+
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: rgba(190, 190, 190, 1)
+    radial-gradient(circle, transparent 1%, rgba(190, 190, 190, 1) 1%)
+    center/15000%;
+  opacity: 1;
+}
+.ripple:active {
+  background-color: $btn-danger;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+button:disabled,
+button[disabled] {
+  opacity: 0.5;
+}

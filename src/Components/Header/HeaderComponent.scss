@@ -34,11 +34,6 @@ header {
         background-color: $main-bg-colour;
         display: flex;
         justify-content: center;
-        background-image: linear-gradient(
-          -100deg,
-          rgba(225, 225, 225, 0.4),
-          rgba(240, 173, 78, 0.7) 95%
-        );
       }
       &:hover {
         background: $border-colour-light;

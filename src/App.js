@@ -7,10 +7,10 @@ import FooterComponent from './Components/Footer/FooterComponent';
 import SpinnerComponent from './Components/Spinner/SpinnerComponent';
 
 const HomeView = lazy(() => import('./Views/Home/HomeView'));
-
 const AboutView = lazy(() => import('./Views/About/AboutView'));
 const ContactView = lazy(() => import('./Views/Contact/ContactView'));
 const ErrorView = lazy(() => import('./Views/Error/ErrorView'));
+const FormsView = lazy(() => import('./Views/Forms/FormsView'));
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
               <Route path="/" element={<HomeView />} exact />
               <Route path="/about" element={<AboutView />} exact />
               <Route path="/contact" element={<ContactView />} exact />
+              <Route path="/forms" element={<FormsView />} exact />
               <Route path="*" element={<ErrorView />} exact />
             </Routes>
           </div>

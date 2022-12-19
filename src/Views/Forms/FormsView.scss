@@ -1,0 +1,12 @@
+.forms-text-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.forms-register {
+  cursor: pointer;
+  &:hover {
+    font-weight: bold;
+    transition: font-weight 0.8s;
+  }
+}

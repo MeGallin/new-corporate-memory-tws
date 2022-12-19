@@ -1,7 +1,12 @@
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import './HeaderComponent.scss';
 
+import LogoutComponent from '../Logout/LogoutComponent';
+
 const HeaderComponent = () => {
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
   return (
     <>
       <header>
@@ -38,6 +43,21 @@ const HeaderComponent = () => {
               Contact
             </NavLink>
           </span>
+
+          {userInfo ? (
+            <span>
+              <LogoutComponent />
+            </span>
+          ) : (
+            <span>
+              <NavLink
+                className={(navData) => (navData.isActive ? 'active' : '')}
+                to="/forms"
+              >
+                Login
+              </NavLink>
+            </span>
+          )}
         </nav>
       </header>
     </>

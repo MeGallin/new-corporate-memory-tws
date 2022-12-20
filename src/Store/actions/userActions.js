@@ -10,6 +10,9 @@ import {
   USER_REGISTER_FAILURE,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_RESET_PASSWORD_FAILURE,
+  USER_RESET_PASSWORD_REQUEST,
+  USER_RESET_PASSWORD_SUCCESS,
 } from '../constants/userConstants';
 
 //User Login
@@ -103,6 +106,36 @@ export const userForgotPWSendEmailAction = (email) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_FORGOT_PW_SEND_EMAIL_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+//User Reset Password
+export const userResetPasswordAction = (updatedInfo) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_RESET_PASSWORD_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_END_POINT}api/resetpassword/${updatedInfo.resetPasswordToken}`,
+      updatedInfo,
+      config,
+    );
+    dispatch({ type: USER_RESET_PASSWORD_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_RESET_PASSWORD_FAILURE,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

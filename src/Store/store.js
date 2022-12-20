@@ -6,6 +6,7 @@ import {
   userLoginReducer,
   userRegistrationReducer,
   userForgotPWSendEmailReducer,
+  userResetPasswordReducer,
 } from './reducers/userReducers';
 
 //Initialise state to hold user info if logged in.
@@ -18,6 +19,7 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegistration: userRegistrationReducer,
   userForgotPWSendEmail: userForgotPWSendEmailReducer,
+  userResetPassword: userResetPasswordReducer,
 });
 
 const initialState = {

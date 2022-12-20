@@ -1,4 +1,7 @@
 import {
+  USER_FORGOT_PW_SEND_EMAIL_FAILURE,
+  USER_FORGOT_PW_SEND_EMAIL_REQUEST,
+  USER_FORGOT_PW_SEND_EMAIL_SUCCESS,
   USER_LOGIN_FAILURE,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -37,6 +40,24 @@ export const userRegistrationReducer = (state = {}, action) => {
         error: null,
       };
     case USER_REGISTER_FAILURE:
+      return { loading: false, error: action.payload };
+
+    default:
+      return { ...state };
+  }
+};
+
+//Forgot Password send email
+export const userForgotPWSendEmailReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_FORGOT_PW_SEND_EMAIL_REQUEST:
+      return { loading: true };
+    case USER_FORGOT_PW_SEND_EMAIL_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case USER_FORGOT_PW_SEND_EMAIL_FAILURE:
       return { loading: false, error: action.payload };
 
     default:

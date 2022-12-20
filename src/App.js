@@ -30,7 +30,6 @@ function App() {
               <Route
                 path="/password-reset/:token"
                 element={<PasswordResetLinkView />}
-                exact
               />
               <Route path="*" element={<ErrorView />} exact />
             </Routes>

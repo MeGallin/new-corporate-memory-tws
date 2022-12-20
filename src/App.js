@@ -11,6 +11,9 @@ const AboutView = lazy(() => import('./Views/About/AboutView'));
 const ContactView = lazy(() => import('./Views/Contact/ContactView'));
 const ErrorView = lazy(() => import('./Views/Error/ErrorView'));
 const FormsView = lazy(() => import('./Views/Forms/FormsView'));
+const PasswordResetLinkView = lazy(() =>
+  import('./Views/PasswordResetLink/PasswordResetLinkView'),
+);
 
 function App() {
   return (
@@ -24,6 +27,11 @@ function App() {
               <Route path="/about" element={<AboutView />} exact />
               <Route path="/contact" element={<ContactView />} exact />
               <Route path="/forms" element={<FormsView />} exact />
+              <Route
+                path="/password-reset/:token"
+                element={<PasswordResetLinkView />}
+                exact
+              />
               <Route path="*" element={<ErrorView />} exact />
             </Routes>
           </div>

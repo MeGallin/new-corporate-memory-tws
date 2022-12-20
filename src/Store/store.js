@@ -5,6 +5,7 @@ import { contactFormReducer } from './reducers/contactFormReducer';
 import {
   userLoginReducer,
   userRegistrationReducer,
+  userForgotPWSendEmailReducer,
 } from './reducers/userReducers';
 
 //Initialise state to hold user info if logged in.
@@ -16,6 +17,7 @@ const reducer = combineReducers({
   contactForm: contactFormReducer,
   userLogin: userLoginReducer,
   userRegistration: userRegistrationReducer,
+  userForgotPWSendEmail: userForgotPWSendEmailReducer,
 });
 
 const initialState = {

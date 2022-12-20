@@ -1,28 +1,29 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import ForgotPWSendEmailComponent from '../../Components/ForgotPWSendEmail/ForgotPWSendEmailComponent';
 import LoginComponent from '../../Components/Login/LoginComponent';
-import RegisterComponent from '../../Components/Resgister/RegisterComponent';
+import RegisterComponent from '../../Components/Register/RegisterComponent';
 import './FormsView.scss';
 
 const FormsView = () => {
   const [register, setRegister] = useState(false);
+  const [forgetPWSendEmail, setForgotPWSendEmail] = useState(false);
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   return (
     <>
       {!userInfo ? (
         <>
-          {!register ? (
+          {forgetPWSendEmail ? (
+            <ForgotPWSendEmailComponent />
+          ) : !register ? (
             <>
               <LoginComponent />
-              <div className="forms-text-wrapper">
-                <div
-                  className="forms-register"
-                  onClick={() => setRegister((prev) => !prev)}
-                >
-                  Not Registered yet?
-                </div>
-                <div className="forms-register">Forgotten your password?</div>
+              <div
+                className="forms-register"
+                onClick={() => setRegister((prev) => !prev)}
+              >
+                Not Registered yet?
               </div>
             </>
           ) : (
@@ -38,6 +39,16 @@ const FormsView = () => {
           )}
         </>
       ) : null}
+      <div className="forms-text-wrapper">
+        <div
+          className="forms-register"
+          onClick={() => setForgotPWSendEmail((prev) => !prev)}
+        >
+          {!forgetPWSendEmail
+            ? 'Forgotten your password?'
+            : 'Hide, forgotten your password?'}
+        </div>
+      </div>
     </>
   );
 };

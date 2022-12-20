@@ -5,8 +5,8 @@ import { registerAction } from '../../Store/actions/userActions';
 
 import { nameRegEx, emailRegEx, passwordRegEx } from '../../Utils/regEx';
 
-import InputComponent from '../../Components/Input/InputComponent';
-import ButtonComponent from '../../Components/Button/ButtonComponent';
+import InputComponent from '../Input/InputComponent';
+import ButtonComponent from '../Button/ButtonComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import ErrorComponent from '../Error/ErrorComponent';
 import SuccessComponent from '../Success/SuccessComponent';

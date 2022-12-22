@@ -25,11 +25,11 @@ export const userLoginReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case USER_LOGOUT:
       return {};
-
     default:
       return { ...state };
   }
 };
+
 //Register a User
 export const userRegistrationReducer = (state = {}, action) => {
   switch (action.type) {

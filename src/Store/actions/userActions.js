@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { MEMORIES_GET_RESET } from '../constants/memoriesConstants';
 import {
   USER_FORGOT_PW_SEND_EMAIL_FAILURE,
   USER_FORGOT_PW_SEND_EMAIL_REQUEST,
@@ -51,6 +52,7 @@ export const loginAction = (formData) => async (dispatch) => {
 export const logoutAction = () => (dispatch) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: USER_LOGOUT });
+  dispatch({ type: MEMORIES_GET_RESET });
 };
 
 // User Registration

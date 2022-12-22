@@ -12,7 +12,7 @@ const LogoutComponent = () => {
   };
   return (
     <div className="link-effect" onClick={handleLogout}>
-      LOG OUT
+      LOGOUT
     </div>
   );
 };

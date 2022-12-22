@@ -8,6 +8,7 @@ import {
   userForgotPWSendEmailReducer,
   userResetPasswordReducer,
 } from './reducers/userReducers';
+import { memoriesGetReducer } from './reducers/memoriesReducers';
 
 //Initialise state to hold user info if logged in.
 const userInfoFromStorage = localStorage.getItem('userInfo')
@@ -20,6 +21,7 @@ const reducer = combineReducers({
   userRegistration: userRegistrationReducer,
   userForgotPWSendEmail: userForgotPWSendEmailReducer,
   userResetPassword: userResetPasswordReducer,
+  memoriesGet: memoriesGetReducer,
 });
 
 const initialState = {

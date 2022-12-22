@@ -7,26 +7,31 @@ import LogoutComponent from '../Logout/LogoutComponent';
 const HeaderComponent = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
   return (
     <>
       <header>
         <nav className="nav-wrapper">
-          <span>
-            <NavLink
-              className={(navData) => (navData.isActive ? 'active' : '')}
-              to="/"
-            >
-              Memories
-            </NavLink>
-          </span>
-          <span>
-            <NavLink
-              className={(navData) => (navData.isActive ? 'active' : '')}
-              to="/"
-            >
-              Home
-            </NavLink>
-          </span>
+          {userInfo ? (
+            <span>
+              <NavLink
+                className={(navData) => (navData.isActive ? 'active' : '')}
+                to="/memories"
+              >
+                Memories
+              </NavLink>
+            </span>
+          ) : (
+            <span>
+              <NavLink
+                className={(navData) => (navData.isActive ? 'active' : '')}
+                to="/"
+              >
+                Home
+              </NavLink>
+            </span>
+          )}
+
           <span>
             <NavLink
               className={(navData) => (navData.isActive ? 'active' : '')}
@@ -59,6 +64,7 @@ const HeaderComponent = () => {
             </span>
           )}
         </nav>
+        {userInfo ? <p>Current User: {userInfo?.name}</p> : null}
       </header>
     </>
   );

@@ -7,6 +7,7 @@ import FooterComponent from './Components/Footer/FooterComponent';
 import SpinnerComponent from './Components/Spinner/SpinnerComponent';
 
 const HomeView = lazy(() => import('./Views/Home/HomeView'));
+const MemoriesView = lazy(() => import('./Views/Memories/MemoriesView'));
 const AboutView = lazy(() => import('./Views/About/AboutView'));
 const ContactView = lazy(() => import('./Views/Contact/ContactView'));
 const ErrorView = lazy(() => import('./Views/Error/ErrorView'));
@@ -24,6 +25,7 @@ function App() {
           <div className="content-wrapper">
             <Routes>
               <Route path="/" element={<HomeView />} exact />
+              <Route path="/memories" element={<MemoriesView />} exact />
               <Route path="/about" element={<AboutView />} exact />
               <Route path="/contact" element={<ContactView />} exact />
               <Route path="/forms" element={<FormsView />} exact />

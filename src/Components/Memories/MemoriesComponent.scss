@@ -1,0 +1,13 @@
+@import '../../index.scss';
+.memories-component-wrapper {
+  border-bottom: 1px solid $border-colour-light;
+  padding-bottom: 0.3em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.memories-component-wrapper > div:nth-child(even) {
+  background-color: $main-font-colour;
+  color: $main-bg-colour;
+}

@@ -2,6 +2,7 @@ fieldset.fieldSet {
   border: 1px solid $border-colour-light;
   background-color: $fieldSet-bg-colour;
   flex-grow: 1;
+  height: 100%;
   // width: MIN(100%, 600px);
 }
 fieldset legend {

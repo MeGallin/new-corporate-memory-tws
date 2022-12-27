@@ -1,9 +1,9 @@
 @import '../../index.scss';
 
 .card-wrapper {
-  width: 376px;
+  width: 460px;
   border: 1px solid $border-colour-dark;
-  height: 280px;
+  height: auto;
   .card-header {
     display: flex;
     justify-content: space-between;
@@ -26,5 +26,11 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.6em;
+  }
+}
+
+@media (max-width: 812px) {
+  .card-wrapper {
+    width: auto;
   }
 }

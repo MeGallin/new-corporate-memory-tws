@@ -4,10 +4,16 @@ import PropTypes from 'prop-types';
 import StarsComponent from '../Stars/StarsComponent';
 import moment from 'moment';
 import { TagsComponent } from '../Tags/TagsComponent';
+import MemoriesImagesComponent from '../MemoriesImages/MemoriesImagesComponent';
+import { FaBullhorn } from 'react-icons/fa';
 
 const CardComponent = ({
   title,
   memory,
+  voice,
+  imgSrc,
+  setDueDate,
+  isComplete,
   created,
   updated,
   dueDate,
@@ -19,6 +25,10 @@ const CardComponent = ({
   useEffect(() => {
     setDateTime(moment().valueOf());
   }, [title]);
+
+  const activateVoice = (text) => {
+    window.responsiveVoice.speak(text);
+  };
 
   return (
     <div className="card-wrapper">
@@ -37,7 +47,13 @@ const CardComponent = ({
         </div>
         <div className="card-body">
           <p>{memory}</p>
+          <div onClick={() => activateVoice(voice)}>
+            <FaBullhorn size={22} title="Activate voice text" />
+          </div>
+          <MemoriesImagesComponent imgSrc={imgSrc} altText={'Female Image'} />
           <StarsComponent priority={priority} />
+          <p>{setDueDate ? 'Set Due Date: true' : 'Set Due Date: false'}</p>
+          <p>{isComplete ? 'Is Complete: true' : 'Is Complete: false'}</p>
         </div>
         <div className="card-footer">
           <div>Created: {moment(created).format('Do MMM YYYY')}</div>

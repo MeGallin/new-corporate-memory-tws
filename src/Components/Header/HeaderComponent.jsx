@@ -64,7 +64,9 @@ const HeaderComponent = () => {
             </span>
           )}
         </nav>
-        {userInfo ? <p>Current User: {userInfo?.name}</p> : null}
+        {userInfo ? (
+          <p className="header-user">User: {userInfo?.name}</p>
+        ) : null}
       </header>
     </>
   );

@@ -10,6 +10,7 @@ import CardComponent from '../Card/CardComponent';
 import ErrorComponent from '../Error/ErrorComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import SearchComponent from '../Search/SearchComponent';
+import ModalComponent from '../Modal/ModalComponent';
 
 const Memories = () => {
   const dispatch = useDispatch();
@@ -44,6 +45,13 @@ const Memories = () => {
     setKeyword(e.target.value);
   };
   // Searched memories
+
+  const completedMemories = memories?.filter((memory) => {
+    if (memory.isComplete) {
+      return memory;
+    }
+    return false;
+  });
   return (
     <>
       {error ? <ErrorComponent error={error} /> : null}
@@ -55,6 +63,16 @@ const Memories = () => {
             placeholder="search"
             value={keyword}
             handleSearch={handleSearch}
+          />
+          <p>
+            [{searchedMemories.length}]{' '}
+            {searchedMemories.length === 1 ? 'memory found.' : 'memories'} and [
+            {completedMemories.length}] marked as complete.
+          </p>
+          <ModalComponent
+            className="create-btn"
+            openButtonTitle="Create"
+            closeButtonTitle="X"
           />
           <div className="memories-component-wrapper">
             {searchedMemories?.map((memory) => (

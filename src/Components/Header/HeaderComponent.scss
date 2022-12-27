@@ -40,6 +40,11 @@ header {
       }
     }
   }
+  .header-user {
+    color: $warning;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
 }
 /* Responsive layout */
 @media (max-width: 812px) {

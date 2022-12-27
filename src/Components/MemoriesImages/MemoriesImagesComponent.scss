@@ -1,0 +1,10 @@
+@import '../../index.scss';
+
+.memories-image-wrapper {
+  border: 1px solid $danger;
+
+  .memories-image {
+    width: 40%;
+    height: auto;
+  }
+}

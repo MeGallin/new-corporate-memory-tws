@@ -11,6 +11,7 @@ import ErrorComponent from '../Error/ErrorComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import SearchComponent from '../Search/SearchComponent';
 import ModalComponent from '../Modal/ModalComponent';
+import CreateMemoryComponent from '../CreateMemory/CreateMemoryComponent';
 
 const Memories = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,8 @@ const Memories = () => {
     let ignore = false;
     if (userInfo) {
       dispatch(memoriesGetAction());
+    } else {
+      navigate('/forms');
     }
     if (!ignore);
     return () => (ignore = true);
@@ -65,14 +68,15 @@ const Memories = () => {
             handleSearch={handleSearch}
           />
           <p>
-            [{searchedMemories.length}]{' '}
-            {searchedMemories.length === 1 ? 'memory found.' : 'memories'} and [
-            {completedMemories.length}] marked as complete.
+            [{searchedMemories?.length}]{' '}
+            {searchedMemories?.length === 1 ? 'memory found.' : 'memories'} and
+            [{completedMemories?.length}] marked as complete.
           </p>
           <ModalComponent
             className="create-btn"
             openButtonTitle="Create"
             closeButtonTitle="X"
+            props={<CreateMemoryComponent />}
           />
           <div className="memories-component-wrapper">
             {searchedMemories?.map((memory) => (

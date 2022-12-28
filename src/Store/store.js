@@ -11,6 +11,7 @@ import {
 import {
   memoriesGetReducer,
   memoryCreateReducer,
+  memoryEditReducer,
 } from './reducers/memoriesReducers';
 
 //Initialise state to hold user info if logged in.
@@ -26,6 +27,7 @@ const reducer = combineReducers({
   userResetPassword: userResetPasswordReducer,
   memoriesGet: memoriesGetReducer,
   memoryCreate: memoryCreateReducer,
+  memoryEdit: memoryEditReducer,
 });
 
 const initialState = {

@@ -12,6 +12,7 @@ import SpinnerComponent from '../Spinner/SpinnerComponent';
 import SearchComponent from '../Search/SearchComponent';
 import ModalComponent from '../Modal/ModalComponent';
 import CreateMemoryComponent from '../CreateMemory/CreateMemoryComponent';
+import EditMemoryComponent from '../EditMemory/EditMemoryComponent';
 
 const Memories = () => {
   const dispatch = useDispatch();
@@ -76,6 +77,7 @@ const Memories = () => {
             className="create-btn"
             openButtonTitle="Create"
             closeButtonTitle="X"
+            variant={'success'}
             props={<CreateMemoryComponent />}
           />
           <div className="memories-component-wrapper">
@@ -94,6 +96,13 @@ const Memories = () => {
                   tag={memory.tags.map((tag) => tag)}
                   created={memory.createdAt}
                   updated={memory.updatedAt}
+                />
+                <ModalComponent
+                  className="edit-btn"
+                  openButtonTitle="EDIT"
+                  closeButtonTitle="X"
+                  variant={'warning'}
+                  props={<EditMemoryComponent updateMemory={{ ...memory }} />}
                 />
               </div>
             ))}

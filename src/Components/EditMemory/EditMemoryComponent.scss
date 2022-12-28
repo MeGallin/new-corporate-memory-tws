@@ -1,0 +1,12 @@
+@import '../../index.scss';
+.update-memory-wrapper {
+  .update-input-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .update-memory-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+}

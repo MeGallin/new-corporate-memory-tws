@@ -3,6 +3,9 @@ import {
   MEMORIES_CREATE_FAILURE,
   MEMORIES_CREATE_REQUEST,
   MEMORIES_CREATE_SUCCESS,
+  MEMORIES_DELETE_FAILURE,
+  MEMORIES_DELETE_REQUEST,
+  MEMORIES_DELETE_SUCCESS,
   MEMORIES_EDIT_FAILURE,
   MEMORIES_EDIT_REQUEST,
   MEMORIES_EDIT_SUCCESS,
@@ -79,7 +82,6 @@ export const memoryCreateAction = (formData) => async (dispatch, getState) => {
 
 //PUT: Edit a memory
 export const memoryEditAction = (formData) => async (dispatch, getState) => {
-  console.log(formData);
   try {
     dispatch({
       type: MEMORIES_EDIT_REQUEST,
@@ -104,6 +106,39 @@ export const memoryEditAction = (formData) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: MEMORIES_EDIT_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+//Delete: Delete a memory
+export const memoryDeleteAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: MEMORIES_DELETE_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      `${process.env.REACT_APP_END_POINT}api/delete-memory/${id}`,
+      config,
+    );
+    dispatch({ type: MEMORIES_DELETE_SUCCESS, payload: data });
+    dispatch(memoriesGetAction());
+  } catch (error) {
+    dispatch({
+      type: MEMORIES_DELETE_FAILURE,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

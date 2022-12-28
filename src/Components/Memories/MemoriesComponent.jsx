@@ -13,6 +13,7 @@ import SearchComponent from '../Search/SearchComponent';
 import ModalComponent from '../Modal/ModalComponent';
 import CreateMemoryComponent from '../CreateMemory/CreateMemoryComponent';
 import EditMemoryComponent from '../EditMemory/EditMemoryComponent';
+import DeleteMemoryComponent from '../DeleteMemory/DeleteMemoryComponent';
 
 const Memories = () => {
   const dispatch = useDispatch();
@@ -104,6 +105,7 @@ const Memories = () => {
                   variant={'warning'}
                   props={<EditMemoryComponent updateMemory={{ ...memory }} />}
                 />
+                <DeleteMemoryComponent id={memory._id} />
               </div>
             ))}
           </div>

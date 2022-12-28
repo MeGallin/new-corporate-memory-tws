@@ -2,6 +2,9 @@ import {
   MEMORIES_CREATE_FAILURE,
   MEMORIES_CREATE_REQUEST,
   MEMORIES_CREATE_SUCCESS,
+  MEMORIES_DELETE_FAILURE,
+  MEMORIES_DELETE_REQUEST,
+  MEMORIES_DELETE_SUCCESS,
   MEMORIES_EDIT_FAILURE,
   MEMORIES_EDIT_REQUEST,
   MEMORIES_EDIT_SUCCESS,
@@ -61,6 +64,24 @@ export const memoryEditReducer = (state = {}, action) => {
         ...action.payload,
       };
     case MEMORIES_EDIT_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return { ...state };
+  }
+};
+
+// DELETE: Delete a memory
+export const memoryDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case MEMORIES_DELETE_REQUEST:
+      return { loading: true };
+    case MEMORIES_DELETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        ...action.payload,
+      };
+    case MEMORIES_DELETE_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return { ...state };

@@ -3,6 +3,9 @@ import {
   MEMORIES_CREATE_FAILURE,
   MEMORIES_CREATE_REQUEST,
   MEMORIES_CREATE_SUCCESS,
+  MEMORIES_EDIT_FAILURE,
+  MEMORIES_EDIT_REQUEST,
+  MEMORIES_EDIT_SUCCESS,
   MEMORIES_GET_FAILURE,
   MEMORIES_GET_REQUEST,
   MEMORIES_GET_SUCCESS,
@@ -66,6 +69,41 @@ export const memoryCreateAction = (formData) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: MEMORIES_CREATE_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+//PUT: Edit a memory
+export const memoryEditAction = (formData) => async (dispatch, getState) => {
+  console.log(formData);
+  try {
+    dispatch({
+      type: MEMORIES_EDIT_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `${process.env.REACT_APP_END_POINT}api/edit-memory/${formData.id}`,
+      formData,
+      config,
+    );
+    dispatch({ type: MEMORIES_EDIT_SUCCESS, payload: data });
+    dispatch(memoriesGetAction());
+  } catch (error) {
+    dispatch({
+      type: MEMORIES_EDIT_FAILURE,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

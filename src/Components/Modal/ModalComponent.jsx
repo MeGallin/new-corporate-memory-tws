@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './ModalComponent.scss';
 
+import ButtonComponent from '../Button/ButtonComponent';
+
 const ModalComponent = ({
   openButtonTitle,
   closeButtonTitle,
   props,
-  className,
+  variant,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => {
@@ -14,7 +16,7 @@ const ModalComponent = ({
   return (
     <>
       {showModal ? (
-        <div>
+        <>
           <div
             title="Close modal"
             className={showModal ? 'modal-overlay' : null}
@@ -23,21 +25,22 @@ const ModalComponent = ({
           <div className="modal-wrapper">
             <button
               onClick={() => setShowModal(false)}
-              className="confirmation"
+              className="modal-close-button"
             >
               {closeButtonTitle}
             </button>
             {props}
           </div>
-        </div>
+        </>
       ) : null}
-      <button
-        type="button"
+
+      <ButtonComponent
         onClick={handleShowModal}
-        className={`${className} modal-btn`}
-      >
-        {openButtonTitle}
-      </button>
+        type="button"
+        text={openButtonTitle}
+        variant={variant}
+        disabled={false}
+      />
     </>
   );
 };

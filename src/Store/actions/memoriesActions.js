@@ -6,6 +6,9 @@ import {
   MEMORIES_DELETE_FAILURE,
   MEMORIES_DELETE_REQUEST,
   MEMORIES_DELETE_SUCCESS,
+  MEMORIES_DELETE_TAG_FAILURE,
+  MEMORIES_DELETE_TAG_REQUEST,
+  MEMORIES_DELETE_TAG_SUCCESS,
   MEMORIES_EDIT_FAILURE,
   MEMORIES_EDIT_REQUEST,
   MEMORIES_EDIT_SUCCESS,
@@ -145,6 +148,39 @@ export const memoryDeleteAction = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: MEMORIES_DELETE_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+//Delete: Delete a memory TAG
+export const memoryDeleteTagAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: MEMORIES_DELETE_TAG_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      `${process.env.REACT_APP_END_POINT}api/delete-memory-tag/${id}`,
+      config,
+    );
+    dispatch({ type: MEMORIES_DELETE_TAG_SUCCESS, payload: data });
+    dispatch(memoriesGetAction());
+  } catch (error) {
+    dispatch({
+      type: MEMORIES_DELETE_TAG_FAILURE,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

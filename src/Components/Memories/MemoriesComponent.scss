@@ -1,13 +1,20 @@
 @import '../../index.scss';
 .memories-component-wrapper {
-  border-bottom: 1px solid $border-colour-light;
   padding-bottom: 0.3em;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-}
-
-.memories-component-wrapper > div:nth-child(even) {
-  background-color: $main-font-colour;
-  color: $main-bg-colour;
+  .memories-card-wrapper {
+    border: 1px solid $border-colour-light;
+    padding: 0.2em;
+    background-color: $main-bg-colour;
+    color: $main-font-colour;
+    margin-bottom: 0.4em;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
+      rgba(0, 0, 0, 0.05) 0px 5px 10px;
+  }
+  .memories-card-wrapper:nth-child(even) {
+    background-color: $main-font-colour;
+    color: $main-bg-colour;
+  }
 }

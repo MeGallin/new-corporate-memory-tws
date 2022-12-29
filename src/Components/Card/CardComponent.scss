@@ -2,7 +2,6 @@
 
 .card-wrapper {
   width: 460px;
-  border: 1px solid $border-colour-dark;
   height: auto;
   .card-header {
     display: flex;
@@ -18,7 +17,6 @@
     }
   }
   .card-body {
-    border: 1px solid green;
     height: 88%;
     .memories-priority-wrapper {
       display: flex;

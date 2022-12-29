@@ -24,17 +24,19 @@ const Memories = () => {
   const { userInfo } = userLogin;
   const memoriesGet = useSelector((state) => state.memoriesGet);
   const { loading, success, error, memories } = memoriesGet;
+  const userInfoDetails = useSelector((state) => state.userInfoDetails);
+  const { userDetails } = userInfoDetails;
 
   useEffect(() => {
     let ignore = false;
-    if (userInfo) {
+    if (userInfo && userDetails?.isConfirmed) {
       dispatch(memoriesGetAction());
     } else {
       navigate('/forms');
     }
     if (!ignore);
     return () => (ignore = true);
-  }, [userInfo, navigate, dispatch]);
+  }, [userInfo, userDetails?.isConfirmed, navigate, dispatch]);
 
   //Searched memories
   const searchedMemories = memories?.filter((memory) => {

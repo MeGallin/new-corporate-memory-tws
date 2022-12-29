@@ -1,3 +1,4 @@
+@import '../../index.scss';
 .forms-text-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -8,5 +9,19 @@
   &:hover {
     font-weight: bold;
     transition: font-weight 0.8s;
+  }
+}
+.forms-email-confirmation-wrapper {
+  text-align: center;
+  .warning {
+    color: $danger;
+  }
+  span {
+    text-decoration: underline;
+    font-weight: bold;
+  }
+
+  .logged-in {
+    color: $success;
   }
 }

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import { loginAction } from '../../Store/actions/userActions';
 
@@ -14,7 +13,7 @@ import SuccessComponent from '../Success/SuccessComponent';
 
 const LoginComponent = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, success } = userLogin;
 
@@ -28,7 +27,7 @@ const LoginComponent = () => {
     e.preventDefault();
     // Dispatch Action
     dispatch(loginAction(formData));
-    navigate('/memories');
+
     setFormData({
       email: '',
       password: '',

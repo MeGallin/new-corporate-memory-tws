@@ -59,6 +59,13 @@ const Memories = () => {
     return false;
   });
 
+  const memoryDeleteTag = useSelector((state) => state.memoryDeleteTag);
+  const {
+    loading: deleteTagLoading,
+    success: deleteTagSuccess,
+    error: deleteTagError,
+  } = memoryDeleteTag;
+
   const memorySetDueDate = useSelector((state) => state.memorySetDueDate);
   const {
     loading: setDueDateLoading,
@@ -75,13 +82,17 @@ const Memories = () => {
 
   return (
     <>
-      {error && isCompleteError && setDueDateError ? (
+      {error || isCompleteError || setDueDateError || deleteTagError ? (
         <ErrorComponent error={error} />
       ) : null}
-      {isCompleteSuccess && setDueDateSuccess ? (
+      {isCompleteSuccess || setDueDateSuccess || deleteTagSuccess ? (
         <SuccessComponent message={'Memory has bee successfully Updated.'} />
       ) : null}
-      {loading && setDueDateLoading && isCompleteLoading && !success ? (
+      {loading ||
+      setDueDateLoading ||
+      isCompleteLoading ||
+      deleteTagLoading ||
+      !success ? (
         <SpinnerComponent />
       ) : (
         <>
@@ -104,7 +115,7 @@ const Memories = () => {
           />
           <div className="memories-component-wrapper">
             {searchedMemories?.map((memory) => (
-              <div key={memory._id}>
+              <div key={memory._id} className="memories-card-wrapper">
                 {console.log(memory)}
                 <CardComponent
                   id={memory._id}

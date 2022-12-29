@@ -57,17 +57,22 @@ const CardComponent = ({
         <fieldset className="fieldSet">
           <legend>{title}</legend>
           <div className="card-header">
-            <div
-              className={`${
-                moment(dueDate).valueOf() < dateTime ? 'late' : 'early'
-              } `}
-            >
-              {moment(dueDate).valueOf() < dateTime
-                ? 'Over due by '
-                : 'Due in '}{' '}
-              {moment(dueDate).fromNow(dateTime)}
-            </div>
-            <TagsComponent tag={tag} variant="warning" />
+            {setDueDate ? (
+              <div
+                className={`${
+                  moment(dueDate).valueOf() < dateTime ? 'late' : 'early'
+                } `}
+              >
+                {moment(dueDate).valueOf() < dateTime
+                  ? 'Over due by '
+                  : 'Due in '}{' '}
+                {moment(dueDate).fromNow(dateTime)}
+              </div>
+            ) : (
+              <p>No date set.</p>
+            )}
+
+            <TagsComponent memoryId={id} tag={tag} variant="warning" />
           </div>
           <div className="card-body">
             <p>{memory}</p>

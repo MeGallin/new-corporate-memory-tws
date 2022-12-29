@@ -13,6 +13,7 @@ import {
   memoryCreateReducer,
   memoryEditReducer,
   memoryDeleteReducer,
+  memoryDeleteTagReducer,
   memorySetDueDateReducer,
   memoryIsCompleteReducer,
 } from './reducers/memoriesReducers';
@@ -32,6 +33,7 @@ const reducer = combineReducers({
   memoryCreate: memoryCreateReducer,
   memoryEdit: memoryEditReducer,
   memoryDelete: memoryDeleteReducer,
+  memoryDeleteTag: memoryDeleteTagReducer,
   memorySetDueDate: memorySetDueDateReducer,
   memoryIsComplete: memoryIsCompleteReducer,
 });

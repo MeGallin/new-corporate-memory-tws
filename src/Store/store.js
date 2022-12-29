@@ -13,6 +13,8 @@ import {
   memoryCreateReducer,
   memoryEditReducer,
   memoryDeleteReducer,
+  memorySetDueDateReducer,
+  memoryIsCompleteReducer,
 } from './reducers/memoriesReducers';
 
 //Initialise state to hold user info if logged in.
@@ -30,6 +32,8 @@ const reducer = combineReducers({
   memoryCreate: memoryCreateReducer,
   memoryEdit: memoryEditReducer,
   memoryDelete: memoryDeleteReducer,
+  memorySetDueDate: memorySetDueDateReducer,
+  memoryIsComplete: memoryIsCompleteReducer,
 });
 
 const initialState = {

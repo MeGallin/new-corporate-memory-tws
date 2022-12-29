@@ -14,6 +14,7 @@ import ModalComponent from '../Modal/ModalComponent';
 import CreateMemoryComponent from '../CreateMemory/CreateMemoryComponent';
 import EditMemoryComponent from '../EditMemory/EditMemoryComponent';
 import DeleteMemoryComponent from '../DeleteMemory/DeleteMemoryComponent';
+import SuccessComponent from '../Success/SuccessComponent';
 
 const Memories = () => {
   const dispatch = useDispatch();
@@ -57,10 +58,30 @@ const Memories = () => {
     }
     return false;
   });
+
+  const memorySetDueDate = useSelector((state) => state.memorySetDueDate);
+  const {
+    loading: setDueDateLoading,
+    success: setDueDateSuccess,
+    error: setDueDateError,
+  } = memorySetDueDate;
+
+  const memoryIsComplete = useSelector((state) => state.memoryIsComplete);
+  const {
+    loading: isCompleteLoading,
+    success: isCompleteSuccess,
+    error: isCompleteError,
+  } = memoryIsComplete;
+
   return (
     <>
-      {error ? <ErrorComponent error={error} /> : null}
-      {loading && !success ? (
+      {error && isCompleteError && setDueDateError ? (
+        <ErrorComponent error={error} />
+      ) : null}
+      {isCompleteSuccess && setDueDateSuccess ? (
+        <SuccessComponent message={'Memory has bee successfully Updated.'} />
+      ) : null}
+      {loading && setDueDateLoading && isCompleteLoading && !success ? (
         <SpinnerComponent />
       ) : (
         <>
@@ -86,6 +107,7 @@ const Memories = () => {
               <div key={memory._id}>
                 {console.log(memory)}
                 <CardComponent
+                  id={memory._id}
                   title={memory.title}
                   dueDate={memory.dueDate}
                   memory={memory.memory}

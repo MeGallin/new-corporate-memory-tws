@@ -4,6 +4,9 @@ import {
   USER_FORGOT_PW_SEND_EMAIL_FAILURE,
   USER_FORGOT_PW_SEND_EMAIL_REQUEST,
   USER_FORGOT_PW_SEND_EMAIL_SUCCESS,
+  USER_INFO_DETAILS_FAILURE,
+  USER_INFO_DETAILS_REQUEST,
+  USER_INFO_DETAILS_SUCCESS,
   USER_LOGIN_FAILURE,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -37,6 +40,7 @@ export const loginAction = (formData) => async (dispatch) => {
 
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     localStorage.setItem('userInfo', JSON.stringify(data));
+    dispatch(userInfoDetailsAction());
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAILURE,
@@ -138,6 +142,40 @@ export const userResetPasswordAction = (updatedInfo) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_RESET_PASSWORD_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+//GET: USER INFO DETAILS
+export const userInfoDetailsAction = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_INFO_DETAILS_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    console.log('action', config);
+
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_END_POINT}api/user-details`,
+      config,
+    );
+    dispatch({ type: USER_INFO_DETAILS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_INFO_DETAILS_FAILURE,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

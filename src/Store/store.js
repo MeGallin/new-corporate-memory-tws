@@ -4,6 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { contactFormReducer } from './reducers/contactFormReducer';
 import {
   userLoginReducer,
+  userInfoDetailsReducer,
   userRegistrationReducer,
   userForgotPWSendEmailReducer,
   userResetPasswordReducer,
@@ -26,6 +27,7 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
 const reducer = combineReducers({
   contactForm: contactFormReducer,
   userLogin: userLoginReducer,
+  userInfoDetails: userInfoDetailsReducer,
   userRegistration: userRegistrationReducer,
   userForgotPWSendEmail: userForgotPWSendEmailReducer,
   userResetPassword: userResetPasswordReducer,

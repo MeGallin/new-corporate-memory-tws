@@ -12,6 +12,12 @@ import {
   MEMORIES_GET_FAILURE,
   MEMORIES_GET_REQUEST,
   MEMORIES_GET_SUCCESS,
+  MEMORIES_IS_COMPETE_FAILURE,
+  MEMORIES_IS_COMPETE_REQUEST,
+  MEMORIES_IS_COMPETE_SUCCESS,
+  MEMORIES_SET_DUE_DATE_FAILURE,
+  MEMORIES_SET_DUE_DATE_REQUEST,
+  MEMORIES_SET_DUE_DATE_SUCCESS,
 } from '../constants/memoriesConstants';
 
 //GET: Memories
@@ -146,3 +152,79 @@ export const memoryDeleteAction = (id) => async (dispatch, getState) => {
     });
   }
 };
+
+//PUT: SET Due Date i memory
+export const memorySetDueDateAction =
+  (memoryData) => async (dispatch, getState) => {
+    console.log(memoryData);
+    try {
+      dispatch({
+        type: MEMORIES_SET_DUE_DATE_REQUEST,
+      });
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_END_POINT}api/edit-memory/${memoryData.id}`,
+        {
+          setDueDate: memoryData.setDueDate,
+        },
+        config,
+      );
+      dispatch({ type: MEMORIES_SET_DUE_DATE_SUCCESS, payload: data });
+      dispatch(memoriesGetAction());
+    } catch (error) {
+      dispatch({
+        type: MEMORIES_SET_DUE_DATE_FAILURE,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+//PUT: IS Complete memory
+export const memoryIsCompleteAction =
+  (memoryData) => async (dispatch, getState) => {
+    console.log(memoryData);
+    try {
+      dispatch({
+        type: MEMORIES_IS_COMPETE_REQUEST,
+      });
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_END_POINT}api/edit-memory/${memoryData.id}`,
+        {
+          isComplete: memoryData.isComplete,
+        },
+        config,
+      );
+      dispatch({ type: MEMORIES_IS_COMPETE_SUCCESS, payload: data });
+      dispatch(memoriesGetAction());
+    } catch (error) {
+      dispatch({
+        type: MEMORIES_IS_COMPETE_FAILURE,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

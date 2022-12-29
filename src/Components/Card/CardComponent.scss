@@ -20,6 +20,10 @@
   .card-body {
     border: 1px solid green;
     height: 88%;
+    .memories-priority-wrapper {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 
   .card-footer {

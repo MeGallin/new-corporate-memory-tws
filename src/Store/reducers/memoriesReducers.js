@@ -12,6 +12,12 @@ import {
   MEMORIES_GET_REQUEST,
   MEMORIES_GET_RESET,
   MEMORIES_GET_SUCCESS,
+  MEMORIES_IS_COMPETE_FAILURE,
+  MEMORIES_IS_COMPETE_REQUEST,
+  MEMORIES_IS_COMPETE_SUCCESS,
+  MEMORIES_SET_DUE_DATE_FAILURE,
+  MEMORIES_SET_DUE_DATE_REQUEST,
+  MEMORIES_SET_DUE_DATE_SUCCESS,
 } from '../constants/memoriesConstants';
 
 // GET: ADMIN get PLAYERS reducer
@@ -82,6 +88,42 @@ export const memoryDeleteReducer = (state = {}, action) => {
         ...action.payload,
       };
     case MEMORIES_DELETE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return { ...state };
+  }
+};
+
+// PUT: SET DUE DATE in memory
+export const memorySetDueDateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case MEMORIES_SET_DUE_DATE_REQUEST:
+      return { loading: true };
+    case MEMORIES_SET_DUE_DATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        ...action.payload,
+      };
+    case MEMORIES_SET_DUE_DATE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return { ...state };
+  }
+};
+
+// PUT: Is complete in memory
+export const memoryIsCompleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case MEMORIES_IS_COMPETE_REQUEST:
+      return { loading: true };
+    case MEMORIES_IS_COMPETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        ...action.payload,
+      };
+    case MEMORIES_IS_COMPETE_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return { ...state };

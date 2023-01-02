@@ -15,6 +15,7 @@ const FormsView = lazy(() => import('./Views/Forms/FormsView'));
 const PasswordResetLinkView = lazy(() =>
   import('./Views/PasswordResetLink/PasswordResetLinkView'),
 );
+const UserAdminView = lazy(() => import('./Views/UserAdmin/UserAdminView'));
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               <Route path="/about" element={<AboutView />} exact />
               <Route path="/contact" element={<ContactView />} exact />
               <Route path="/forms" element={<FormsView />} exact />
+              <Route path="/user-admin" element={<UserAdminView />} exact />
               <Route
                 path="/password-reset/:token"
                 element={<PasswordResetLinkView />}

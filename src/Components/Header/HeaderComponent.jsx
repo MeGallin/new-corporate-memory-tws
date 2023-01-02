@@ -40,6 +40,7 @@ const HeaderComponent = () => {
               About
             </NavLink>
           </span>
+
           <span>
             <NavLink
               className={(navData) => (navData.isActive ? 'active' : '')}
@@ -65,7 +66,19 @@ const HeaderComponent = () => {
           )}
         </nav>
         {userInfo ? (
-          <p className="header-user">User: {userInfo?.name}</p>
+          <>
+            <p className="header-user">
+              {userInfo?.name}
+              <span className="user-info-nav-link">
+                <NavLink
+                  className={(navData) => (navData.isActive ? 'active' : '')}
+                  to="/user-admin"
+                >
+                  Your Admin Dashboard
+                </NavLink>
+              </span>
+            </p>
+          </>
         ) : null}
       </header>
     </>

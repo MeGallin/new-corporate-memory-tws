@@ -46,13 +46,23 @@ header {
     font-size: 0.8rem;
     font-weight: bold;
     margin: 0.2em 0 0.2em 0;
-  }
-  .user-info-nav-link {
-    background-color: $main-font-colour;
-    font-size: 1.2em;
-    padding: 0.2em;
-    &:hover {
-      background-color: $border-colour-light;
+
+    .user-info-nav-link {
+      border: 1px solid $border-colour-light;
+      background-color: $main-font-colour;
+      font-size: 0.8em;
+      padding: 0.2em;
+      color: $warning;
+      .header-user-name {
+        color: $link-colour;
+        letter-spacing: 0.5rem;
+      }
+      &:hover {
+        background-color: $main-bg-colour;
+        border: 1px solid $border-colour-dark;
+        color: $link-colour;
+        transition: all 0.8s;
+      }
     }
   }
 }

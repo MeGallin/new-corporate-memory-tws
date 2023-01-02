@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './MemoriesComponent.scss';
-import femaleImage from '../../Assets/Images/female.png';
 
 import { memoriesGetAction } from '../../Store/actions/memoriesActions';
 
@@ -118,7 +117,6 @@ const Memories = () => {
           <div className="memories-component-wrapper">
             {searchedMemories?.map((memory) => (
               <div key={memory._id} className="memories-card-wrapper">
-                {console.log(memory)}
                 <CardComponent
                   id={memory._id}
                   title={memory.title}

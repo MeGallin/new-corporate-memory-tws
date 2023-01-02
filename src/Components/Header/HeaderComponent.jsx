@@ -7,6 +7,8 @@ import LogoutComponent from '../Logout/LogoutComponent';
 const HeaderComponent = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  const userInfoDetails = useSelector((state) => state.userInfoDetails);
+  const { userDetails } = userInfoDetails;
 
   return (
     <>
@@ -67,17 +69,13 @@ const HeaderComponent = () => {
         </nav>
         {userInfo ? (
           <>
-            <p className="header-user">
-              {userInfo?.name}
-              <span className="user-info-nav-link">
-                <NavLink
-                  className={(navData) => (navData.isActive ? 'active' : '')}
-                  to="/user-admin"
-                >
-                  Your Admin Dashboard
+            <div className="header-user">
+              <div className="user-info-nav-link">
+                <NavLink to="/user-admin" className="header-user-name">
+                  DASHBOARD: {userDetails?.name}
                 </NavLink>
-              </span>
-            </p>
+              </div>
+            </div>
           </>
         ) : null}
       </header>

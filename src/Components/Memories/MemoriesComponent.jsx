@@ -125,7 +125,7 @@ const Memories = () => {
                   dueDate={memory.dueDate}
                   memory={memory.memory}
                   voice={memory.memory}
-                  imgSrc={femaleImage}
+                  imgSrc={memory.memoryImage}
                   setDueDate={memory.setDueDate}
                   isComplete={memory.isComplete}
                   priority={memory.priority}

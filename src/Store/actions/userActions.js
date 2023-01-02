@@ -165,9 +165,6 @@ export const userInfoDetailsAction = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-
-    console.log('action', config);
-
     const { data } = await axios.get(
       `${process.env.REACT_APP_END_POINT}api/user-details`,
       config,

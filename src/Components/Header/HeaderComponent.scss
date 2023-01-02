@@ -41,9 +41,19 @@ header {
     }
   }
   .header-user {
+    text-align: center;
     color: $warning;
     font-size: 0.8rem;
     font-weight: bold;
+    margin: 0.2em 0 0.2em 0;
+  }
+  .user-info-nav-link {
+    background-color: $main-font-colour;
+    font-size: 1.2em;
+    padding: 0.2em;
+    &:hover {
+      background-color: $border-colour-light;
+    }
   }
 }
 /* Responsive layout */

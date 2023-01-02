@@ -66,12 +66,12 @@ const FormsView = () => {
                 You can view your{' '}
                 <NavLink to="/memories">
                   {' '}
-                  <span className="logged-in">memories</span>{' '}
+                  <span className="logged-in">MEMORIES</span>{' '}
                 </NavLink>{' '}
                 or go to your
-                <NavLink to="/memories">
+                <NavLink to="/user-admin">
                   {' '}
-                  <span className="logged-in">admin area.</span>{' '}
+                  <span className="logged-in">ADMIN DASHBOARD</span>{' '}
                 </NavLink>{' '}
               </p>
             </div>

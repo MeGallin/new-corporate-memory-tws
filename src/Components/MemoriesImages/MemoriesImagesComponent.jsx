@@ -3,7 +3,9 @@ import './MemoriesImagesComponent.scss';
 const MemoriesImagesComponent = ({ imgSrc, altText }) => {
   return (
     <div className="memories-image-wrapper">
-      <img src={imgSrc} alt={altText} className="memories-image" />
+      {imgSrc ? (
+        <img src={imgSrc} alt={altText} className="memories-image" />
+      ) : null}
     </div>
   );
 };

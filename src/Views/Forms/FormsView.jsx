@@ -17,7 +17,10 @@ const FormsView = () => {
   const userInfoDetails = useSelector((state) => state.userInfoDetails);
   const { userDetails } = userInfoDetails;
 
-  console.log(userDetails);
+  const userPageHits = useSelector((state) => state.userPageHits);
+  const { hits } = userPageHits;
+
+  console.log({ hits });
 
   return (
     <>

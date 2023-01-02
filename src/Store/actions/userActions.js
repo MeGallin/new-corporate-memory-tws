@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { MEMORIES_GET_RESET } from '../constants/memoriesConstants';
 import {
+  USER_EDIT_DETAILS_FAILURE,
+  USER_EDIT_DETAILS_REQUEST,
+  USER_EDIT_DETAILS_SUCCESS,
   USER_FORGOT_PW_SEND_EMAIL_FAILURE,
   USER_FORGOT_PW_SEND_EMAIL_REQUEST,
   USER_FORGOT_PW_SEND_EMAIL_SUCCESS,
@@ -180,3 +183,40 @@ export const userInfoDetailsAction = () => async (dispatch, getState) => {
     });
   }
 };
+
+//PUT: User EDIT Password
+export const userEditDetailAction =
+  (id, formaData) => async (dispatch, getState) => {
+    console.log(id, formaData);
+    try {
+      dispatch({
+        type: USER_EDIT_DETAILS_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_END_POINT}api/user/${id.id}`,
+        formaData,
+        config,
+      );
+      dispatch({ type: USER_EDIT_DETAILS_SUCCESS, payload: data });
+      dispatch(userInfoDetailsAction());
+    } catch (error) {
+      dispatch({
+        type: USER_EDIT_DETAILS_FAILURE,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

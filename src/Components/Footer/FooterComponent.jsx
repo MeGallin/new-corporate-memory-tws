@@ -13,11 +13,9 @@ const Footer = () => {
   const { hits } = userPageHits;
 
   useEffect(() => {
-    console.log('fired');
     let ignore = false;
     // Dispatch action for visitor counter
     dispatch(userPageHitsAction());
-
     if (!ignore);
     return () => (ignore = true);
   }, [dispatch]);
@@ -26,9 +24,8 @@ const Footer = () => {
     <footer>
       <div>Developed by Gary Allin</div>
       <div className="footer-content-wrapper">
-        {' '}
-        <div>YourCorporateMemory &copy;</div>{' '}
-        <div>visitors: {hits?.length}</div>{' '}
+        <div>YourCorporateMemory &copy;</div>
+        <div>Visitors: {hits?.length}</div>
       </div>
       <DateTime />
     </footer>

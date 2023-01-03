@@ -7,8 +7,10 @@ footer {
   background-color: $main-font-colour;
   color: $main-bg-colour;
   padding: 4px 0;
+  text-align: center;
   .footer-content-wrapper {
     display: flex;
     gap: 2rem;
+    justify-content: space-around;
   }
 }

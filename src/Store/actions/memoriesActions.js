@@ -192,7 +192,6 @@ export const memoryDeleteTagAction = (id) => async (dispatch, getState) => {
 //PUT: SET Due Date i memory
 export const memorySetDueDateAction =
   (memoryData) => async (dispatch, getState) => {
-    console.log(memoryData);
     try {
       dispatch({
         type: MEMORIES_SET_DUE_DATE_REQUEST,
@@ -230,7 +229,6 @@ export const memorySetDueDateAction =
 //PUT: IS Complete memory
 export const memoryIsCompleteAction =
   (memoryData) => async (dispatch, getState) => {
-    console.log(memoryData);
     try {
       dispatch({
         type: MEMORIES_IS_COMPETE_REQUEST,

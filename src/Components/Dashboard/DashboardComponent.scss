@@ -22,4 +22,21 @@
       transition: all 0.8s;
     }
   }
+  .dashboard-completed-component-wrapper {
+    opacity: 0.4;
+    padding-bottom: 0.3em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    gap: 0.4em;
+    &:hover {
+      opacity: 1;
+      transition: all 0.8s;
+    }
+    .dashboard-completed {
+      display: none;
+    }
+  }
 }

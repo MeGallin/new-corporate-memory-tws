@@ -116,7 +116,14 @@ const Memories = () => {
           />
           <div className="memories-component-wrapper">
             {searchedMemories?.map((memory) => (
-              <div key={memory._id} className="memories-card-wrapper">
+              <div
+                key={memory._id}
+                className={
+                  memory.isComplete
+                    ? 'memories-completed'
+                    : 'memories-card-wrapper'
+                }
+              >
                 <CardComponent
                   id={memory._id}
                   title={memory.title}

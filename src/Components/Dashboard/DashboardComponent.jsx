@@ -5,6 +5,7 @@ import { nameRegEx, emailRegEx, passwordRegEx } from '../../Utils/regEx';
 import './DashboardComponent.scss';
 
 import { userEditDetailAction } from '../../Store/actions/userActions';
+import { memoriesGetAction } from '../../Store/actions/memoriesActions';
 
 import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
 import InputComponent from '../Input/InputComponent';
@@ -13,6 +14,7 @@ import moment from 'moment';
 import ErrorComponent from '../Error/ErrorComponent';
 import SuccessComponent from '../Success/SuccessComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
+import CardComponent from '../Card/CardComponent';
 
 const DashboardComponent = () => {
   const dispatch = useDispatch();
@@ -21,16 +23,22 @@ const DashboardComponent = () => {
   const { userInfo } = userLogin;
   const userInfoDetails = useSelector((state) => state.userInfoDetails);
   const { userDetails } = userInfoDetails;
-  // console.log(userDetails);
+
   const userEditDetails = useSelector((state) => state.userEditDetails);
   const { loading, success, error } = userEditDetails;
+
+  const memoriesGet = useSelector((state) => state.memoriesGet);
+  const { memories } = memoriesGet;
+
+  console.log('dashboard', memories);
 
   useEffect(() => {
     let ignore = false;
     if (!userInfo && !userDetails?.isConfirmed) return navigate('/forms');
+    if (!memories) dispatch(memoriesGetAction());
     if (!ignore);
     return () => (ignore = true);
-  }, [userInfo, userDetails?.isConfirmed, navigate]);
+  }, [userInfo, userDetails?.isConfirmed, navigate, memories, dispatch]);
 
   const [editName, setEditName] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
@@ -54,7 +62,6 @@ const DashboardComponent = () => {
     e.preventDefault();
     //Dispatch the Action
     dispatch(userEditDetailAction({ id: userDetails?._id }, formData));
-
     setEditName(false);
   };
 
@@ -77,12 +84,10 @@ const DashboardComponent = () => {
                 src={userDetails?.profileImage}
                 alt={userDetails?.name}
               />
-
               <div>
                 <span className="edit-title">ID: </span>
                 <span title="Edit your name">{userDetails?._id}</span>
               </div>
-
               {editName ? (
                 <form onSubmit={handleRegistrationSubmit}>
                   <InputComponent
@@ -126,7 +131,6 @@ const DashboardComponent = () => {
                   </span>
                 </div>
               )}
-
               {editEmail ? (
                 <form onSubmit={handleRegistrationSubmit}>
                   <InputComponent
@@ -169,7 +173,6 @@ const DashboardComponent = () => {
                   </span>
                 </div>
               )}
-
               {editPassword ? (
                 <form onSubmit={handleRegistrationSubmit}>
                   <InputComponent
@@ -215,6 +218,30 @@ const DashboardComponent = () => {
                   </span>
                 </div>
               )}
+              <div>
+                <span className="edit-title">your current IP Address: </span>
+                {userDetails?.ipAddress === '::1' ? (
+                  <span>LOCALHOST</span>
+                ) : (
+                  userDetails?.ipAddress
+                )}
+              </div>
+
+              <div>
+                <span className="edit-title">Joined: </span>
+                <span>
+                  {moment(userDetails?.updatedAt).diff(
+                    moment(userDetails?.createdAt),
+                    'days',
+                  )}
+                </span>
+                <span> day ago.</span>
+              </div>
+
+              <div>
+                <span className="edit-title">Login Count: </span>
+                <span>{userDetails?.loginCounter}</span>
+              </div>
 
               <div>
                 <span className="edit-title">Is Admin: </span>
@@ -226,7 +253,6 @@ const DashboardComponent = () => {
                   )}
                 </span>
               </div>
-
               <div>
                 <span className="edit-title">Is Confirmed: </span>
                 <span>
@@ -237,7 +263,6 @@ const DashboardComponent = () => {
                   )}
                 </span>
               </div>
-
               <div>
                 <span className="edit-title">Is Suspended: </span>
                 <span>
@@ -248,13 +273,13 @@ const DashboardComponent = () => {
                   )}
                 </span>
               </div>
-
               <div>
                 <span className="edit-title">Created: </span>
                 <span>
                   {moment(userDetails?.createdAt).format('Do MMMM YYYY')}
                 </span>
               </div>
+
               <div>
                 <span className="edit-title">Updated: </span>
                 <span>
@@ -266,7 +291,29 @@ const DashboardComponent = () => {
 
           <fieldset className="fieldSet">
             <legend>Completed Tasks</legend>
-            <div></div>
+            <div className="dashboard-completed-component-wrapper">
+              {memories?.map((memory) => (
+                <div
+                  key={memory._id}
+                  className={!memory.isComplete ? 'dashboard-completed' : ''}
+                >
+                  <CardComponent
+                    id={memory._id}
+                    title={memory.title}
+                    dueDate={memory.dueDate}
+                    memory={memory.memory}
+                    voice={memory.memory}
+                    imgSrc={memory.memoryImage}
+                    setDueDate={memory.setDueDate}
+                    isComplete={memory.isComplete}
+                    priority={memory.priority}
+                    tag={memory.tags.map((tag) => tag)}
+                    created={memory.createdAt}
+                    updated={memory.updatedAt}
+                  />
+                </div>
+              ))}
+            </div>
           </fieldset>
         </div>
       )}

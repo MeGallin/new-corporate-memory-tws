@@ -7,4 +7,8 @@ footer {
   background-color: $main-font-colour;
   color: $main-bg-colour;
   padding: 4px 0;
+  .footer-content-wrapper {
+    display: flex;
+    gap: 2rem;
+  }
 }

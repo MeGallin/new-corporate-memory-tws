@@ -26,7 +26,6 @@ const DashboardComponent = () => {
   const { loading, success, error } = userEditDetails;
 
   useEffect(() => {
-    console.log('fired');
     let ignore = false;
     if (!userInfo && !userDetails?.isConfirmed) return navigate('/forms');
     if (!ignore);

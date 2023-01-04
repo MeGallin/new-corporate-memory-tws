@@ -8,8 +8,6 @@ import { memoryEditAction } from '../../Store/actions/memoriesActions';
 
 import InputComponent from '../Input/InputComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
-import ErrorComponent from '../Error/ErrorComponent';
-import SuccessComponent from '../Success/SuccessComponent';
 import ButtonComponent from '../Button/ButtonComponent';
 
 const EditMemoryComponent = ({ updateMemory }) => {
@@ -58,14 +56,10 @@ const EditMemoryComponent = ({ updateMemory }) => {
   };
 
   const memoryEdit = useSelector((state) => state.memoryEdit);
-  const { loading, success, error } = memoryEdit;
+  const { loading } = memoryEdit;
 
   return (
     <div className="update-memory-wrapper">
-      {error ? <ErrorComponent error={error} /> : null}
-      {success ? (
-        <SuccessComponent message={'Memory has bee successfully created.'} />
-      ) : null}
       {loading ? (
         <SpinnerComponent />
       ) : !showForm ? (

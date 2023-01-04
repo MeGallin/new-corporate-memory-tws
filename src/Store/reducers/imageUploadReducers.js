@@ -1,12 +1,15 @@
 import {
   MEMORY_IMAGE_DELETE_FAILURE,
   MEMORY_IMAGE_DELETE_REQUEST,
+  MEMORY_IMAGE_DELETE_RESET,
   MEMORY_IMAGE_DELETE_SUCCESS,
   MEMORY_IMAGE_UPLOAD_FAILURE,
   MEMORY_IMAGE_UPLOAD_REQUEST,
+  MEMORY_IMAGE_UPLOAD_RESET,
   MEMORY_IMAGE_UPLOAD_SUCCESS,
   PROFILE_IMAGE_UPLOAD_FAILURE,
   PROFILE_IMAGE_UPLOAD_REQUEST,
+  PROFILE_IMAGE_UPLOAD_RESET,
   PROFILE_IMAGE_UPLOAD_SUCCESS,
 } from '../constants/imageUploadConstants';
 
@@ -21,6 +24,8 @@ export const profileImageUploadReducer = (state = {}, action) => {
         success: true,
         profileImageUploaded: action.payload,
       };
+    case PROFILE_IMAGE_UPLOAD_RESET:
+      return {};
     case PROFILE_IMAGE_UPLOAD_FAILURE:
       return { ...state, loading: false, error: action.payload };
     default:
@@ -39,6 +44,8 @@ export const memoryImageUploadReducer = (state = {}, action) => {
         success: true,
         ...action.payload,
       };
+    case MEMORY_IMAGE_UPLOAD_RESET:
+      return {};
     case MEMORY_IMAGE_UPLOAD_FAILURE:
       return { loading: false, error: action.payload };
     default:
@@ -55,8 +62,10 @@ export const memoryDeleteImageReducer = (state = {}, action) => {
       return {
         loading: false,
         success: true,
-        error: null,
+        ...action.payload,
       };
+    case MEMORY_IMAGE_DELETE_RESET:
+      return {};
     case MEMORY_IMAGE_DELETE_FAILURE:
       return { loading: false, error: action.payload };
     default:

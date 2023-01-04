@@ -21,7 +21,10 @@ import {
   memoryIsCompleteReducer,
 } from './reducers/memoriesReducers';
 
-import { memoryImageUploadReducer } from './reducers/imageUploadReducers';
+import {
+  memoryImageUploadReducer,
+  memoryDeleteImageReducer,
+} from './reducers/imageUploadReducers';
 
 //Initialise state to hold user info if logged in.
 const userInfoFromStorage = localStorage.getItem('userInfo')
@@ -45,6 +48,7 @@ const reducer = combineReducers({
   memorySetDueDate: memorySetDueDateReducer,
   memoryIsComplete: memoryIsCompleteReducer,
   memoryImageUpload: memoryImageUploadReducer,
+  memoryDeleteImage: memoryDeleteImageReducer,
 });
 
 const initialState = {

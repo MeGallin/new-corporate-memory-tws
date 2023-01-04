@@ -87,7 +87,10 @@ const Memories = () => {
         <ErrorComponent error={error} />
       ) : null}
       {isCompleteSuccess || setDueDateSuccess || deleteTagSuccess ? (
-        <SuccessComponent message={'Memory has bee successfully Updated.'} />
+        <SuccessComponent
+          type={'MEMORIES_DELETE_TAG_SUCCESS'}
+          message={'Memory has been successfully Removed.'}
+        />
       ) : null}
       {loading ||
       setDueDateLoading ||

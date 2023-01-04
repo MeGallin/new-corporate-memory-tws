@@ -1,15 +1,19 @@
 import {
   MEMORIES_CREATE_FAILURE,
   MEMORIES_CREATE_REQUEST,
+  MEMORIES_CREATE_RESET,
   MEMORIES_CREATE_SUCCESS,
   MEMORIES_DELETE_FAILURE,
   MEMORIES_DELETE_REQUEST,
+  MEMORIES_DELETE_RESET,
   MEMORIES_DELETE_SUCCESS,
   MEMORIES_DELETE_TAG_FAILURE,
   MEMORIES_DELETE_TAG_REQUEST,
+  MEMORIES_DELETE_TAG_RESET,
   MEMORIES_DELETE_TAG_SUCCESS,
   MEMORIES_EDIT_FAILURE,
   MEMORIES_EDIT_REQUEST,
+  MEMORIES_EDIT_RESET,
   MEMORIES_EDIT_SUCCESS,
   MEMORIES_GET_FAILURE,
   MEMORIES_GET_REQUEST,
@@ -17,9 +21,11 @@ import {
   MEMORIES_GET_SUCCESS,
   MEMORIES_IS_COMPETE_FAILURE,
   MEMORIES_IS_COMPETE_REQUEST,
+  MEMORIES_IS_COMPETE_RESET,
   MEMORIES_IS_COMPETE_SUCCESS,
   MEMORIES_SET_DUE_DATE_FAILURE,
   MEMORIES_SET_DUE_DATE_REQUEST,
+  MEMORIES_SET_DUE_DATE_RESET,
   MEMORIES_SET_DUE_DATE_SUCCESS,
 } from '../constants/memoriesConstants';
 
@@ -54,6 +60,8 @@ export const memoryCreateReducer = (state = {}, action) => {
         success: true,
         ...action.payload,
       };
+    case MEMORIES_CREATE_RESET:
+      return {};
     case MEMORIES_CREATE_FAILURE:
       return { loading: false, error: action.payload };
     default:
@@ -72,6 +80,8 @@ export const memoryEditReducer = (state = {}, action) => {
         success: true,
         ...action.payload,
       };
+    case MEMORIES_EDIT_RESET:
+      return {};
     case MEMORIES_EDIT_FAILURE:
       return { loading: false, error: action.payload };
     default:
@@ -90,6 +100,8 @@ export const memoryDeleteReducer = (state = {}, action) => {
         success: true,
         ...action.payload,
       };
+    case MEMORIES_DELETE_RESET:
+      return {};
     case MEMORIES_DELETE_FAILURE:
       return { loading: false, error: action.payload };
     default:
@@ -108,6 +120,8 @@ export const memoryDeleteTagReducer = (state = {}, action) => {
         success: true,
         ...action.payload,
       };
+    case MEMORIES_DELETE_TAG_RESET:
+      return {};
     case MEMORIES_DELETE_TAG_FAILURE:
       return { loading: false, error: action.payload };
     default:
@@ -126,6 +140,8 @@ export const memorySetDueDateReducer = (state = {}, action) => {
         success: true,
         ...action.payload,
       };
+    case MEMORIES_SET_DUE_DATE_RESET:
+      return {};
     case MEMORIES_SET_DUE_DATE_FAILURE:
       return { loading: false, error: action.payload };
     default:
@@ -144,6 +160,8 @@ export const memoryIsCompleteReducer = (state = {}, action) => {
         success: true,
         ...action.payload,
       };
+    case MEMORIES_IS_COMPETE_RESET:
+      return {};
     case MEMORIES_IS_COMPETE_FAILURE:
       return { loading: false, error: action.payload };
     default:

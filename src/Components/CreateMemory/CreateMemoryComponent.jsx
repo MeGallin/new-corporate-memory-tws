@@ -8,8 +8,6 @@ import { memoryCreateAction } from '../../Store/actions/memoriesActions';
 
 import InputComponent from '../Input/InputComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
-import ErrorComponent from '../Error/ErrorComponent';
-import SuccessComponent from '../Success/SuccessComponent';
 
 const CreateMemoryComponent = () => {
   const dispatch = useDispatch();
@@ -47,14 +45,10 @@ const CreateMemoryComponent = () => {
   };
 
   const memoryCreate = useSelector((state) => state.memoryCreate);
-  const { loading, success, error } = memoryCreate;
+  const { loading } = memoryCreate;
 
   return (
     <div className="create-memory-wrapper">
-      {error ? <ErrorComponent error={error} /> : null}
-      {success ? (
-        <SuccessComponent message={'Memory has bee successfully created.'} />
-      ) : null}
       {loading ? (
         <SpinnerComponent />
       ) : (

@@ -11,13 +11,11 @@ import { FaUpload, FaTrash, FaPencilAlt } from 'react-icons/fa';
 import InputComponent from '../Input/InputComponent';
 import ButtonComponent from '../Button/ButtonComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
-import ErrorComponent from '../Error/ErrorComponent';
-import SuccessComponent from '../Success/SuccessComponent';
 
 const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
   const dispatch = useDispatch();
   const memoryImageUpload = useSelector((state) => state.memoryImageUpload);
-  const { loading, error, success } = memoryImageUpload;
+  const { loading } = memoryImageUpload;
 
   const [showUploadInput, setShowUploadInput] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -51,23 +49,19 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
     setShowUploadInput(false);
   };
   const handleImageDelete = (id) => {
-    if (window.confirm(`Are you sure you want to delete ${id}`)) {
+    if (window.confirm(`Are you sure you want to delete this image ${id}`)) {
       // Dispatch delete Image Action
       dispatch(deleteMemoryImageAction(id));
     }
   };
+  const memoryDeleteImage = useSelector((state) => state.memoryDeleteImage);
+  const { loading: memoryDeleteLoading } = memoryDeleteImage;
 
   return (
     <div className="memories-image-wrapper">
-      {error ? <ErrorComponent error={error} /> : null}
-      {success ? (
-        <SuccessComponent
-          message={'You have successfully uploaded your image.'}
-        />
-      ) : null}
       {previewImage ? (
         <>
-          {loading ? (
+          {loading || memoryDeleteLoading ? (
             <SpinnerComponent />
           ) : (
             <form onSubmit={handleImageUpdate}>

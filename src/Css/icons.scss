@@ -5,6 +5,7 @@
     cursor: pointer;
     opacity: 1;
     font-weight: bold;
+    color: $info;
     transition: all 0.8s;
   }
 }
@@ -16,6 +17,31 @@
     cursor: pointer;
     opacity: 1;
     font-weight: bold;
+    color: $info;
+    transition: all 0.8s;
+  }
+}
+
+.pencil-icon {
+  color: $main-font-colour;
+  opacity: 0.4;
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+    font-weight: bold;
+    color: $warning;
+    transition: all 0.8s;
+  }
+}
+
+.trash-icon {
+  color: $main-font-colour;
+  opacity: 0.4;
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+    font-weight: bold;
+    color: $danger;
     transition: all 0.8s;
   }
 }

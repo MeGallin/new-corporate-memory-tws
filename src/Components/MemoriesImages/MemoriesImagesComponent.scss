@@ -7,11 +7,29 @@
     box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
       rgba(0, 0, 0, 0.05) 0px 5px 10px;
     margin: 0 auto;
-    width: 80%;
+    width: 90%;
   }
   .memories-image-selector {
-    border: 1px solid $border-colour-dark;
+    border: 1px solid $main-font-colour;
     background-color: $main-bg-colour;
     padding: 0.2em;
+  }
+  .memories-image-selector:nth-child(even) {
+    background-color: $main-bg-colour;
+    color: $main-font-colour;
+    padding: 0.2em;
+  }
+  .image-wrapper {
+    .image-icon-wrapper {
+      border: 1px solid $border-colour-light;
+      display: flex;
+      justify-content: space-between;
+      background-color: $main-bg-colour;
+      margin: 0 auto;
+      width: 90%;
+      position: relative;
+      top: -22px;
+      padding: 0.2em;
+    }
   }
 }

@@ -32,7 +32,35 @@
   .memories-card-wrapper:nth-child(even) {
     background-color: $main-font-colour;
     color: $main-bg-colour;
+    .image-icon-wrapper {
+      background-color: $main-font-colour;
+    }
+    .bullhorn-icon {
+      color: $main-bg-colour;
+      &:hover {
+        color: $info;
+      }
+    }
+    .upload-icon {
+      color: $main-bg-colour;
+      &:hover {
+        color: $info;
+      }
+    }
+    .pencil-icon {
+      color: $main-bg-colour;
+      &:hover {
+        color: $warning;
+      }
+    }
+    .trash-icon {
+      color: $main-bg-colour;
+      &:hover {
+        color: $danger;
+      }
+    }
   }
+
   .memories-completed {
     display: none;
   }

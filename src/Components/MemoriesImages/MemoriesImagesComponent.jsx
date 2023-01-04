@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './MemoriesImagesComponent.scss';
 
-import { memoryImageUploadAction } from '../../Store/actions/imageUploadActions';
+import {
+  memoryImageUploadAction,
+  deleteMemoryImageAction,
+} from '../../Store/actions/imageUploadActions';
 
-import { FaUpload } from 'react-icons/fa';
+import { FaUpload, FaTrash, FaPencilAlt } from 'react-icons/fa';
 import InputComponent from '../Input/InputComponent';
 import ButtonComponent from '../Button/ButtonComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
@@ -15,8 +18,6 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
   const dispatch = useDispatch();
   const memoryImageUpload = useSelector((state) => state.memoryImageUpload);
   const { loading, error, success } = memoryImageUpload;
-
-  console.log(error, loading, success);
 
   const [showUploadInput, setShowUploadInput] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -45,10 +46,15 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
     const formImageData = new FormData();
     formImageData.append('memoryImage', previewImageFile);
     // Dispatch Profile image upload Action
-
     dispatch(memoryImageUploadAction(id, formImageData));
     setPreviewImage('');
     setShowUploadInput(false);
+  };
+  const handleImageDelete = (id) => {
+    if (window.confirm(`Are you sure you want to delete ${id}`)) {
+      // Dispatch delete Image Action
+      dispatch(deleteMemoryImageAction(id));
+    }
   };
 
   return (
@@ -88,16 +94,35 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
         </>
       ) : null}
 
-      {imgSrc ? (
-        <img src={imgSrc} alt={altText} className="memories-image" />
-      ) : !previewImage ? (
-        <FaUpload
-          onClick={() => setShowUploadInput((prev) => !prev)}
-          size={22}
-          title="Upload an Image"
-          className="upload-icon"
-        />
-      ) : null}
+      <div className="image-wrapper">
+        {imgSrc && !previewImage ? (
+          <>
+            <img src={imgSrc} alt={altText} className="memories-image" />
+            <div className="image-icon-wrapper">
+              <FaTrash
+                onClick={() => handleImageDelete(id)}
+                className="trash-icon"
+                size={22}
+                title="Delete this Image"
+              />
+              <FaPencilAlt
+                onClick={() => setShowUploadInput(!showUploadInput)}
+                className="pencil-icon"
+                size={22}
+                title="EDIT this Image"
+              />
+            </div>
+          </>
+        ) : !previewImage ? (
+          <FaUpload
+            onClick={() => setShowUploadInput((prev) => !prev)}
+            size={22}
+            title="Upload an Image"
+            className="upload-icon"
+          />
+        ) : null}
+      </div>
+
       {showUploadInput && !previewImage ? (
         <div className="memories-image-selector">
           <InputComponent

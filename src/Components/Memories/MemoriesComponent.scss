@@ -1,4 +1,16 @@
 @import '../../index.scss';
+.memories-search-wrapper {
+  display: flex;
+  justify-content: space-between;
+  background-color: $fieldSet-bg-colour;
+  border: 1px solid $border-colour-light;
+  margin-bottom: 0.3em;
+  padding: 0.1em 0;
+}
+.memories-search-wrapper p {
+  font-size: 0.8rem;
+}
+
 .memories-component-wrapper {
   padding-bottom: 0.3em;
   display: flex;

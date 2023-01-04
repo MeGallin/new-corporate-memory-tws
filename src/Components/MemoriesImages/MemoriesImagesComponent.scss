@@ -2,11 +2,16 @@
 
 .memories-image-wrapper {
   // border: 1px solid $danger;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
-    rgba(0, 0, 0, 0.05) 0px 5px 10px;
 
   .memories-image {
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
+      rgba(0, 0, 0, 0.05) 0px 5px 10px;
     margin: 0 auto;
-    width: 100%;
+    width: 80%;
+  }
+  .memories-image-selector {
+    border: 1px solid $border-colour-dark;
+    background-color: $main-bg-colour;
+    padding: 0.2em;
   }
 }

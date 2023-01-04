@@ -23,14 +23,10 @@ const DashboardComponent = () => {
   const { userInfo } = userLogin;
   const userInfoDetails = useSelector((state) => state.userInfoDetails);
   const { userDetails } = userInfoDetails;
-
   const userEditDetails = useSelector((state) => state.userEditDetails);
   const { loading, success, error } = userEditDetails;
-
   const memoriesGet = useSelector((state) => state.memoriesGet);
   const { memories } = memoriesGet;
-
-  console.log('dashboard', memories);
 
   useEffect(() => {
     let ignore = false;
@@ -64,6 +60,13 @@ const DashboardComponent = () => {
     dispatch(userEditDetailAction({ id: userDetails?._id }, formData));
     setEditName(false);
   };
+
+  const completedMemories = memories?.filter((memory) => {
+    if (memory.isComplete) {
+      return memory;
+    }
+    return false;
+  });
 
   return (
     <>
@@ -290,30 +293,34 @@ const DashboardComponent = () => {
           </fieldset>
 
           <fieldset className="fieldSet">
-            <legend>Completed Tasks</legend>
-            <div className="dashboard-completed-component-wrapper">
-              {memories?.map((memory) => (
-                <div
-                  key={memory._id}
-                  className={!memory.isComplete ? 'dashboard-completed' : ''}
-                >
-                  <CardComponent
-                    id={memory._id}
-                    title={memory.title}
-                    dueDate={memory.dueDate}
-                    memory={memory.memory}
-                    voice={memory.memory}
-                    imgSrc={memory.memoryImage}
-                    setDueDate={memory.setDueDate}
-                    isComplete={memory.isComplete}
-                    priority={memory.priority}
-                    tag={memory.tags.map((tag) => tag)}
-                    created={memory.createdAt}
-                    updated={memory.updatedAt}
-                  />
-                </div>
-              ))}
-            </div>
+            <legend>Completed Memories</legend>
+            {completedMemories?.length > 0 ? (
+              <div className="dashboard-completed-component-wrapper">
+                {memories?.map((memory) => (
+                  <div
+                    key={memory._id}
+                    className={!memory.isComplete ? 'dashboard-completed' : ''}
+                  >
+                    <CardComponent
+                      id={memory._id}
+                      title={memory.title}
+                      dueDate={memory.dueDate}
+                      memory={memory.memory}
+                      voice={memory.memory}
+                      imgSrc={memory.memoryImage}
+                      setDueDate={memory.setDueDate}
+                      isComplete={memory.isComplete}
+                      priority={memory.priority}
+                      tag={memory.tags.map((tag) => tag)}
+                      created={memory.createdAt}
+                      updated={memory.updatedAt}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              'You currently have no completed memories'
+            )}
           </fieldset>
         </div>
       )}

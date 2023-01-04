@@ -21,6 +21,8 @@ import {
   memoryIsCompleteReducer,
 } from './reducers/memoriesReducers';
 
+import { memoryImageUploadReducer } from './reducers/imageUploadReducers';
+
 //Initialise state to hold user info if logged in.
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
@@ -42,6 +44,7 @@ const reducer = combineReducers({
   memoryDeleteTag: memoryDeleteTagReducer,
   memorySetDueDate: memorySetDueDateReducer,
   memoryIsComplete: memoryIsCompleteReducer,
+  memoryImageUpload: memoryImageUploadReducer,
 });
 
 const initialState = {

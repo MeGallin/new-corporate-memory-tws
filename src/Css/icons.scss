@@ -1,0 +1,21 @@
+.upload-icon {
+  color: $main-font-colour;
+  opacity: 0.4;
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+    font-weight: bold;
+    transition: all 0.8s;
+  }
+}
+
+.bullhorn-icon {
+  color: $main-font-colour;
+  opacity: 0.4;
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+    font-weight: bold;
+    transition: all 0.8s;
+  }
+}

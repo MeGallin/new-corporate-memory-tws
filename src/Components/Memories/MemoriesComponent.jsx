@@ -97,23 +97,30 @@ const Memories = () => {
         <SpinnerComponent />
       ) : (
         <>
-          <SearchComponent
-            placeholder="search"
-            value={keyword}
-            handleSearch={handleSearch}
-          />
-          <p>
-            [{searchedMemories?.length}]{' '}
-            {searchedMemories?.length === 1 ? 'memory found.' : 'memories'} and
-            [{completedMemories?.length}] marked as complete.
-          </p>
-          <ModalComponent
-            className="create-btn"
-            openButtonTitle="Create"
-            closeButtonTitle="X"
-            variant={'success'}
-            props={<CreateMemoryComponent />}
-          />
+          <div className="memories-search-wrapper">
+            <div>
+              <SearchComponent
+                placeholder="search"
+                value={keyword}
+                handleSearch={handleSearch}
+              />
+              <p>
+                [{searchedMemories?.length}]{' '}
+                {searchedMemories?.length === 1 ? 'memory found.' : 'memories'}{' '}
+                and [{completedMemories?.length}] marked as complete.
+              </p>
+            </div>
+            <div>
+              <ModalComponent
+                className="create-btn"
+                openButtonTitle="Create"
+                closeButtonTitle="X"
+                variant={'success'}
+                props={<CreateMemoryComponent />}
+              />
+            </div>
+          </div>
+
           <div className="memories-component-wrapper">
             {searchedMemories?.map((memory) => (
               <div

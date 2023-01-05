@@ -1,5 +1,12 @@
 @import './index.scss';
 @import './Css/scssMixIn.scss';
+
+@import './Css/componentWrapper.scss';
+@import './Css/fieldSet.scss';
+@import './Css/icons.scss';
+@import './Css/scrollBar.scss';
+@import './Css/textArea.scss';
+
 $grid__bp-md: 1280;
 
 .container {

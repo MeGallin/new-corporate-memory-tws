@@ -1,0 +1,25 @@
+@import '../../../index.scss';
+.edit-details-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border: 1px solid $border-colour-dark;
+  background-color: $main-font-colour;
+  color: $main-bg-colour;
+
+  padding: 0.4em;
+  .edit-title {
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    text-transform: lowercase;
+  }
+  .edit-input {
+    color: $info;
+    &:hover {
+      cursor: pointer;
+      color: $warning;
+      font-weight: bold;
+      transition: all 0.8s;
+    }
+  }
+}

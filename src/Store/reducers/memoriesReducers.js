@@ -38,7 +38,7 @@ export const memoriesGetReducer = (state = {}, action) => {
       return {
         loading: false,
         success: true,
-        memories: action.payload,
+        ...action.payload,
       };
     case MEMORIES_GET_RESET:
       return {};

@@ -19,7 +19,6 @@ import {
 } from '../../Store/constants/imageUploadConstants';
 
 const SuccessComponent = ({ type, message }) => {
-  console.log(type);
   const dispatch = useDispatch();
   const [clear, setClear] = useState('');
   useEffect(() => {

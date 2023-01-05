@@ -15,7 +15,7 @@ import SpinnerComponent from '../Spinner/SpinnerComponent';
 const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
   const dispatch = useDispatch();
   const memoryImageUpload = useSelector((state) => state.memoryImageUpload);
-  const { loading } = memoryImageUpload;
+  const { loading: memoryImageUploadLoading } = memoryImageUpload;
 
   const [showUploadInput, setShowUploadInput] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -55,13 +55,13 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
     }
   };
   const memoryDeleteImage = useSelector((state) => state.memoryDeleteImage);
-  const { loading: memoryDeleteLoading } = memoryDeleteImage;
+  const { loading: memoryDeleteImageLoading } = memoryDeleteImage;
 
   return (
     <div className="memories-image-wrapper">
       {previewImage ? (
         <>
-          {loading || memoryDeleteLoading ? (
+          {memoryImageUploadLoading || memoryDeleteImageLoading ? (
             <SpinnerComponent />
           ) : (
             <form onSubmit={handleImageUpdate}>

@@ -57,7 +57,7 @@ const DashboardComponent = () => {
               <EditDetailsComponent />
               <fieldset className="fieldSet">
                 <legend>Details</legend>
-                <div className="flex-wrapper-dates border-temp">
+                <div className="flex-wrapper-dates">
                   <div>
                     <img
                       className="dashboard-profile-img"
@@ -67,6 +67,21 @@ const DashboardComponent = () => {
                   </div>
 
                   <div>
+                    <h3>Stats</h3>
+                    <div>
+                      <span className="details-label">Total Memories: </span>
+                      <span>{memories.length}</span>
+                    </div>
+                    <div>
+                      <span className="details-label">
+                        Completed Memories:{' '}
+                      </span>
+                      <span>{completedMemories.length}</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3>Basic Info</h3>
                     <div>
                       <span className="details-label">ID: </span>
                       <span>{userDetails?._id}</span>

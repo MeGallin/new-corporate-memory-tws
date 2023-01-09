@@ -26,7 +26,11 @@ import {
   memoryDeleteImageReducer,
 } from './reducers/imageUploadReducers';
 
-import { adminGetAllUserDetailsReducer } from './reducers/adminReducers';
+import {
+  adminGetAllUserDetailsReducer,
+  adminIsAdminReducer,
+  adminIsSuspendedReducer,
+} from './reducers/adminReducers';
 
 //Initialise state to hold user info if logged in.
 const userInfoFromStorage = localStorage.getItem('userInfo')
@@ -35,6 +39,8 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
 
 const reducer = combineReducers({
   adminGetAllUserDetails: adminGetAllUserDetailsReducer,
+  adminIsAdmin: adminIsAdminReducer,
+  adminIsSuspended: adminIsSuspendedReducer,
   contactForm: contactFormReducer,
   userLogin: userLoginReducer,
   userInfoDetails: userInfoDetailsReducer,

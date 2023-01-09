@@ -2,11 +2,16 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './AdminComponent.scss';
 
-import { adminGetAllUserDetailsAction } from '../../Store/actions/adminActions';
+import {
+  adminGetAllUserDetailsAction,
+  adminIsAdminAction,
+  adminIsSuspendedAction,
+} from '../../Store/actions/adminActions';
 import ErrorComponent from '../Error/ErrorComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
 import moment from 'moment';
+import ToggleSwitchComponent from '../ToggleSwitch/ToggleSwitchComponent';
 
 const AdminComponent = () => {
   const dispatch = useDispatch();
@@ -15,6 +20,7 @@ const AdminComponent = () => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userIsAdmin, setUserIsAdmin] = useState('');
+  const [userIsConfirmed, setUserIsConfirmed] = useState('');
   const [userLoginCounter, setUserLoginCounter] = useState('');
   const [userIsSuspended, setUserIsSuspended] = useState('');
   const [userIpAddress, setUserIpAddress] = useState('');
@@ -38,12 +44,24 @@ const AdminComponent = () => {
   const userMemories = memories?.filter((obj) => obj?.user === userId);
   //   console.log(userMemories);
 
+  const handleIsAdmin = (id, value) => {
+    const toggledValue = (value = !value);
+    setUserIsAdmin(toggledValue);
+    dispatch(adminIsAdminAction({ id, toggledValue }));
+  };
+  const handleIsSuspended = (id, value) => {
+    const toggledValue = (value = !value);
+    setUserIsSuspended(toggledValue);
+    dispatch(adminIsSuspendedAction({ id, toggledValue }));
+  };
+
   const handleUser = (
     id,
     userName,
     userEmail,
     userIsAdmin,
     userIsSuspended,
+    userIsConfirmed,
     userLoginCounter,
     userIpAddress,
     userCreatedAt,
@@ -54,6 +72,7 @@ const AdminComponent = () => {
     setUserEmail(userEmail);
     setUserIsAdmin(userIsAdmin);
     setUserIsSuspended(userIsSuspended);
+    setUserIsConfirmed(userIsConfirmed);
     setUserLoginCounter(userLoginCounter);
     setUserIpAddress(userIpAddress);
     setUserCreatedAt(userCreatedAt);
@@ -87,6 +106,7 @@ const AdminComponent = () => {
                       user?.email,
                       user?.isAdmin,
                       user?.isSuspended,
+                      user?.isConfirmed,
                       user?.loginCounter,
                       user?.ipAddress,
                       user?.createdAt,
@@ -100,104 +120,142 @@ const AdminComponent = () => {
             ) : null,
           )}
 
-          <fieldset className="fieldSet">
-            <legend>{userName} Details</legend>
+          {userName && userMemories?.length ? (
+            <>
+              <fieldset className="fieldSet">
+                <legend>{userName} Details</legend>
 
-            {userName ? (
-              <>
-                <div className="edit-details-wrapper">
-                  <div>
-                    <div>
-                      <span className="details-label">name: </span>
-                      <span>{userName}</span>
-                    </div>
-                    <div>
-                      <span className="details-label">email: </span>
-                      <span>{userEmail}</span>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <span className="details-label">is admin: </span>
-                      <span>
-                        {userIsAdmin ? (
-                          <FaRegThumbsUp
-                            className="reg-thumbs-up-icon"
-                            size={22}
-                          />
-                        ) : (
-                          <FaRegThumbsDown
-                            className="reg-thumbs-down-icon"
-                            size={22}
-                          />
-                        )}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="details-label">is Suspended: </span>
-                      <span>
-                        {userIsSuspended ? (
-                          <FaRegThumbsUp
-                            className="reg-thumbs-up-icon"
-                            size={22}
-                          />
-                        ) : (
-                          <FaRegThumbsDown
-                            className="reg-thumbs-down-icon"
-                            size={22}
-                          />
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <span className="details-label">login Counter: </span>
-                      <span>{userLoginCounter}</span>
-                    </div>
-                    <div>
-                      <span className="details-label">ip: </span>
-                      <span>
-                        {userIpAddress === '::1' ? (
-                          <span>LOCALHOST</span>
-                        ) : (
-                          userIpAddress
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div>
-                    <span className="details-label">created: </span>
-                    <span>
-                      {moment(userUpdatedAt).diff(
-                        moment(userCreatedAt),
-                        'days',
-                      )}{' '}
-                      days ago.
-                    </span>
-                  </div>
-                  <div>
-                    <span className="details-label">updated: </span>
-                    <span>{moment(userUpdatedAt).fromNow()}</span>
-                  </div>
-                </div>
-              </>
-            ) : null}
-          </fieldset>
+                {userName ? (
+                  <>
+                    <div className="edit-details-wrapper">
+                      <div>
+                        <div>
+                          <span className="details-label">name: </span>
+                          <span>{userName}</span>
+                        </div>
+                        <div>
+                          <span className="details-label">email: </span>
+                          <span>{userEmail}</span>
+                        </div>
+                        <div>
+                          <span className="details-label">is Confirmed: </span>
+                          <span>
+                            {userIsConfirmed ? (
+                              <FaRegThumbsUp
+                                className="reg-thumbs-up-icon"
+                                size={22}
+                              />
+                            ) : (
+                              <FaRegThumbsDown
+                                className="reg-thumbs-down-icon"
+                                size={22}
+                              />
+                            )}
+                          </span>
+                        </div>
+                      </div>
 
-          <fieldset className="fieldSet">
-            <legend>
-              {' '}
-              {userName} has {userMemories?.length} Memories
-            </legend>
-            {userMemories?.map((userMemory) => (
-              <>
-                <div key={userMemory?._id}>{userMemory?.title}</div>
-              </>
-            ))}
-          </fieldset>
+                      <div className="is-admin-is-suspended-wrapper">
+                        <div>
+                          <ToggleSwitchComponent
+                            id="isAdmin"
+                            name="isAdmin"
+                            checked={userIsAdmin}
+                            onChange={() => handleIsAdmin(userId, userIsAdmin)}
+                          />
+
+                          <span className="details-label">is admin: </span>
+                          <span>
+                            {userIsAdmin ? (
+                              <FaRegThumbsUp
+                                className="reg-thumbs-up-icon"
+                                size={22}
+                              />
+                            ) : (
+                              <FaRegThumbsDown
+                                className="reg-thumbs-down-icon"
+                                size={22}
+                              />
+                            )}
+                          </span>
+                        </div>
+                        <div>
+                          <ToggleSwitchComponent
+                            id="isSuspended"
+                            name="isSuspended"
+                            checked={userIsSuspended}
+                            onChange={() =>
+                              handleIsSuspended(userId, userIsSuspended)
+                            }
+                          />
+
+                          <span className="details-label">is Suspended: </span>
+                          <span>
+                            {userIsSuspended ? (
+                              <FaRegThumbsUp
+                                className="reg-thumbs-up-icon"
+                                size={22}
+                              />
+                            ) : (
+                              <FaRegThumbsDown
+                                className="reg-thumbs-down-icon"
+                                size={22}
+                              />
+                            )}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div>
+                          <span className="details-label">login Counter: </span>
+                          <span>{userLoginCounter}</span>
+                        </div>
+                        <div>
+                          <span className="details-label">ip: </span>
+                          <span>
+                            {userIpAddress === '::1' ? (
+                              <span>LOCALHOST</span>
+                            ) : (
+                              userIpAddress
+                            )}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div>
+                        <span className="details-label">created: </span>
+                        <span>
+                          {moment(userUpdatedAt).diff(
+                            moment(userCreatedAt),
+                            'days',
+                          )}{' '}
+                          days ago.
+                        </span>
+                      </div>
+                      <div>
+                        <span className="details-label">updated: </span>
+                        <span>{moment(userUpdatedAt).fromNow()}</span>
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+              </fieldset>
+
+              <fieldset className="fieldSet">
+                <legend>
+                  {' '}
+                  {userName} has {userMemories?.length} Memories
+                </legend>
+                {userMemories?.map((userMemory) => (
+                  <>
+                    <div key={userMemory?._id}>{userMemory?.title}</div>
+                  </>
+                ))}
+              </fieldset>
+            </>
+          ) : null}
         </>
       )}
     </>

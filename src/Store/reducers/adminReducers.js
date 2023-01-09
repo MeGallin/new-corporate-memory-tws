@@ -2,6 +2,13 @@ import {
   ADMIN_GET_ALL_USER_DETAILS_FAILURE,
   ADMIN_GET_ALL_USER_DETAILS_REQUEST,
   ADMIN_GET_ALL_USER_DETAILS_SUCCESS,
+  ADMIN_IS_ADMIN_FAILURE,
+  ADMIN_IS_ADMIN_REQUEST,
+  ADMIN_IS_ADMIN_RESET,
+  ADMIN_IS_ADMIN_SUCCESS,
+  ADMIN_IS_SUSPENDED_FAILURE,
+  ADMIN_IS_SUSPENDED_REQUEST,
+  ADMIN_IS_SUSPENDED_SUCCESS,
 } from '../constants/adminConstants';
 
 export const adminGetAllUserDetailsReducer = (state = {}, action) => {
@@ -15,6 +22,44 @@ export const adminGetAllUserDetailsReducer = (state = {}, action) => {
         ...action.payload,
       };
     case ADMIN_GET_ALL_USER_DETAILS_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return { ...state };
+  }
+};
+
+// PUT: ADMIN isAdmin reducer
+export const adminIsAdminReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADMIN_IS_ADMIN_REQUEST:
+      return { loading: true };
+    case ADMIN_IS_ADMIN_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        isAdmin: action.payload,
+      };
+    case ADMIN_IS_ADMIN_RESET:
+      return {};
+    case ADMIN_IS_ADMIN_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return { ...state };
+  }
+};
+
+// PUT: ADMIN isSuspended reducer
+export const adminIsSuspendedReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADMIN_IS_SUSPENDED_REQUEST:
+      return { loading: true };
+    case ADMIN_IS_SUSPENDED_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        isSuspended: action.payload,
+      };
+    case ADMIN_IS_SUSPENDED_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return { ...state };

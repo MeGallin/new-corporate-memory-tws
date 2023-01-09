@@ -1,0 +1,20 @@
+@import '../../index.scss';
+
+.admin-component-select-name-dropdown {
+  color: $warning;
+  margin-left: 1em;
+  &:hover {
+    font-weight: bold;
+    color: $info;
+    cursor: pointer;
+    transition: all 0.8s;
+  }
+}
+.admin-component-select-name {
+  color: $info;
+  &:hover {
+    background-color: $main-font-colour;
+    cursor: pointer;
+    transition: all 0.8s;
+  }
+}

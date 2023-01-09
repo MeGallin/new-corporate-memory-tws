@@ -17,6 +17,10 @@ import {
   MEMORY_IMAGE_DELETE_RESET,
   MEMORY_IMAGE_UPLOAD_RESET,
 } from '../../Store/constants/imageUploadConstants';
+import {
+  ADMIN_IS_ADMIN_RESET,
+  ADMIN_IS_SUSPENDED_RESET,
+} from '../../Store/constants/adminConstants';
 
 const SuccessComponent = ({ type, message }) => {
   const dispatch = useDispatch();
@@ -45,6 +49,12 @@ const SuccessComponent = ({ type, message }) => {
           break;
         case 'MEMORY_IMAGE_DELETE_SUCCESS':
           dispatch({ type: MEMORY_IMAGE_DELETE_RESET });
+          break;
+        case 'ADMIN_IS_ADMIN_SUCCESS':
+          dispatch({ type: ADMIN_IS_ADMIN_RESET });
+          break;
+        case 'ADMIN_IS_SUSPENDED_SUCCESS':
+          dispatch({ type: ADMIN_IS_SUSPENDED_RESET });
           break;
         default:
           break;

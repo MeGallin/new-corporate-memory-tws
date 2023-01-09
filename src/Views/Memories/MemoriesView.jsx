@@ -15,6 +15,7 @@ const MemoriesView = () => {
   const memoryDeleteImage = useSelector((state) => state.memoryDeleteImage);
   const { success: memoryDeleteImageSuccess, error: memoryDeleteImageError } =
     memoryDeleteImage;
+
   return (
     <>
       {CreateError ? <ErrorComponent error={CreateError} /> : null}

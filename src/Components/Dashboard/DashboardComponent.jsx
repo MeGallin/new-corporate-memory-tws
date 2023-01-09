@@ -12,6 +12,7 @@ import SuccessComponent from '../Success/SuccessComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import CardComponent from '../Card/CardComponent';
 import EditDetailsComponent from './EditDetails/EditDetailsComponent';
+import AdminComponent from '../Admin/AdminComponent';
 
 const DashboardComponent = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,15 @@ const DashboardComponent = () => {
         <SpinnerComponent />
       ) : (
         <div className="dashboard-wrapper">
+          {userDetails?.isAdmin ? (
+            <>
+              <fieldset className="fieldSet">
+                <legend>Users at a glance</legend>
+                <AdminComponent />
+              </fieldset>
+            </>
+          ) : null}
+
           <fieldset className="fieldSet">
             <legend>{userDetails?.name}</legend>
             <div>
@@ -70,13 +80,13 @@ const DashboardComponent = () => {
                     <h3>Stats</h3>
                     <div>
                       <span className="details-label">Total Memories: </span>
-                      <span>{memories.length}</span>
+                      <span>{memories?.length}</span>
                     </div>
                     <div>
                       <span className="details-label">
                         Completed Memories:{' '}
                       </span>
-                      <span>{completedMemories.length}</span>
+                      <span>{completedMemories?.length}</span>
                     </div>
                   </div>
 

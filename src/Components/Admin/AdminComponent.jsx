@@ -17,6 +17,9 @@ import AdminDeleteUserComponent from '../AdminDeleteUser/AdminDeleteUserComponen
 const AdminComponent = () => {
   const dispatch = useDispatch();
 
+  const userInfoDetails = useSelector((state) => state.userInfoDetails);
+  const { userDetails } = userInfoDetails;
+
   const [userId, setUserId] = useState('');
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -41,9 +44,8 @@ const AdminComponent = () => {
     (state) => state.adminGetAllUserDetails,
   );
   const { loading, success, error, users, memories } = adminGetAllUserDetails;
-  // console.log(users);
+
   const userMemories = memories?.filter((obj) => obj?.user === userId);
-  // console.log(userMemories);
 
   const handleIsAdmin = (id, value) => {
     const toggledValue = (value = !value);
@@ -161,6 +163,9 @@ const AdminComponent = () => {
                             id="isAdmin"
                             name="isAdmin"
                             checked={userIsAdmin}
+                            disabled={
+                              userId !== userDetails?._id ? false : true
+                            }
                             onChange={() => handleIsAdmin(userId, userIsAdmin)}
                           />
 
@@ -184,6 +189,9 @@ const AdminComponent = () => {
                             id="isSuspended"
                             name="isSuspended"
                             checked={userIsSuspended}
+                            disabled={
+                              userId !== userDetails?._id ? false : true
+                            }
                             onChange={() =>
                               handleIsSuspended(userId, userIsSuspended)
                             }
@@ -244,7 +252,9 @@ const AdminComponent = () => {
                     </div>
                   </>
                 ) : null}
-                <AdminDeleteUserComponent id={userId} name={userName} />
+                {userId !== userDetails?._id ? (
+                  <AdminDeleteUserComponent id={userId} name={userName} />
+                ) : null}
               </fieldset>
 
               <fieldset className="fieldSet">

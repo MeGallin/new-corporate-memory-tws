@@ -1,5 +1,8 @@
 import axios from 'axios';
 import {
+  ADMIN_DELETE_ALL_USER_DATA_FAILURE,
+  ADMIN_DELETE_ALL_USER_DATA_REQUEST,
+  ADMIN_DELETE_ALL_USER_DATA_SUCCESS,
   ADMIN_GET_ALL_USER_DETAILS_FAILURE,
   ADMIN_GET_ALL_USER_DETAILS_REQUEST,
   ADMIN_GET_ALL_USER_DETAILS_SUCCESS,
@@ -103,6 +106,40 @@ export const adminIsSuspendedAction =
     } catch (error) {
       dispatch({
         type: ADMIN_IS_SUSPENDED_FAILURE,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+//DELETE: ADMIN delete all USER's data
+export const adminDeleteAllUserDataAction =
+  (id) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: ADMIN_DELETE_ALL_USER_DATA_REQUEST,
+      });
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_END_POINT}api/admin/user-memories-delete/${id}`,
+        config,
+      );
+      dispatch({ type: ADMIN_DELETE_ALL_USER_DATA_SUCCESS, payload: data });
+      dispatch(adminGetAllUserDetailsAction());
+    } catch (error) {
+      dispatch({
+        type: ADMIN_DELETE_ALL_USER_DATA_FAILURE,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

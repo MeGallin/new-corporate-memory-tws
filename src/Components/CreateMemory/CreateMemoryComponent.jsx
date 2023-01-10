@@ -92,12 +92,11 @@ const CreateMemoryComponent = () => {
                   </label>
                 </div>
 
-                <input
-                  type="text"
-                  id="tag"
-                  name="tag"
+                <InputComponent
+                  label="Tag"
                   value={tag}
-                  placeholder="Tag"
+                  type="text"
+                  name="tag"
                   onChange={handleOnchange}
                 />
               </div>

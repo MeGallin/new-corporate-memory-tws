@@ -9,6 +9,9 @@ const UserAdminView = () => {
   const adminIsSuspended = useSelector((state) => state.adminIsSuspended);
   const { success: isSuspendedSuccess, error: isSuspendedError } =
     adminIsSuspended;
+  const adminDeleteAllUser = useSelector((state) => state.adminDeleteAllUser);
+  const { success: deleteAllUserDataSuccess, error: deleteAllUserDataError } =
+    adminDeleteAllUser;
   return (
     <>
       {isAdminError ? <ErrorComponent error={isAdminError} /> : null}
@@ -23,6 +26,17 @@ const UserAdminView = () => {
         <SuccessComponent
           type={'ADMIN_IS_ADMIN_SUCCESS'}
           message={'User Suspension status has been updated.'}
+        />
+      ) : null}
+      {deleteAllUserDataError ? (
+        <ErrorComponent error={deleteAllUserDataError} />
+      ) : null}
+      {deleteAllUserDataSuccess ? (
+        <SuccessComponent
+          type={'ADMIN_DELETE_ALL_USER_DATA_SUCCESS'}
+          message={
+            'User account and all their memories have been successfully deleted.'
+          }
         />
       ) : null}
       <DashboardComponent />

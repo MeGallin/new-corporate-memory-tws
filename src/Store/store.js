@@ -30,6 +30,7 @@ import {
   adminGetAllUserDetailsReducer,
   adminIsAdminReducer,
   adminIsSuspendedReducer,
+  adminDeleteAllUserReducer,
 } from './reducers/adminReducers';
 
 //Initialise state to hold user info if logged in.
@@ -41,6 +42,7 @@ const reducer = combineReducers({
   adminGetAllUserDetails: adminGetAllUserDetailsReducer,
   adminIsAdmin: adminIsAdminReducer,
   adminIsSuspended: adminIsSuspendedReducer,
+  adminDeleteAllUser: adminDeleteAllUserReducer,
   contactForm: contactFormReducer,
   userLogin: userLoginReducer,
   userInfoDetails: userInfoDetailsReducer,

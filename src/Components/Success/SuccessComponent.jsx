@@ -18,6 +18,7 @@ import {
   MEMORY_IMAGE_UPLOAD_RESET,
 } from '../../Store/constants/imageUploadConstants';
 import {
+  ADMIN_DELETE_ALL_USER_DATA_RESET,
   ADMIN_IS_ADMIN_RESET,
   ADMIN_IS_SUSPENDED_RESET,
 } from '../../Store/constants/adminConstants';
@@ -42,14 +43,14 @@ const SuccessComponent = ({ type, message }) => {
         case 'MEMORIES_DELETE_TAG_SUCCESS':
           dispatch({ type: MEMORIES_DELETE_TAG_RESET });
           break;
-        case 'MEMORIES_IS_COMPETE_SUCCESS':
-          dispatch({ type: MEMORIES_IS_COMPETE_RESET });
-          break;
         case 'MEMORY_IMAGE_UPLOAD_SUCCESS':
           dispatch({ type: MEMORY_IMAGE_UPLOAD_RESET });
           break;
         case 'MEMORY_IMAGE_DELETE_SUCCESS':
           dispatch({ type: MEMORY_IMAGE_DELETE_RESET });
+          break;
+        case 'MEMORIES_IS_COMPETE_SUCCESS':
+          dispatch({ type: MEMORIES_IS_COMPETE_RESET });
           break;
         case 'MEMORIES_SET_DUE_DATE_SUCCESS':
           dispatch({ type: MEMORIES_SET_DUE_DATE_RESET });
@@ -59,6 +60,9 @@ const SuccessComponent = ({ type, message }) => {
           break;
         case 'ADMIN_IS_SUSPENDED_SUCCESS':
           dispatch({ type: ADMIN_IS_SUSPENDED_RESET });
+          break;
+        case 'ADMIN_DELETE_ALL_USER_DATA_SUCCESS':
+          dispatch({ type: ADMIN_DELETE_ALL_USER_DATA_RESET });
           break;
         default:
           break;

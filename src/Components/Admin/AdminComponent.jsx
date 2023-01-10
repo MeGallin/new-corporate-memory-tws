@@ -12,6 +12,7 @@ import SpinnerComponent from '../Spinner/SpinnerComponent';
 import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
 import moment from 'moment';
 import ToggleSwitchComponent from '../ToggleSwitch/ToggleSwitchComponent';
+import AdminDeleteUserComponent from '../AdminDeleteUser/AdminDeleteUserComponent';
 
 const AdminComponent = () => {
   const dispatch = useDispatch();
@@ -40,9 +41,9 @@ const AdminComponent = () => {
     (state) => state.adminGetAllUserDetails,
   );
   const { loading, success, error, users, memories } = adminGetAllUserDetails;
-  //   console.log(users);
+  // console.log(users);
   const userMemories = memories?.filter((obj) => obj?.user === userId);
-  //   console.log(userMemories);
+  // console.log(userMemories);
 
   const handleIsAdmin = (id, value) => {
     const toggledValue = (value = !value);
@@ -120,11 +121,10 @@ const AdminComponent = () => {
             ) : null,
           )}
 
-          {userName && userMemories?.length ? (
+          {userName ? (
             <>
               <fieldset className="fieldSet">
                 <legend>{userName} Details</legend>
-
                 {userName ? (
                   <>
                     <div className="edit-details-wrapper">
@@ -223,10 +223,11 @@ const AdminComponent = () => {
                         </div>
                       </div>
                     </div>
-                    <div>
+
+                    <div className="user-details-dates-wrapper">
                       <div>
                         <span className="details-label">created: </span>
-                        <span>
+                        <span className="small-text">
                           {moment(userUpdatedAt).diff(
                             moment(userCreatedAt),
                             'days',
@@ -236,23 +237,19 @@ const AdminComponent = () => {
                       </div>
                       <div>
                         <span className="details-label">updated: </span>
-                        <span>{moment(userUpdatedAt).fromNow()}</span>
+                        <span className="small-text">
+                          {moment(userUpdatedAt).fromNow()}
+                        </span>
                       </div>
                     </div>
                   </>
                 ) : null}
+                <AdminDeleteUserComponent id={userId} name={userName} />
               </fieldset>
 
               <fieldset className="fieldSet">
-                <legend>
-                  {' '}
-                  {userName} has {userMemories?.length} Memories
-                </legend>
-                {userMemories?.map((userMemory) => (
-                  <>
-                    <div key={userMemory?._id}>{userMemory?.title}</div>
-                  </>
-                ))}
+                <legend> {userName}</legend>
+                {userName} has {userMemories?.length} Memories.
               </fieldset>
             </>
           ) : null}

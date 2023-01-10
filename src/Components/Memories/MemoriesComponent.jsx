@@ -6,14 +6,12 @@ import './MemoriesComponent.scss';
 import { memoriesGetAction } from '../../Store/actions/memoriesActions';
 
 import CardComponent from '../Card/CardComponent';
-import ErrorComponent from '../Error/ErrorComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import SearchComponent from '../Search/SearchComponent';
 import ModalComponent from '../Modal/ModalComponent';
 import CreateMemoryComponent from '../CreateMemory/CreateMemoryComponent';
 import EditMemoryComponent from '../EditMemory/EditMemoryComponent';
 import DeleteMemoryComponent from '../DeleteMemory/DeleteMemoryComponent';
-import SuccessComponent from '../Success/SuccessComponent';
 
 const Memories = () => {
   const dispatch = useDispatch();
@@ -22,7 +20,7 @@ const Memories = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const memoriesGet = useSelector((state) => state.memoriesGet);
-  const { loading, success, error, memories } = memoriesGet;
+  const { loading, success, memories } = memoriesGet;
   const userInfoDetails = useSelector((state) => state.userInfoDetails);
   const { userDetails } = userInfoDetails;
 
@@ -60,43 +58,9 @@ const Memories = () => {
     return false;
   });
 
-  const memoryDeleteTag = useSelector((state) => state.memoryDeleteTag);
-  const {
-    loading: deleteTagLoading,
-    success: deleteTagSuccess,
-    error: deleteTagError,
-  } = memoryDeleteTag;
-
-  const memorySetDueDate = useSelector((state) => state.memorySetDueDate);
-  const {
-    loading: setDueDateLoading,
-    success: setDueDateSuccess,
-    error: setDueDateError,
-  } = memorySetDueDate;
-
-  const memoryIsComplete = useSelector((state) => state.memoryIsComplete);
-  const {
-    loading: isCompleteLoading,
-    success: isCompleteSuccess,
-    error: isCompleteError,
-  } = memoryIsComplete;
-
   return (
     <>
-      {error || isCompleteError || setDueDateError || deleteTagError ? (
-        <ErrorComponent error={error} />
-      ) : null}
-      {isCompleteSuccess || setDueDateSuccess || deleteTagSuccess ? (
-        <SuccessComponent
-          type={'MEMORIES_DELETE_TAG_SUCCESS'}
-          message={'Memory has been successfully Removed.'}
-        />
-      ) : null}
-      {loading ||
-      setDueDateLoading ||
-      isCompleteLoading ||
-      deleteTagLoading ||
-      !success ? (
+      {loading || !success ? (
         <SpinnerComponent />
       ) : (
         <>
@@ -144,7 +108,7 @@ const Memories = () => {
                   setDueDate={memory.setDueDate}
                   isComplete={memory.isComplete}
                   priority={memory.priority}
-                  tag={memory.tags.map((tag) => tag)}
+                  tag={memory.tag}
                   created={memory.createdAt}
                   updated={memory.updatedAt}
                 />

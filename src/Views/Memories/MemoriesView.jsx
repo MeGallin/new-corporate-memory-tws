@@ -15,9 +15,41 @@ const MemoriesView = () => {
   const memoryDeleteImage = useSelector((state) => state.memoryDeleteImage);
   const { success: memoryDeleteImageSuccess, error: memoryDeleteImageError } =
     memoryDeleteImage;
+  const memoryIsComplete = useSelector((state) => state.memoryIsComplete);
+  const { success: isCompleteSuccess, error: isCompleteError } =
+    memoryIsComplete;
+  const memoryDeleteTag = useSelector((state) => state.memoryDeleteTag);
+  const { success: deleteTagSuccess, error: deleteTagError } = memoryDeleteTag;
+  const memorySetDueDate = useSelector((state) => state.memorySetDueDate);
+  const { success: setDueDateSuccess, error: setDueDateError } =
+    memorySetDueDate;
 
   return (
     <>
+      {setDueDateError ? <ErrorComponent error={setDueDateError} /> : null}
+      {setDueDateSuccess ? (
+        <SuccessComponent
+          type={'MEMORIES_SET_DUE_DATE_SUCCESS'}
+          message={'Memory Due Date has been changed.'}
+        />
+      ) : null}
+
+      {deleteTagError ? <ErrorComponent error={deleteTagError} /> : null}
+      {deleteTagSuccess ? (
+        <SuccessComponent
+          type={'MEMORIES_DELETE_TAG_SUCCESS'}
+          message={'TAG has been successfully Deleted.'}
+        />
+      ) : null}
+
+      {isCompleteError ? <ErrorComponent error={isCompleteError} /> : null}
+      {isCompleteSuccess ? (
+        <SuccessComponent
+          type={'MEMORIES_IS_COMPETE_SUCCESS'}
+          message={'Memory has been MARKED as Complete.'}
+        />
+      ) : null}
+
       {CreateError ? <ErrorComponent error={CreateError} /> : null}
       {CreateSuccess ? (
         <SuccessComponent

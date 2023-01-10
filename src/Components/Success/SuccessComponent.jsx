@@ -41,7 +41,8 @@ const SuccessComponent = ({ type, message }) => {
           break;
         case 'MEMORIES_DELETE_TAG_SUCCESS':
           dispatch({ type: MEMORIES_DELETE_TAG_RESET });
-          dispatch({ type: MEMORIES_SET_DUE_DATE_RESET });
+          break;
+        case 'MEMORIES_IS_COMPETE_SUCCESS':
           dispatch({ type: MEMORIES_IS_COMPETE_RESET });
           break;
         case 'MEMORY_IMAGE_UPLOAD_SUCCESS':
@@ -49,6 +50,9 @@ const SuccessComponent = ({ type, message }) => {
           break;
         case 'MEMORY_IMAGE_DELETE_SUCCESS':
           dispatch({ type: MEMORY_IMAGE_DELETE_RESET });
+          break;
+        case 'MEMORIES_SET_DUE_DATE_SUCCESS':
+          dispatch({ type: MEMORIES_SET_DUE_DATE_RESET });
           break;
         case 'ADMIN_IS_ADMIN_SUCCESS':
           dispatch({ type: ADMIN_IS_ADMIN_RESET });

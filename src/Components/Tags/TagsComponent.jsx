@@ -9,25 +9,21 @@ export const TagsComponent = ({ memoryId, tag, variant }) => {
   const handleDeleteTag = () => {
     dispatch(memoryDeleteTagAction(memoryId));
   };
-  return (
-    <>
-      {tag[0]?.tagName ? (
-        <div className={`tags-wrapper ${variant}`}>
-          {tag[0]?.tagName}
-          <span
-            className="tag-x"
-            onClick={() => handleDeleteTag()}
-            title="Delete Tag"
-          >
-            X
-          </span>
-        </div>
-      ) : null}
-    </>
-  );
+  return tag ? (
+    <div className={`tags-wrapper ${variant}`}>
+      {tag}
+      <span
+        className="tag-x"
+        onClick={() => handleDeleteTag()}
+        title="Delete Tag"
+      >
+        X
+      </span>
+    </div>
+  ) : null;
 };
 TagsComponent.propTypes = {
   id: PropTypes.string,
-  tag: PropTypes.array,
+  tag: PropTypes.string,
   variant: PropTypes.string,
 };

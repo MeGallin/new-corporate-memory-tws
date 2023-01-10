@@ -215,7 +215,7 @@ const DashboardComponent = () => {
                       setDueDate={memory.setDueDate}
                       isComplete={memory.isComplete}
                       priority={memory.priority}
-                      tag={memory.tags.map((tag) => tag)}
+                      tag={memory.tag}
                       created={memory.createdAt}
                       updated={memory.updatedAt}
                     />

@@ -19,9 +19,9 @@ const EditMemoryComponent = ({ updateMemory }) => {
     memory: updateMemory.memory,
     dueDate: new Date(updateMemory.dueDate),
     priority: updateMemory.priority,
-    tags: updateMemory.tags[0]?.tagName || 'TAG',
+    tag: updateMemory.tag,
   });
-  const { id, title, memory, dueDate, priority, tags } = formData;
+  const { id, title, memory, dueDate, priority, tag } = formData;
 
   const handleEditMemory = (e) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ const EditMemoryComponent = ({ updateMemory }) => {
       title: '',
       memory: '',
       priority: '',
-      tags: [],
+      tag: '',
     });
     setShowForm(false);
   };
@@ -51,7 +51,7 @@ const EditMemoryComponent = ({ updateMemory }) => {
       memory,
       dueDate: date,
       priority,
-      tags: tags,
+      tag,
     });
   };
 
@@ -99,10 +99,10 @@ const EditMemoryComponent = ({ updateMemory }) => {
 
                 <input
                   type="text"
-                  id="tags"
-                  name="tags"
-                  value={tags}
-                  placeholder="Tags"
+                  id="tag"
+                  name="tag"
+                  value={tag}
+                  placeholder="Tag"
                   onChange={handleOnchange}
                 />
               </div>

@@ -8,6 +8,7 @@ import { memoryCreateAction } from '../../Store/actions/memoriesActions';
 
 import InputComponent from '../Input/InputComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
+import ButtonComponent from '../Button/ButtonComponent';
 
 const CreateMemoryComponent = () => {
   const dispatch = useDispatch();
@@ -17,9 +18,9 @@ const CreateMemoryComponent = () => {
     memory: '',
     dueDate: startDate,
     priority: '',
-    tags: [],
+    tag: '',
   });
-  const { title, memory, dueDate, priority, tags } = formData;
+  const { title, memory, dueDate, priority, tag } = formData;
 
   const handleCreateMemory = (e) => {
     e.preventDefault();
@@ -29,12 +30,12 @@ const CreateMemoryComponent = () => {
       title: '',
       memory: '',
       priority: '',
-      tags: [],
+      tag: '',
     });
   };
 
   const handleOnChangeDate = (date) => {
-    setFormData({ title, memory, dueDate: date, priority, tags });
+    setFormData({ title, memory, dueDate: date, priority, tag });
   };
 
   const handleOnchange = (e) => {
@@ -93,10 +94,10 @@ const CreateMemoryComponent = () => {
 
                 <input
                   type="text"
-                  id="tags"
-                  name="tags"
-                  value={tags}
-                  placeholder="Tags"
+                  id="tag"
+                  name="tag"
+                  value={tag}
+                  placeholder="Tag"
                   onChange={handleOnchange}
                 />
               </div>
@@ -111,14 +112,14 @@ const CreateMemoryComponent = () => {
                 />
               </div>
 
-              <div>
-                <button
-                  type="submit"
-                  disabled={!title || !memory || memory.length < 3}
-                >
-                  Submit
-                </button>
-              </div>
+              <ButtonComponent
+                type="submit"
+                text={
+                  !title || !memory || memory.length < 3 ? 'DISABLED' : 'CREATE'
+                }
+                variant="dark"
+                disabled={!title || !memory || memory.length < 3}
+              />
             </form>
           </div>
         </fieldset>

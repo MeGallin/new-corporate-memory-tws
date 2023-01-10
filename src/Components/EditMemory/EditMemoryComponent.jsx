@@ -97,12 +97,11 @@ const EditMemoryComponent = ({ updateMemory }) => {
                   onChange={handleOnchange}
                 />
 
-                <input
-                  type="text"
-                  id="tag"
-                  name="tag"
+                <InputComponent
+                  label="Tag"
                   value={tag}
-                  placeholder="Tag"
+                  type="text"
+                  name="tag"
                   onChange={handleOnchange}
                 />
               </div>

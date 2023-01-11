@@ -7,6 +7,8 @@ import LogoutComponent from '../Logout/LogoutComponent';
 const HeaderComponent = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  const googleUserLogin = useSelector((state) => state.googleUserLogin);
+  const { userInfo: googleUserInfo } = googleUserLogin;
   const userInfoDetails = useSelector((state) => state.userInfoDetails);
   const { userDetails } = userInfoDetails;
 
@@ -14,7 +16,7 @@ const HeaderComponent = () => {
     <>
       <header>
         <nav className="nav-wrapper">
-          {userInfo ? (
+          {userInfo || googleUserInfo ? (
             <span>
               <NavLink
                 className={(navData) => (navData.isActive ? 'active' : '')}
@@ -52,7 +54,7 @@ const HeaderComponent = () => {
             </NavLink>
           </span>
 
-          {userInfo ? (
+          {userInfo || googleUserInfo ? (
             <span>
               <LogoutComponent />
             </span>
@@ -67,7 +69,7 @@ const HeaderComponent = () => {
             </span>
           )}
         </nav>
-        {userInfo ? (
+        {userInfo || googleUserInfo ? (
           <>
             <div className="header-user">
               <div className="user-info-nav-link">

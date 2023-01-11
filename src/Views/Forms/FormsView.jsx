@@ -13,13 +13,12 @@ const FormsView = () => {
   const [forgetPWSendEmail, setForgotPWSendEmail] = useState(false);
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-
   const userInfoDetails = useSelector((state) => state.userInfoDetails);
   const { userDetails } = userInfoDetails;
 
   return (
     <>
-      {!userInfo ? (
+      {!userInfo && !userDetails?.isConfirmed ? (
         <>
           {forgetPWSendEmail ? (
             <ForgotPWSendEmailComponent />

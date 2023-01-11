@@ -21,21 +21,23 @@ const Memories = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  const googleUserLogin = useSelector((state) => state.googleUserLogin);
+  const { userInfo: googleUserInfo } = googleUserLogin;
   const memoriesGet = useSelector((state) => state.memoriesGet);
-  const { loading, success, memories } = memoriesGet;
+  const { loading, memories } = memoriesGet;
   const userInfoDetails = useSelector((state) => state.userInfoDetails);
   const { userDetails } = userInfoDetails;
 
   useEffect(() => {
     let ignore = false;
-    if (userInfo && userDetails?.isConfirmed) {
+    if ((userInfo || googleUserInfo) && userDetails?.isConfirmed) {
       dispatch(memoriesGetAction());
     } else {
       navigate('/forms');
     }
     if (!ignore);
     return () => (ignore = true);
-  }, [userInfo, userDetails?.isConfirmed, navigate, dispatch]);
+  }, [userInfo, googleUserInfo, userDetails?.isConfirmed, navigate, dispatch]);
 
   //Searched memories
   const searchedMemories = memories?.filter((memory) => {
@@ -62,39 +64,38 @@ const Memories = () => {
 
   return (
     <>
-      {loading || !success ? (
+      <div className="memories-search-wrapper">
+        <div>
+          <div className="search-sort-wrapper">
+            <SearchComponent
+              placeholder="search"
+              value={keyword}
+              handleSearch={handleSearch}
+            />
+            <SortComponent props={memories} />
+          </div>
+
+          <p>
+            [{searchedMemories?.length}]{' '}
+            {searchedMemories?.length === 1 ? 'memory found.' : 'memories'} and
+            [{completedMemories?.length}] marked as complete.
+          </p>
+        </div>
+
+        <div>
+          <ModalComponent
+            className="create-btn"
+            openButtonTitle="Create"
+            closeButtonTitle="X"
+            variant={'success'}
+            props={<CreateMemoryComponent />}
+          />
+        </div>
+      </div>
+      {loading ? (
         <SpinnerComponent />
       ) : (
         <>
-          <div className="memories-search-wrapper">
-            <div>
-              <div className="search-sort-wrapper">
-                <SearchComponent
-                  placeholder="search"
-                  value={keyword}
-                  handleSearch={handleSearch}
-                />
-                <SortComponent props={memories} />
-              </div>
-
-              <p>
-                [{searchedMemories?.length}]{' '}
-                {searchedMemories?.length === 1 ? 'memory found.' : 'memories'}{' '}
-                and [{completedMemories?.length}] marked as complete.
-              </p>
-            </div>
-
-            <div>
-              <ModalComponent
-                className="create-btn"
-                openButtonTitle="Create"
-                closeButtonTitle="X"
-                variant={'success'}
-                props={<CreateMemoryComponent />}
-              />
-            </div>
-          </div>
-
           <div className="memories-component-wrapper">
             {searchedMemories?.map((memory) => (
               <div

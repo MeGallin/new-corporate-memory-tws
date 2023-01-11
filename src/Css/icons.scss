@@ -46,6 +46,19 @@
   }
 }
 
+.sort-down-arrow-icon,
+.sort-down-up-icon {
+  color: $main-font-colour;
+  opacity: 0.4;
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+    font-weight: bold;
+    color: $info;
+    transition: all 0.8s;
+  }
+}
+
 .reg-thumbs-up-icon {
   color: $success;
 }

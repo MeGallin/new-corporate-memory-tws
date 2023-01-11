@@ -33,6 +33,8 @@ import {
   adminDeleteAllUserReducer,
 } from './reducers/adminReducers';
 
+import { sortedMemoriesReducer } from './reducers/sortedMemories';
+
 //Initialise state to hold user info if logged in.
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
@@ -60,6 +62,7 @@ const reducer = combineReducers({
   memoryIsComplete: memoryIsCompleteReducer,
   memoryImageUpload: memoryImageUploadReducer,
   memoryDeleteImage: memoryDeleteImageReducer,
+  sortedMemories: sortedMemoriesReducer,
 });
 
 const initialState = {

@@ -30,21 +30,41 @@ export const memoriesGetAction = () => async (dispatch, getState) => {
     dispatch({
       type: MEMORIES_GET_REQUEST,
     });
-    const {
-      userLogin: { userInfo },
-    } = getState();
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
 
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_END_POINT}api/memories`,
-      config,
-    );
-    dispatch({ type: MEMORIES_GET_SUCCESS, payload: data });
+    if (getState().userLogin.userInfo) {
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_END_POINT}api/memories`,
+        config,
+      );
+      dispatch({ type: MEMORIES_GET_SUCCESS, payload: data });
+    }
+
+    if (getState().googleUserLogin.userInfo) {
+      const {
+        googleUserLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_END_POINT}api/memories`,
+        config,
+      );
+      dispatch({ type: MEMORIES_GET_SUCCESS, payload: data });
+    }
   } catch (error) {
     dispatch({
       type: MEMORIES_GET_FAILURE,
@@ -62,23 +82,45 @@ export const memoryCreateAction = (formData) => async (dispatch, getState) => {
     dispatch({
       type: MEMORIES_CREATE_REQUEST,
     });
-    const {
-      userLogin: { userInfo },
-    } = getState();
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
 
-    const { data } = await axios.post(
-      `${process.env.REACT_APP_END_POINT}api/create-memory`,
-      formData,
-      config,
-    );
-    dispatch({ type: MEMORIES_CREATE_SUCCESS, payload: data });
-    dispatch(memoriesGetAction());
+    if (getState().userLogin.userInfo) {
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_END_POINT}api/create-memory`,
+        formData,
+        config,
+      );
+      dispatch({ type: MEMORIES_CREATE_SUCCESS, payload: data });
+      dispatch(memoriesGetAction());
+    }
+
+    if (getState().googleUserLogin.userInfo) {
+      const {
+        googleUserLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_END_POINT}api/create-memory`,
+        formData,
+        config,
+      );
+      dispatch({ type: MEMORIES_CREATE_SUCCESS, payload: data });
+      dispatch(memoriesGetAction());
+    }
   } catch (error) {
     dispatch({
       type: MEMORIES_CREATE_FAILURE,
@@ -96,23 +138,46 @@ export const memoryEditAction = (formData) => async (dispatch, getState) => {
     dispatch({
       type: MEMORIES_EDIT_REQUEST,
     });
-    const {
-      userLogin: { userInfo },
-    } = getState();
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
 
-    const { data } = await axios.put(
-      `${process.env.REACT_APP_END_POINT}api/edit-memory/${formData.id}`,
-      formData,
-      config,
-    );
-    dispatch({ type: MEMORIES_EDIT_SUCCESS, payload: data });
-    dispatch(memoriesGetAction());
+    if (getState().userLogin.userInfo) {
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_END_POINT}api/edit-memory/${formData.id}`,
+        formData,
+        config,
+      );
+      dispatch({ type: MEMORIES_EDIT_SUCCESS, payload: data });
+      dispatch(memoriesGetAction());
+    }
+
+    if (getState().googleUserLogin.userInfo) {
+      const {
+        googleUserLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_END_POINT}api/edit-memory/${formData.id}`,
+        formData,
+        config,
+      );
+      dispatch({ type: MEMORIES_EDIT_SUCCESS, payload: data });
+      dispatch(memoriesGetAction());
+    }
   } catch (error) {
     dispatch({
       type: MEMORIES_EDIT_FAILURE,
@@ -130,22 +195,44 @@ export const memoryDeleteAction = (id) => async (dispatch, getState) => {
     dispatch({
       type: MEMORIES_DELETE_REQUEST,
     });
-    const {
-      userLogin: { userInfo },
-    } = getState();
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
 
-    const { data } = await axios.delete(
-      `${process.env.REACT_APP_END_POINT}api/delete-memory/${id}`,
-      config,
-    );
-    dispatch({ type: MEMORIES_DELETE_SUCCESS, payload: data });
-    dispatch(memoriesGetAction());
+    if (getState().userLogin.userInfo) {
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_END_POINT}api/delete-memory/${id}`,
+        config,
+      );
+      dispatch({ type: MEMORIES_DELETE_SUCCESS, payload: data });
+      dispatch(memoriesGetAction());
+    }
+
+    if (getState().googleUserLogin.userInfo) {
+      const {
+        googleUserLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_END_POINT}api/delete-memory/${id}`,
+        config,
+      );
+      dispatch({ type: MEMORIES_DELETE_SUCCESS, payload: data });
+      dispatch(memoriesGetAction());
+    }
   } catch (error) {
     dispatch({
       type: MEMORIES_DELETE_FAILURE,
@@ -163,22 +250,44 @@ export const memoryDeleteTagAction = (id) => async (dispatch, getState) => {
     dispatch({
       type: MEMORIES_DELETE_TAG_REQUEST,
     });
-    const {
-      userLogin: { userInfo },
-    } = getState();
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
 
-    const { data } = await axios.delete(
-      `${process.env.REACT_APP_END_POINT}api/delete-memory-tag/${id}`,
-      config,
-    );
-    dispatch({ type: MEMORIES_DELETE_TAG_SUCCESS, payload: data });
-    dispatch(memoriesGetAction());
+    if (getState().userLogin.userInfo) {
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_END_POINT}api/delete-memory-tag/${id}`,
+        config,
+      );
+      dispatch({ type: MEMORIES_DELETE_TAG_SUCCESS, payload: data });
+      dispatch(memoriesGetAction());
+    }
+
+    if (getState().googleUserLogin.userInfo) {
+      const {
+        googleUserLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_END_POINT}api/delete-memory-tag/${id}`,
+        config,
+      );
+      dispatch({ type: MEMORIES_DELETE_TAG_SUCCESS, payload: data });
+      dispatch(memoriesGetAction());
+    }
   } catch (error) {
     dispatch({
       type: MEMORIES_DELETE_TAG_FAILURE,
@@ -197,25 +306,50 @@ export const memorySetDueDateAction =
       dispatch({
         type: MEMORIES_SET_DUE_DATE_REQUEST,
       });
-      const {
-        userLogin: { userInfo },
-      } = getState();
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
 
-      const { data } = await axios.put(
-        `${process.env.REACT_APP_END_POINT}api/edit-memory/${memoryData.id}`,
-        {
-          setDueDate: memoryData.setDueDate,
-        },
-        config,
-      );
-      dispatch({ type: MEMORIES_SET_DUE_DATE_SUCCESS, payload: data });
-      dispatch(memoriesGetAction());
+      if (getState().userLogin.userInfo) {
+        const {
+          userLogin: { userInfo },
+        } = getState();
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        };
+
+        const { data } = await axios.put(
+          `${process.env.REACT_APP_END_POINT}api/edit-memory/${memoryData.id}`,
+          {
+            setDueDate: memoryData.setDueDate,
+          },
+          config,
+        );
+        dispatch({ type: MEMORIES_SET_DUE_DATE_SUCCESS, payload: data });
+        dispatch(memoriesGetAction());
+      }
+
+      if (getState().googleUserLogin.userInfo) {
+        const {
+          googleUserLogin: { userInfo },
+        } = getState();
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        };
+
+        const { data } = await axios.put(
+          `${process.env.REACT_APP_END_POINT}api/edit-memory/${memoryData.id}`,
+          {
+            setDueDate: memoryData.setDueDate,
+          },
+          config,
+        );
+        dispatch({ type: MEMORIES_SET_DUE_DATE_SUCCESS, payload: data });
+        dispatch(memoriesGetAction());
+      }
     } catch (error) {
       dispatch({
         type: MEMORIES_SET_DUE_DATE_FAILURE,
@@ -234,25 +368,50 @@ export const memoryIsCompleteAction =
       dispatch({
         type: MEMORIES_IS_COMPETE_REQUEST,
       });
-      const {
-        userLogin: { userInfo },
-      } = getState();
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
 
-      const { data } = await axios.put(
-        `${process.env.REACT_APP_END_POINT}api/edit-memory/${memoryData.id}`,
-        {
-          isComplete: memoryData.isComplete,
-        },
-        config,
-      );
-      dispatch({ type: MEMORIES_IS_COMPETE_SUCCESS, payload: data });
-      dispatch(memoriesGetAction());
+      if (getState().userLogin.userInfo) {
+        const {
+          userLogin: { userInfo },
+        } = getState();
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        };
+
+        const { data } = await axios.put(
+          `${process.env.REACT_APP_END_POINT}api/edit-memory/${memoryData.id}`,
+          {
+            isComplete: memoryData.isComplete,
+          },
+          config,
+        );
+        dispatch({ type: MEMORIES_IS_COMPETE_SUCCESS, payload: data });
+        dispatch(memoriesGetAction());
+      }
+
+      if (getState().googleUserLogin.userInfo) {
+        const {
+          googleUserLogin: { userInfo },
+        } = getState();
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        };
+
+        const { data } = await axios.put(
+          `${process.env.REACT_APP_END_POINT}api/edit-memory/${memoryData.id}`,
+          {
+            isComplete: memoryData.isComplete,
+          },
+          config,
+        );
+        dispatch({ type: MEMORIES_IS_COMPETE_SUCCESS, payload: data });
+        dispatch(memoriesGetAction());
+      }
     } catch (error) {
       dispatch({
         type: MEMORIES_IS_COMPETE_FAILURE,

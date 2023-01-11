@@ -10,6 +10,7 @@ import {
   userForgotPWSendEmailReducer,
   userResetPasswordReducer,
   userPageHitsReducer,
+  googleUserLoginReducer,
 } from './reducers/userReducers';
 import {
   memoriesGetReducer,
@@ -53,6 +54,7 @@ const reducer = combineReducers({
   userForgotPWSendEmail: userForgotPWSendEmailReducer,
   userResetPassword: userResetPasswordReducer,
   userPageHits: userPageHitsReducer,
+  googleUserLogin: googleUserLoginReducer,
   memoriesGet: memoriesGetReducer,
   memoryCreate: memoryCreateReducer,
   memoryEdit: memoryEditReducer,

@@ -1,4 +1,8 @@
 import {
+  GOOGLE_USER_LOGIN_FAILURE,
+  GOOGLE_USER_LOGIN_REQUEST,
+  GOOGLE_USER_LOGIN_SUCCESS,
+  GOOGLE_USER_LOGOUT,
   USER_EDIT_DETAILS_FAILURE,
   USER_EDIT_DETAILS_REQUEST,
   USER_EDIT_DETAILS_SUCCESS,
@@ -7,6 +11,7 @@ import {
   USER_FORGOT_PW_SEND_EMAIL_SUCCESS,
   USER_INFO_DETAILS_FAILURE,
   USER_INFO_DETAILS_REQUEST,
+  USER_INFO_DETAILS_RESET,
   USER_INFO_DETAILS_SUCCESS,
   USER_LOGIN_FAILURE,
   USER_LOGIN_REQUEST,
@@ -106,6 +111,8 @@ export const userInfoDetailsReducer = (state = {}, action) => {
         success: true,
         ...action.payload,
       };
+    case USER_INFO_DETAILS_RESET:
+      return {};
     case USER_INFO_DETAILS_FAILURE:
       return { loading: false, error: action.payload };
 
@@ -147,6 +154,22 @@ export const userPageHitsReducer = (state = {}, action) => {
     case USER_PAGE_HITS_FAILURE:
       return { loading: false, error: action.payload };
 
+    default:
+      return { ...state };
+  }
+};
+
+// GOOGLE USER LOGIN REDUCER
+export const googleUserLoginReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GOOGLE_USER_LOGIN_REQUEST:
+      return { loading: true };
+    case GOOGLE_USER_LOGIN_SUCCESS:
+      return { loading: false, success: true, userInfo: action.payload };
+    case GOOGLE_USER_LOGIN_FAILURE:
+      return { loading: false, error: action.payload };
+    case GOOGLE_USER_LOGOUT:
+      return {};
     default:
       return { ...state };
   }

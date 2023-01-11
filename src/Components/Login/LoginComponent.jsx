@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { loginAction } from '../../Store/actions/userActions';
+import {
+  loginAction,
+  googleUserLoginAction,
+} from '../../Store/actions/userActions';
 
 import { emailRegEx, passwordRegEx } from '../../Utils/regEx';
 
@@ -10,6 +13,8 @@ import ButtonComponent from '../../Components/Button/ButtonComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import ErrorComponent from '../Error/ErrorComponent';
 import SuccessComponent from '../Success/SuccessComponent';
+
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 const LoginComponent = () => {
   const dispatch = useDispatch();
@@ -34,12 +39,29 @@ const LoginComponent = () => {
     });
   };
 
+  //Google auth stuff
+  const googleSuccess = async (googleRes) => {
+    //Dispatch action that save google info from googleRes.
+    dispatch(googleUserLoginAction(googleRes));
+  };
+  const googleFailure = (error) => {
+    console.log('Error, with google login', error);
+  };
+
   const handleOnchange = (e) => {
     setFormData((previousState) => ({
       ...previousState,
       [e.target.name]: e.target.value,
     }));
   };
+  const googleUserLogin = useSelector((state) => state.googleUserLogin);
+  const {
+    loading: googleLoading,
+    success: googleSuccessState,
+    error: googleError,
+    userInfo: googleUserInfo,
+  } = googleUserLogin;
+  //Google auth stuff
 
   return (
     <div>
@@ -47,6 +69,14 @@ const LoginComponent = () => {
       {success ? (
         <SuccessComponent message={'You have successfully logged in.'} />
       ) : null}
+
+      {googleError ? <ErrorComponent error={error} /> : null}
+      {googleSuccessState ? (
+        <SuccessComponent message="You have successfully logged in through GOOGLE" />
+      ) : null}
+
+      {googleUserInfo && googleSuccessState ? googleUserInfo?.username : null}
+
       {loading ? (
         <SpinnerComponent />
       ) : (
@@ -86,6 +116,19 @@ const LoginComponent = () => {
                   variant="dark"
                   disabled={!emailRegEx.test(email) || password.length <= 5}
                 />
+
+                {googleLoading ? (
+                  <SpinnerComponent />
+                ) : (
+                  <GoogleOAuthProvider
+                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                  >
+                    <GoogleLogin
+                      onSuccess={googleSuccess}
+                      onError={googleFailure}
+                    />
+                  </GoogleOAuthProvider>
+                )}
               </div>
             </form>
           </div>

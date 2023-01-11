@@ -12,11 +12,13 @@ import ModalComponent from '../Modal/ModalComponent';
 import CreateMemoryComponent from '../CreateMemory/CreateMemoryComponent';
 import EditMemoryComponent from '../EditMemory/EditMemoryComponent';
 import DeleteMemoryComponent from '../DeleteMemory/DeleteMemoryComponent';
+import SortComponent from '../Sort/SortComponent';
 
 const Memories = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState('');
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const memoriesGet = useSelector((state) => state.memoriesGet);
@@ -66,17 +68,22 @@ const Memories = () => {
         <>
           <div className="memories-search-wrapper">
             <div>
-              <SearchComponent
-                placeholder="search"
-                value={keyword}
-                handleSearch={handleSearch}
-              />
+              <div className="search-sort-wrapper">
+                <SearchComponent
+                  placeholder="search"
+                  value={keyword}
+                  handleSearch={handleSearch}
+                />
+                <SortComponent props={memories} />
+              </div>
+
               <p>
                 [{searchedMemories?.length}]{' '}
                 {searchedMemories?.length === 1 ? 'memory found.' : 'memories'}{' '}
                 and [{completedMemories?.length}] marked as complete.
               </p>
             </div>
+
             <div>
               <ModalComponent
                 className="create-btn"

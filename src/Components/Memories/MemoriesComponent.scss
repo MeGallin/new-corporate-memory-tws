@@ -6,6 +6,12 @@
   border: 1px solid $border-colour-light;
   margin-bottom: 0.3em;
   padding: 0.1em 0;
+  .search-sort-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 0.5em;
+  }
 }
 .memories-search-wrapper p {
   font-size: 0.8rem;

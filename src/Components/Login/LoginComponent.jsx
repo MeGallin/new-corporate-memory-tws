@@ -105,7 +105,7 @@ const LoginComponent = () => {
                 onChange={handleOnchange}
               />
 
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <ButtonComponent
                   type="submit"
                   text={
@@ -120,14 +120,21 @@ const LoginComponent = () => {
                 {googleLoading ? (
                   <SpinnerComponent />
                 ) : (
-                  <GoogleOAuthProvider
-                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                  <div
+                    style={{
+                      padding: '2px 2px 4px 2px',
+                      backgroundColor: 'hsla(0deg, 0%, 45%, 0.1)',
+                    }}
                   >
-                    <GoogleLogin
-                      onSuccess={googleSuccess}
-                      onError={googleFailure}
-                    />
-                  </GoogleOAuthProvider>
+                    <GoogleOAuthProvider
+                      clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                    >
+                      <GoogleLogin
+                        onSuccess={googleSuccess}
+                        onError={googleFailure}
+                      />
+                    </GoogleOAuthProvider>
+                  </div>
                 )}
               </div>
             </form>

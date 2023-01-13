@@ -13,6 +13,7 @@ import SpinnerComponent from '../Spinner/SpinnerComponent';
 import CardComponent from '../Card/CardComponent';
 import EditDetailsComponent from './EditDetails/EditDetailsComponent';
 import AdminComponent from '../Admin/AdminComponent';
+import UserProfileImageComponent from '../UserProfileImages/UserProfileImageComponent';
 
 const DashboardComponent = () => {
   const dispatch = useDispatch();
@@ -69,10 +70,10 @@ const DashboardComponent = () => {
                 <legend>Details</legend>
                 <div className="flex-wrapper-dates">
                   <div>
-                    <img
-                      className="dashboard-profile-img"
-                      src={userDetails?.profileImage}
-                      alt={userDetails?.name}
+                    <UserProfileImageComponent
+                      id={userDetails?._id}
+                      imgSrc={userDetails?.profileImage}
+                      altText={userDetails?.name}
                     />
                   </div>
 

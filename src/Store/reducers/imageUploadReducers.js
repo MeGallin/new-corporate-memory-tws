@@ -7,31 +7,56 @@ import {
   MEMORY_IMAGE_UPLOAD_REQUEST,
   MEMORY_IMAGE_UPLOAD_RESET,
   MEMORY_IMAGE_UPLOAD_SUCCESS,
-  PROFILE_IMAGE_UPLOAD_FAILURE,
-  PROFILE_IMAGE_UPLOAD_REQUEST,
-  PROFILE_IMAGE_UPLOAD_RESET,
-  PROFILE_IMAGE_UPLOAD_SUCCESS,
+  USER_PROFILE_IMAGE_DELETE_FAILURE,
+  USER_PROFILE_IMAGE_DELETE_REQUEST,
+  USER_PROFILE_IMAGE_DELETE_RESET,
+  USER_PROFILE_IMAGE_DELETE_SUCCESS,
+  USER_PROFILE_IMAGE_UPLOAD_FAILURE,
+  USER_PROFILE_IMAGE_UPLOAD_REQUEST,
+  USER_PROFILE_IMAGE_UPLOAD_RESET,
+  USER_PROFILE_IMAGE_UPLOAD_SUCCESS,
 } from '../constants/imageUploadConstants';
 
-export const profileImageUploadReducer = (state = {}, action) => {
+// User profile images
+export const userProfileImageUploadReducer = (state = {}, action) => {
   switch (action.type) {
-    case PROFILE_IMAGE_UPLOAD_REQUEST:
+    case USER_PROFILE_IMAGE_UPLOAD_REQUEST:
       return { ...state, loading: true };
-    case PROFILE_IMAGE_UPLOAD_SUCCESS:
+    case USER_PROFILE_IMAGE_UPLOAD_SUCCESS:
       return {
         ...state,
         loading: false,
         success: true,
         profileImageUploaded: action.payload,
       };
-    case PROFILE_IMAGE_UPLOAD_RESET:
+    case USER_PROFILE_IMAGE_UPLOAD_RESET:
       return {};
-    case PROFILE_IMAGE_UPLOAD_FAILURE:
+    case USER_PROFILE_IMAGE_UPLOAD_FAILURE:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }
 };
+//User Profiles Image Delete
+export const userProfileImageDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_PROFILE_IMAGE_DELETE_REQUEST:
+      return { loading: true };
+    case USER_PROFILE_IMAGE_DELETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        ...action.payload,
+      };
+    case USER_PROFILE_IMAGE_DELETE_RESET:
+      return {};
+    case USER_PROFILE_IMAGE_DELETE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return { ...state };
+  }
+};
+// USER profile images
 
 //Memories images
 export const memoryImageUploadReducer = (state = {}, action) => {

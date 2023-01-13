@@ -25,6 +25,8 @@ import {
 import {
   memoryImageUploadReducer,
   memoryDeleteImageReducer,
+  userProfileImageUploadReducer,
+  userProfileImageDeleteReducer,
 } from './reducers/imageUploadReducers';
 
 import {
@@ -54,6 +56,8 @@ const reducer = combineReducers({
   userForgotPWSendEmail: userForgotPWSendEmailReducer,
   userResetPassword: userResetPasswordReducer,
   userPageHits: userPageHitsReducer,
+  userProfileImageUpload: userProfileImageUploadReducer,
+  userProfileImageDelete: userProfileImageDeleteReducer,
   googleUserLogin: googleUserLoginReducer,
   memoriesGet: memoriesGetReducer,
   memoryCreate: memoryCreateReducer,

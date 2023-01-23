@@ -1,31 +1,16 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { userPageHitsAction } from '../../Store/actions/userActions';
-
 import DateTime from '../DateTime/DateTimeComponent';
+import PageHitCounterComponent from '../PageHitCounter/PageHitCounterComponent';
 import './FooterComponent.scss';
 
 const Footer = () => {
-  const dispatch = useDispatch();
-
-  const userPageHits = useSelector((state) => state.userPageHits);
-  const { hits } = userPageHits;
-
-  useEffect(() => {
-    let ignore = false;
-    // Dispatch action for visitor counter
-    dispatch(userPageHitsAction());
-    if (!ignore);
-    return () => (ignore = true);
-  }, [dispatch]);
-
   return (
     <footer>
       <div>Developed by Gary Allin</div>
       <div className="footer-content-wrapper">
         <div>YourCorporateMemory &copy;</div>
-        <div>Visitors: {hits?.length}</div>
+        <div>
+          <PageHitCounterComponent />
+        </div>
       </div>
       <DateTime />
     </footer>

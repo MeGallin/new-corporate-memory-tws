@@ -19,9 +19,6 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGOUT,
-  USER_PAGE_HITS_FAILURE,
-  USER_PAGE_HITS_REQUEST,
-  USER_PAGE_HITS_SUCCESS,
   USER_REGISTER_FAILURE,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
@@ -284,25 +281,3 @@ export const userEditDetailAction =
       });
     }
   };
-
-//GET: User get ip and login hits of user
-export const userPageHitsAction = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: USER_PAGE_HITS_REQUEST,
-    });
-
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_END_POINT}api/page-hits`,
-    );
-    dispatch({ type: USER_PAGE_HITS_SUCCESS, payload: data });
-  } catch (error) {
-    dispatch({
-      type: USER_PAGE_HITS_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};

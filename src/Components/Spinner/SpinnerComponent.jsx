@@ -2,9 +2,16 @@ import './SpinnerComponent.scss';
 
 const SpinnerComponent = () => {
   return (
-    <div className="spinner-wrapper">
-      <span className="loader"></span>
-    </div>
+    <>
+      <div>
+        <div className="lds-ellipsis">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </>
   );
 };
 

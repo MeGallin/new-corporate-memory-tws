@@ -9,7 +9,6 @@ import {
   userEditDetailsReducer,
   userForgotPWSendEmailReducer,
   userResetPasswordReducer,
-  userPageHitsReducer,
   googleUserLoginReducer,
 } from './reducers/userReducers';
 import {
@@ -38,6 +37,8 @@ import {
 
 import { sortedMemoriesReducer } from './reducers/sortedMemories';
 
+import { pageHitsReducer } from './reducers/pageHitCounterReducers';
+
 //Initialise state to hold user info if logged in.
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
@@ -55,7 +56,6 @@ const reducer = combineReducers({
   userEditDetails: userEditDetailsReducer,
   userForgotPWSendEmail: userForgotPWSendEmailReducer,
   userResetPassword: userResetPasswordReducer,
-  userPageHits: userPageHitsReducer,
   userProfileImageUpload: userProfileImageUploadReducer,
   userProfileImageDelete: userProfileImageDeleteReducer,
   googleUserLogin: googleUserLoginReducer,
@@ -69,6 +69,7 @@ const reducer = combineReducers({
   memoryImageUpload: memoryImageUploadReducer,
   memoryDeleteImage: memoryDeleteImageReducer,
   sortedMemories: sortedMemoriesReducer,
+  pageHits: pageHitsReducer,
 });
 
 const initialState = {

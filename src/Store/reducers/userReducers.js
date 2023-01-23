@@ -140,25 +140,6 @@ export const userEditDetailsReducer = (state = {}, action) => {
   }
 };
 
-//GET: User PAGE HITS
-export const userPageHitsReducer = (state = {}, action) => {
-  switch (action.type) {
-    case USER_PAGE_HITS_REQUEST:
-      return { loading: true };
-    case USER_PAGE_HITS_SUCCESS:
-      return {
-        loading: false,
-        success: true,
-        ...action.payload,
-      };
-    case USER_PAGE_HITS_FAILURE:
-      return { loading: false, error: action.payload };
-
-    default:
-      return { ...state };
-  }
-};
-
 // GOOGLE USER LOGIN REDUCER
 export const googleUserLoginReducer = (state = {}, action) => {
   switch (action.type) {

@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './HeaderComponent.scss';
 
 import LogoutComponent from '../Logout/LogoutComponent';
+import BetaReleaseComponent from '../BetaRelease/BetaReleaseComponent';
 
 const HeaderComponent = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -14,6 +15,7 @@ const HeaderComponent = () => {
 
   return (
     <>
+      <BetaReleaseComponent />
       <header>
         <nav className="nav-wrapper">
           {userInfo || googleUserInfo ? (

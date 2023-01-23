@@ -1,4 +1,4 @@
-import './BetaReleaseComponent.css';
+import './BetaReleaseComponent.scss';
 
 const BetaReleaseComponent = () => {
   return <div class="badge">Beta</div>;

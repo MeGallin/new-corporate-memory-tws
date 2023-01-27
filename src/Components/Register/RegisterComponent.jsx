@@ -54,7 +54,7 @@ const RegisterComponent = () => {
     <div>
       {error ? <ErrorComponent error={error} /> : null}
       {success ? (
-        <SuccessComponent message={'You have successfully logged in.'} />
+        <SuccessComponent message={'You have successfully registered.'} />
       ) : null}
       {loading ? (
         <SpinnerComponent />

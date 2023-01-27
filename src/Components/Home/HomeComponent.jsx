@@ -16,7 +16,7 @@ const HomeComponent = () => {
         <p>
           The abilities and knowledge of your employees. Generally speaking,
           when people leave corporate memory is lost. That is to say that there
-          is always information that isn't transfered or retained such as tacit
+          is always information that isn't transferred or retained such as tacit
           knowledge and situational knowledge. For example, a salesperson who
           has figured out an effective method for selling to a particular
           executive might be unlikely to communicate the approach to someone who

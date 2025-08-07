@@ -72,3 +72,77 @@
     display: none;
   }
 }
+
+.error-message {
+  text-align: center;
+  padding: 2em;
+  background-color: lighten($danger, 45%);
+  border: 1px solid $danger;
+  border-radius: 4px;
+  margin: 1em 0;
+
+  p {
+    color: $danger;
+    margin-bottom: 1em;
+    font-weight: bold;
+  }
+
+  button {
+    background-color: $danger;
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken($danger, 10%);
+    }
+  }
+}
+
+.empty-memories-state {
+  .empty-state-message {
+    text-align: center;
+    padding: 3em 2em;
+    background-color: $fieldSet-bg-colour;
+    border: 1px solid $border-colour-light;
+    border-radius: 4px;
+    margin-top: 1em;
+
+    h3 {
+      color: $main-font-colour;
+      margin-bottom: 0.5em;
+      font-size: 1.5rem;
+    }
+
+    p {
+      color: lighten($main-font-colour, 20%);
+      font-size: 1rem;
+      margin: 0;
+    }
+  }
+}
+
+.no-search-results {
+  .empty-state-message {
+    text-align: center;
+    padding: 2em;
+    background-color: lighten($warning, 45%);
+    border: 1px solid $warning;
+    border-radius: 4px;
+    margin-top: 1em;
+
+    h3 {
+      color: darken($warning, 20%);
+      margin-bottom: 0.5em;
+      font-size: 1.2rem;
+    }
+
+    p {
+      color: darken($warning, 10%);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+  }
+}

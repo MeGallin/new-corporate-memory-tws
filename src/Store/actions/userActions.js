@@ -27,6 +27,70 @@ import {
   USER_RESET_PASSWORD_SUCCESS,
 } from '../constants/userConstants';
 
+// Utility functions for validation
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const validatePassword = (password) => {
+  return password && password.length >= 8;
+};
+
+// API configuration
+const API_CONFIG = {
+  baseURL: process.env.REACT_APP_END_POINT,
+  endpoints: {
+    userDetails: 'api/user-details',
+    login: 'api/login',
+    googleLogin: 'api/google-login',
+    register: 'api/register',
+    forgotPassword: 'api/forgot-password',
+    resetPassword: 'api/resetpassword',
+    user: 'api/user',
+  },
+};
+
+const buildApiUrl = (endpoint, param = '') => {
+  const url = `${API_CONFIG.baseURL}${API_CONFIG.endpoints[endpoint]}`;
+  return param ? `${url}/${param}` : url;
+};
+
+// Token management utilities
+const setSecureToken = (tokenData) => {
+  localStorage.setItem('userInfo', JSON.stringify(tokenData));
+
+  // Set expiration time if provided by server
+  if (tokenData.expiresIn) {
+    const expirationTime = new Date().getTime() + tokenData.expiresIn * 1000;
+    localStorage.setItem('tokenExpiration', expirationTime.toString());
+  }
+};
+
+const isTokenExpired = () => {
+  const expiration = localStorage.getItem('tokenExpiration');
+  if (!expiration) return false;
+
+  return new Date().getTime() > parseInt(expiration);
+};
+
+// Utility function to handle API errors consistently
+const handleApiError = (error) => {
+  let errorMessage = 'An unexpected error occurred';
+
+  if (error.response) {
+    errorMessage =
+      error.response.data?.message || `Server Error: ${error.response.status}`;
+  } else if (error.request) {
+    errorMessage = 'Network error. Please check your connection.';
+  } else {
+    errorMessage = error.message;
+  }
+
+  console.error('API Error:', { error, errorMessage });
+  return errorMessage;
+};
+
 //GET: USER INFO DETAILS
 export const userInfoDetailsAction = () => async (dispatch, getState) => {
   try {
@@ -34,48 +98,51 @@ export const userInfoDetailsAction = () => async (dispatch, getState) => {
       type: USER_INFO_DETAILS_REQUEST,
     });
 
-    if (getState().userLogin.userInfo) {
-      const {
-        userLogin: { userInfo },
-      } = getState();
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
+    const state = getState();
+    const userInfo =
+      state.userLogin?.userInfo || state.googleUserLogin?.userInfo;
 
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_END_POINT}api/user-details`,
-        config,
-      );
-      dispatch({ type: USER_INFO_DETAILS_SUCCESS, payload: data });
+    if (!userInfo) {
+      dispatch({
+        type: USER_INFO_DETAILS_FAILURE,
+        payload: 'No user authentication found',
+      });
+      return;
     }
 
-    if (getState().googleUserLogin.userInfo) {
-      const {
-        googleUserLogin: { userInfo },
-      } = getState();
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_END_POINT}api/user-details`,
-        config,
-      );
-      dispatch({ type: USER_INFO_DETAILS_SUCCESS, payload: data });
+    // Check if token is expired
+    if (isTokenExpired()) {
+      dispatch({
+        type: USER_INFO_DETAILS_FAILURE,
+        payload: 'Session expired. Please log in again.',
+      });
+      dispatch(logoutAction());
+      return;
     }
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(buildApiUrl('userDetails'), config);
+    dispatch({ type: USER_INFO_DETAILS_SUCCESS, payload: data });
   } catch (error) {
+    // Handle 401 Unauthorized - token expired or invalid
+    if (error.response?.status === 401) {
+      dispatch({
+        type: USER_INFO_DETAILS_FAILURE,
+        payload: 'Session expired. Please log in again.',
+      });
+      dispatch(logoutAction());
+      return;
+    }
+
     dispatch({
       type: USER_INFO_DETAILS_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: handleApiError(error),
     });
   }
 };
@@ -83,6 +150,23 @@ export const userInfoDetailsAction = () => async (dispatch, getState) => {
 //User Login
 export const loginAction = (formData) => async (dispatch) => {
   try {
+    // Client-side validation
+    if (!formData.email || !validateEmail(formData.email)) {
+      dispatch({
+        type: USER_LOGIN_FAILURE,
+        payload: 'Please enter a valid email address',
+      });
+      return;
+    }
+
+    if (!formData.password) {
+      dispatch({
+        type: USER_LOGIN_FAILURE,
+        payload: 'Password is required',
+      });
+      return;
+    }
+
     dispatch({
       type: USER_LOGIN_REQUEST,
     });
@@ -93,22 +177,15 @@ export const loginAction = (formData) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.post(
-      `${process.env.REACT_APP_END_POINT}api/login`,
-      formData,
-      config,
-    );
+    const { data } = await axios.post(buildApiUrl('login'), formData, config);
 
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    localStorage.setItem('userInfo', JSON.stringify(data));
+    setSecureToken(data);
     dispatch(userInfoDetailsAction());
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: handleApiError(error),
     });
   }
 };
@@ -116,6 +193,14 @@ export const loginAction = (formData) => async (dispatch) => {
 //GOOGLE User Login
 export const googleUserLoginAction = (googleRes) => async (dispatch) => {
   try {
+    if (!googleRes?.credential) {
+      dispatch({
+        type: GOOGLE_USER_LOGIN_FAILURE,
+        payload: 'Invalid Google authentication response',
+      });
+      return;
+    }
+
     dispatch({
       type: GOOGLE_USER_LOGIN_REQUEST,
     });
@@ -127,28 +212,26 @@ export const googleUserLoginAction = (googleRes) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.post(
-      `${process.env.REACT_APP_END_POINT}api/google-login`,
-      config,
-    );
+    const { data } = await axios.post(buildApiUrl('googleLogin'), config);
 
     dispatch({ type: GOOGLE_USER_LOGIN_SUCCESS, payload: data });
-    localStorage.setItem('userInfo', JSON.stringify(data));
+    setSecureToken(data);
     dispatch(userInfoDetailsAction());
   } catch (error) {
     dispatch({
       type: GOOGLE_USER_LOGIN_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: handleApiError(error),
     });
   }
 };
 
 //User logout
 export const logoutAction = () => (dispatch) => {
+  // Clear all stored authentication data
   localStorage.removeItem('userInfo');
+  localStorage.removeItem('tokenExpiration');
+
+  // Reset all user-related Redux state
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: MEMORIES_GET_RESET });
   dispatch({ type: GOOGLE_USER_LOGOUT });
@@ -158,6 +241,31 @@ export const logoutAction = () => (dispatch) => {
 // User Registration
 export const registerAction = (formData) => async (dispatch) => {
   try {
+    // Client-side validation
+    if (!formData.email || !validateEmail(formData.email)) {
+      dispatch({
+        type: USER_REGISTER_FAILURE,
+        payload: 'Please enter a valid email address',
+      });
+      return;
+    }
+
+    if (!formData.password || !validatePassword(formData.password)) {
+      dispatch({
+        type: USER_REGISTER_FAILURE,
+        payload: 'Password must be at least 8 characters long',
+      });
+      return;
+    }
+
+    if (!formData.firstName || !formData.lastName) {
+      dispatch({
+        type: USER_REGISTER_FAILURE,
+        payload: 'First name and last name are required',
+      });
+      return;
+    }
+
     dispatch({
       type: USER_REGISTER_REQUEST,
     });
@@ -169,7 +277,7 @@ export const registerAction = (formData) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `${process.env.REACT_APP_END_POINT}api/register`,
+      buildApiUrl('register'),
       formData,
       config,
     );
@@ -178,10 +286,7 @@ export const registerAction = (formData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: handleApiError(error),
     });
   }
 };
@@ -189,6 +294,14 @@ export const registerAction = (formData) => async (dispatch) => {
 //User Forgot password Send email
 export const userForgotPWSendEmailAction = (email) => async (dispatch) => {
   try {
+    if (!email || !validateEmail(email)) {
+      dispatch({
+        type: USER_FORGOT_PW_SEND_EMAIL_FAILURE,
+        payload: 'Please enter a valid email address',
+      });
+      return;
+    }
+
     dispatch({
       type: USER_FORGOT_PW_SEND_EMAIL_REQUEST,
     });
@@ -200,7 +313,7 @@ export const userForgotPWSendEmailAction = (email) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `${process.env.REACT_APP_END_POINT}api/forgot-password`,
+      buildApiUrl('forgotPassword'),
       { email: email },
       config,
     );
@@ -208,10 +321,7 @@ export const userForgotPWSendEmailAction = (email) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_FORGOT_PW_SEND_EMAIL_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: handleApiError(error),
     });
   }
 };
@@ -219,6 +329,22 @@ export const userForgotPWSendEmailAction = (email) => async (dispatch) => {
 //User Reset Password
 export const userResetPasswordAction = (updatedInfo) => async (dispatch) => {
   try {
+    if (!updatedInfo.password || !validatePassword(updatedInfo.password)) {
+      dispatch({
+        type: USER_RESET_PASSWORD_FAILURE,
+        payload: 'Password must be at least 8 characters long',
+      });
+      return;
+    }
+
+    if (!updatedInfo.resetPasswordToken) {
+      dispatch({
+        type: USER_RESET_PASSWORD_FAILURE,
+        payload: 'Invalid or missing reset token',
+      });
+      return;
+    }
+
     dispatch({
       type: USER_RESET_PASSWORD_REQUEST,
     });
@@ -230,7 +356,7 @@ export const userResetPasswordAction = (updatedInfo) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `${process.env.REACT_APP_END_POINT}api/resetpassword/${updatedInfo.resetPasswordToken}`,
+      buildApiUrl('resetPassword', updatedInfo.resetPasswordToken),
       updatedInfo,
       config,
     );
@@ -238,25 +364,31 @@ export const userResetPasswordAction = (updatedInfo) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_RESET_PASSWORD_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: handleApiError(error),
     });
   }
 };
 
-//PUT: User EDIT Password
+//PUT: User EDIT Details
 export const userEditDetailAction =
-  (id, formaData) => async (dispatch, getState) => {
+  (id, formData) => async (dispatch, getState) => {
     try {
       dispatch({
         type: USER_EDIT_DETAILS_REQUEST,
       });
 
-      const {
-        userLogin: { userInfo },
-      } = getState();
+      const state = getState();
+      const userInfo =
+        state.userLogin?.userInfo || state.googleUserLogin?.userInfo;
+
+      if (!userInfo) {
+        dispatch({
+          type: USER_EDIT_DETAILS_FAILURE,
+          payload: 'User not authenticated',
+        });
+        return;
+      }
+
       const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -265,8 +397,8 @@ export const userEditDetailAction =
       };
 
       const { data } = await axios.put(
-        `${process.env.REACT_APP_END_POINT}api/user/${id.id}`,
-        formaData,
+        buildApiUrl('user', id.id),
+        formData,
         config,
       );
       dispatch({ type: USER_EDIT_DETAILS_SUCCESS, payload: data });
@@ -274,10 +406,7 @@ export const userEditDetailAction =
     } catch (error) {
       dispatch({
         type: USER_EDIT_DETAILS_FAILURE,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
+        payload: handleApiError(error),
       });
     }
   };

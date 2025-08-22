@@ -116,6 +116,13 @@ const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
 
   const renderUploadState = () => (
     <div className="image-wrapper">
+      <img
+        width="214"
+        height="214"
+        src="/assets/images/sample.jpg"
+        alt="Default Profile"
+        className="user-profile-image"
+      />
       <FaUpload
         onClick={() => setShowUploadInput((prev) => !prev)}
         size={22}

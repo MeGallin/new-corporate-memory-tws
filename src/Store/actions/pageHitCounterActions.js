@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { buildApiUrl } from '../utils/api';
 import {
   PAGE_HITS_FAILURE,
   PAGE_HITS_REQUEST,
@@ -13,7 +14,7 @@ export const pageHitsAction = () => async (dispatch) => {
     });
 
     const { data } = await axios.get(
-      `${process.env.REACT_APP_END_POINT}api/page-hits`,
+      buildApiUrl('pageHits'),
     );
     dispatch({ type: PAGE_HITS_SUCCESS, payload: data });
   } catch (error) {

@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { buildApiUrl } from '../utils/api';
+import { getAuthenticatedUser, createAuthConfig } from '../utils/auth';
 import {
   ADMIN_DELETE_ALL_USER_DATA_FAILURE,
   ADMIN_DELETE_ALL_USER_DATA_REQUEST,
@@ -17,36 +19,9 @@ import {
 // Import logout action for session management
 import { logoutAction } from './userActions';
 
-// API configuration for admin endpoints
-const ADMIN_API_CONFIG = {
-  baseURL: process.env.REACT_APP_END_POINT,
-  endpoints: {
-    getAllUserDetails: 'api/admin/user-details-memories',
-    toggleAdmin: 'api/admin/user-is-admin',
-    toggleSuspended: 'api/admin/user-is-suspended',
-    deleteUserData: 'api/admin/user-memories-delete',
-  },
-};
 
-const buildAdminApiUrl = (endpoint, param = '') => {
-  const url = `${ADMIN_API_CONFIG.baseURL}${ADMIN_API_CONFIG.endpoints[endpoint]}`;
-  return param ? `${url}/${param}` : url;
-};
 
-// Utility function to get authenticated user (supports both login types)
-const getAuthenticatedUser = (state) => {
-  const regularUser = state.userLogin?.userInfo;
-  const googleUser = state.googleUserLogin?.userInfo;
-  return regularUser || googleUser;
-};
 
-// Utility function to create auth headers
-const createAuthConfig = (userInfo) => ({
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${userInfo.token}`,
-  },
-});
 
 // Utility function to handle API errors consistently
 const handleAdminApiError = (error) => {
@@ -106,7 +81,7 @@ export const adminGetAllUserDetailsAction =
       const config = createAuthConfig(userInfo);
 
       const { data } = await axios.get(
-        buildAdminApiUrl('getAllUserDetails'),
+        buildApiUrl('adminGetAllUserDetails'),
         config,
       );
 
@@ -173,7 +148,7 @@ export const adminIsAdminAction =
       const config = createAuthConfig(userInfo);
 
       const { data } = await axios.put(
-        buildAdminApiUrl('toggleAdmin', adminIsAdmin.id),
+        buildApiUrl('adminToggleAdmin', adminIsAdmin.id),
         { isAdmin: adminIsAdmin.toggledValue },
         config,
       );
@@ -241,7 +216,7 @@ export const adminIsSuspendedAction =
       const config = createAuthConfig(userInfo);
 
       const { data } = await axios.put(
-        buildAdminApiUrl('toggleSuspended', adminIsSuspended.id),
+        buildApiUrl('adminToggleSuspended', adminIsSuspended.id),
         { isSuspended: adminIsSuspended.toggledValue },
         config,
       );
@@ -308,7 +283,7 @@ export const adminDeleteAllUserDataAction =
       const config = createAuthConfig(userInfo);
 
       const { data } = await axios.delete(
-        buildAdminApiUrl('deleteUserData', id),
+        buildApiUrl('adminDeleteUserData', id),
         config,
       );
 

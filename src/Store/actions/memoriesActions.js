@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { buildApiUrl } from '../utils/api';
+import { getAuthenticatedUser, createAuthConfig } from '../utils/auth';
 
 import { SORTED_MEMORIES_SUCCESS } from '../constants/sortedMemories';
 
@@ -29,22 +31,7 @@ import {
 // Import logout action for session management
 import { logoutAction } from './userActions';
 
-// API configuration for memory endpoints
-const MEMORIES_API_CONFIG = {
-  baseURL: process.env.REACT_APP_END_POINT,
-  endpoints: {
-    memories: 'api/memories',
-    createMemory: 'api/create-memory',
-    editMemory: 'api/edit-memory',
-    deleteMemory: 'api/delete-memory',
-    deleteMemoryTag: 'api/delete-memory-tag',
-  },
-};
 
-const buildMemoriesApiUrl = (endpoint, param = '') => {
-  const url = `${MEMORIES_API_CONFIG.baseURL}${MEMORIES_API_CONFIG.endpoints[endpoint]}`;
-  return param ? `${url}/${param}` : url;
-};
 
 // Utility function to validate date
 const isValidDate = (dateString) => {
@@ -54,26 +41,7 @@ const isValidDate = (dateString) => {
   return date instanceof Date && !isNaN(date) && dateString !== '';
 };
 
-// Utility function to get authenticated user from state
-const getAuthenticatedUser = (state) => {
-  if (state.userLogin?.userInfo) {
-    return state.userLogin.userInfo;
-  }
 
-  if (state.googleUserLogin?.userInfo) {
-    return state.googleUserLogin.userInfo;
-  }
-
-  return null;
-};
-
-// Utility function to create auth headers
-const createAuthConfig = (userInfo) => ({
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${userInfo.token}`,
-  },
-});
 
 // Utility function to handle API errors consistently
 const handleMemoriesApiError = (error) => {
@@ -154,7 +122,7 @@ export const memoriesGetAction = () => async (dispatch, getState) => {
 
     const config = createAuthConfig(userInfo);
 
-    const { data } = await axios.get(buildMemoriesApiUrl('memories'), config);
+    const { data } = await axios.get(buildApiUrl('memories'), config);
 
     dispatch({ type: MEMORIES_GET_SUCCESS, payload: data });
     dispatch({ type: SORTED_MEMORIES_SUCCESS, payload: data });
@@ -203,7 +171,7 @@ export const memoryCreateAction = (formData) => async (dispatch, getState) => {
     const config = createAuthConfig(userInfo);
 
     const { data } = await axios.post(
-      buildMemoriesApiUrl('createMemory'),
+      buildApiUrl('createMemory'),
       formData,
       config,
     );
@@ -265,7 +233,7 @@ export const memoryEditAction = (formData) => async (dispatch, getState) => {
     const config = createAuthConfig(userInfo);
 
     const { data } = await axios.put(
-      buildMemoriesApiUrl('editMemory', formData.id),
+      buildApiUrl('editMemory', formData.id),
       formData,
       config,
     );
@@ -332,7 +300,7 @@ export const memoryDeleteAction = (id) => async (dispatch, getState) => {
     const config = createAuthConfig(userInfo);
 
     const { data } = await axios.delete(
-      buildMemoriesApiUrl('deleteMemory', id),
+      buildApiUrl('deleteMemory', id),
       config,
     );
 
@@ -402,7 +370,7 @@ export const memoryDeleteTagAction = (id) => async (dispatch, getState) => {
     const config = createAuthConfig(userInfo);
 
     const { data } = await axios.delete(
-      buildMemoriesApiUrl('deleteMemoryTag', id),
+      buildApiUrl('deleteMemoryTag', id),
       config,
     );
 
@@ -495,7 +463,7 @@ export const memorySetDueDateAction =
       };
 
       const { data } = await axios.put(
-        buildMemoriesApiUrl('editMemory', memoryData.id),
+        buildApiUrl('editMemory', memoryData.id),
         requestBody,
         config,
       );
@@ -592,7 +560,7 @@ export const memoryIsCompleteAction =
       };
 
       const { data } = await axios.put(
-        buildMemoriesApiUrl('editMemory', memoryData.id),
+        buildApiUrl('editMemory', memoryData.id),
         requestBody,
         config,
       );

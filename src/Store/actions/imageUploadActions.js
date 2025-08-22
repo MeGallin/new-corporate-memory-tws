@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { buildApiUrl } from '../utils/api';
+import { getAuthenticatedUser, createAuthConfig } from '../utils/auth';
 import {
   MEMORY_IMAGE_DELETE_FAILURE,
   MEMORY_IMAGE_DELETE_REQUEST,
@@ -24,45 +26,29 @@ export const userProfileImageUploadAction =
         type: USER_PROFILE_IMAGE_UPLOAD_REQUEST,
       });
 
-      if (getState().userLogin.userInfo) {
-        const {
-          userLogin: { userInfo },
-        } = getState();
-
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${userInfo.token}`,
-            userId: userId,
-          },
-        };
-        const { data } = await axios.post(
-          `${process.env.REACT_APP_END_POINT}api/user-profile-upload-image`,
-          formData,
-          config,
-        );
-        dispatch({ type: USER_PROFILE_IMAGE_UPLOAD_SUCCESS, payload: data });
+      const userInfo = getAuthenticatedUser(getState());
+      if (!userInfo) {
+        dispatch({
+          type: USER_PROFILE_IMAGE_UPLOAD_FAILURE,
+          payload: 'User not authenticated',
+        });
+        return;
       }
 
-      if (getState().googleUserLogin.userInfo) {
-        const {
-          googleUserLogin: { userInfo },
-        } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${userInfo.token}`,
+          userId: userId,
+        },
+      };
 
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${userInfo.token}`,
-            userId: userId,
-          },
-        };
-        const { data } = await axios.post(
-          `${process.env.REACT_APP_END_POINT}api/user-profile-upload-image`,
-          formData,
-          config,
-        );
-        dispatch({ type: USER_PROFILE_IMAGE_UPLOAD_SUCCESS, payload: data });
-      }
+      const { data } = await axios.post(
+        buildApiUrl('userProfileUploadImage'),
+        formData,
+        config,
+      );
+      dispatch({ type: USER_PROFILE_IMAGE_UPLOAD_SUCCESS, payload: data });
     } catch (error) {
       dispatch({
         type: USER_PROFILE_IMAGE_UPLOAD_FAILURE,
@@ -82,39 +68,23 @@ export const userProfileImageDeleteAction =
         type: USER_PROFILE_IMAGE_DELETE_REQUEST,
       });
 
-      if (getState().userLogin.userInfo) {
-        const {
-          userLogin: { userInfo },
-        } = getState();
-        const config = {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        };
-        await axios.delete(
-          `${process.env.REACT_APP_END_POINT}api/user-profile-image-delete/${id}`,
-          config,
-        );
-        dispatch({ type: USER_PROFILE_IMAGE_DELETE_SUCCESS });
-        dispatch(userInfoDetailsAction());
+      const userInfo = getAuthenticatedUser(getState());
+      if (!userInfo) {
+        dispatch({
+          type: USER_PROFILE_IMAGE_DELETE_FAILURE,
+          payload: 'User not authenticated',
+        });
+        return;
       }
 
-      if (getState().googleUserLogin.userInfo) {
-        const {
-          googleUserLogin: { userInfo },
-        } = getState();
-        const config = {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        };
-        await axios.delete(
-          `${process.env.REACT_APP_END_POINT}api/user-profile-image-delete/${id}`,
-          config,
-        );
-        dispatch({ type: USER_PROFILE_IMAGE_DELETE_SUCCESS });
-        dispatch(userInfoDetailsAction());
-      }
+      const config = createAuthConfig(userInfo);
+
+      await axios.delete(
+        buildApiUrl('userProfileDeleteImage', id),
+        config,
+      );
+      dispatch({ type: USER_PROFILE_IMAGE_DELETE_SUCCESS });
+      dispatch(userInfoDetailsAction());
     } catch (error) {
       dispatch({
         type: USER_PROFILE_IMAGE_DELETE_FAILURE,
@@ -134,53 +104,34 @@ export const memoryImageUploadAction =
         type: MEMORY_IMAGE_UPLOAD_REQUEST,
       });
 
-      if (getState().userLogin.userInfo) {
-        const {
-          userLogin: { userInfo },
-        } = getState();
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${userInfo.token}`,
-            memoryId: memoryId,
-          },
-        };
-        const { data } = await axios.post(
-          `${process.env.REACT_APP_END_POINT}api/memory-upload-image`,
-          formData,
-          config,
-        );
+      const userInfo = getAuthenticatedUser(getState());
+      if (!userInfo) {
         dispatch({
-          type: MEMORY_IMAGE_UPLOAD_SUCCESS,
-          payload: data,
+          type: MEMORY_IMAGE_UPLOAD_FAILURE,
+          payload: 'User not authenticated',
         });
-        // Update the state of the state
-        dispatch(memoriesGetAction());
+        return;
       }
 
-      if (getState().googleUserLogin.userInfo) {
-        const {
-          googleUserLogin: { userInfo },
-        } = getState();
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${userInfo.token}`,
-            memoryId: memoryId,
-          },
-        };
-        const { data } = await axios.post(
-          `${process.env.REACT_APP_END_POINT}api/memory-upload-image`,
-          formData,
-          config,
-        );
-        dispatch({
-          type: MEMORY_IMAGE_UPLOAD_SUCCESS,
-          payload: data,
-        });
-        // Update the state of the state
-        dispatch(memoriesGetAction());
-      }
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${userInfo.token}`,
+          memoryId: memoryId,
+        },
+      };
+
+      const { data } = await axios.post(
+        buildApiUrl('memoryUploadImage'),
+        formData,
+        config,
+      );
+      dispatch({
+        type: MEMORY_IMAGE_UPLOAD_SUCCESS,
+        payload: data,
+      });
+      // Update the state of the state
+      dispatch(memoriesGetAction());
     } catch (error) {
       dispatch({
         type: MEMORY_IMAGE_UPLOAD_FAILURE,
@@ -199,39 +150,23 @@ export const deleteMemoryImageAction = (id) => async (dispatch, getState) => {
       type: MEMORY_IMAGE_DELETE_REQUEST,
     });
 
-    if (getState().userLogin.userInfo) {
-      const {
-        userLogin: { userInfo },
-      } = getState();
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      await axios.delete(
-        `${process.env.REACT_APP_END_POINT}api/delete-memory-image/${id}`,
-        config,
-      );
-      dispatch({ type: MEMORY_IMAGE_DELETE_SUCCESS });
-      dispatch(memoriesGetAction());
+    const userInfo = getAuthenticatedUser(getState());
+    if (!userInfo) {
+      dispatch({
+        type: MEMORY_IMAGE_DELETE_FAILURE,
+        payload: 'User not authenticated',
+      });
+      return;
     }
 
-    if (getState().googleUserLogin.userInfo) {
-      const {
-        googleUserLogin: { userInfo },
-      } = getState();
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      await axios.delete(
-        `${process.env.REACT_APP_END_POINT}api/delete-memory-image/${id}`,
-        config,
-      );
-      dispatch({ type: MEMORY_IMAGE_DELETE_SUCCESS });
-      dispatch(memoriesGetAction());
-    }
+    const config = createAuthConfig(userInfo);
+
+    await axios.delete(
+      buildApiUrl('memoryDeleteImage', id),
+      config,
+    );
+    dispatch({ type: MEMORY_IMAGE_DELETE_SUCCESS });
+    dispatch(memoriesGetAction());
   } catch (error) {
     dispatch({
       type: MEMORY_IMAGE_DELETE_FAILURE,

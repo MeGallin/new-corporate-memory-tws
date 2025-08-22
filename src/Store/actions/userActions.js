@@ -1,16 +1,20 @@
 import axios from 'axios';
+import { buildApiUrl } from '../utils/api';
 import { MEMORIES_GET_RESET } from '../constants/memoriesConstants';
+import { CONTACT_FORM_RESET } from '../constants/contactFormConstants';
 import {
   GOOGLE_USER_LOGIN_FAILURE,
   GOOGLE_USER_LOGIN_REQUEST,
   GOOGLE_USER_LOGIN_SUCCESS,
-  GOOGLE_USER_LOGOUT,
+  GOOGLE_USER_LOGIN_RESET,
   USER_EDIT_DETAILS_FAILURE,
   USER_EDIT_DETAILS_REQUEST,
   USER_EDIT_DETAILS_SUCCESS,
+  USER_EDIT_DETAILS_RESET,
   USER_FORGOT_PW_SEND_EMAIL_FAILURE,
   USER_FORGOT_PW_SEND_EMAIL_REQUEST,
   USER_FORGOT_PW_SEND_EMAIL_SUCCESS,
+  USER_FORGOT_PW_SEND_EMAIL_RESET,
   USER_INFO_DETAILS_FAILURE,
   USER_INFO_DETAILS_REQUEST,
   USER_INFO_DETAILS_RESET,
@@ -18,13 +22,16 @@ import {
   USER_LOGIN_FAILURE,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
+  USER_LOGIN_RESET,
   USER_LOGOUT,
   USER_REGISTER_FAILURE,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_REGISTER_RESET,
   USER_RESET_PASSWORD_FAILURE,
   USER_RESET_PASSWORD_REQUEST,
   USER_RESET_PASSWORD_SUCCESS,
+  USER_RESET_PASSWORD_RESET,
 } from '../constants/userConstants';
 
 // Utility functions for validation
@@ -37,24 +44,7 @@ const validatePassword = (password) => {
   return password && password.length >= 8;
 };
 
-// API configuration
-const API_CONFIG = {
-  baseURL: process.env.REACT_APP_END_POINT,
-  endpoints: {
-    userDetails: 'api/user-details',
-    login: 'api/login',
-    googleLogin: 'api/google-login',
-    register: 'api/register',
-    forgotPassword: 'api/forgot-password',
-    resetPassword: 'api/resetpassword',
-    user: 'api/user',
-  },
-};
 
-const buildApiUrl = (endpoint, param = '') => {
-  const url = `${API_CONFIG.baseURL}${API_CONFIG.endpoints[endpoint]}`;
-  return param ? `${url}/${param}` : url;
-};
 
 // Token management utilities
 const setSecureToken = (tokenData) => {
@@ -234,8 +224,14 @@ export const logoutAction = () => (dispatch) => {
   // Reset all user-related Redux state
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: MEMORIES_GET_RESET });
-  dispatch({ type: GOOGLE_USER_LOGOUT });
+  dispatch({ type: GOOGLE_USER_LOGIN_RESET });
   dispatch({ type: USER_INFO_DETAILS_RESET });
+  dispatch({ type: USER_LOGIN_RESET });
+  dispatch({ type: USER_REGISTER_RESET });
+  dispatch({ type: USER_EDIT_DETAILS_RESET });
+  dispatch({ type: USER_FORGOT_PW_SEND_EMAIL_RESET });
+  dispatch({ type: USER_RESET_PASSWORD_RESET });
+  dispatch({ type: CONTACT_FORM_RESET });
 };
 
 // User Registration

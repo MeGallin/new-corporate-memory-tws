@@ -4,6 +4,7 @@ import {
   CONTACT_FORM_SUCCESS,
 } from '../constants/contactFormConstants';
 import axios from 'axios';
+import { buildApiUrl } from '../utils/api';
 
 export const contactFormAction = (formData) => async (dispatch) => {
   try {
@@ -11,7 +12,7 @@ export const contactFormAction = (formData) => async (dispatch) => {
       type: CONTACT_FORM_REQUEST,
     });
     const { data } = await axios.post(
-      `${process.env.REACT_APP_END_POINT}api/contact-form`,
+      buildApiUrl('contactForm'),
       formData,
     );
     dispatch({ type: CONTACT_FORM_SUCCESS, payload: data });

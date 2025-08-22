@@ -11,9 +11,9 @@ const LogoutComponent = () => {
     navigate('/forms');
   };
   return (
-    <div className="link-effect" onClick={handleLogout}>
+    <button type="button" className="logout-button" onClick={handleLogout}>
       LOGOUT
-    </div>
+    </button>
   );
 };
 

@@ -6,82 +6,65 @@ import LogoutComponent from '../Logout/LogoutComponent';
 import BetaReleaseComponent from '../BetaRelease/BetaReleaseComponent';
 
 const HeaderComponent = () => {
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-  const googleUserLogin = useSelector((state) => state.googleUserLogin);
-  const { userInfo: googleUserInfo } = googleUserLogin;
-  const userInfoDetails = useSelector((state) => state.userInfoDetails);
-  const { userDetails } = userInfoDetails;
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const { userInfo: googleUserInfo } = useSelector((state) => state.googleUserLogin);
+  const { userDetails } = useSelector((state) => state.userInfoDetails);
+
+  const isAuthenticated = !!(userInfo || googleUserInfo);
 
   return (
     <>
       <BetaReleaseComponent />
       <header>
-        <nav className="nav-wrapper">
-          {userInfo || googleUserInfo ? (
-            <span>
+        <nav>
+          <ul className="nav-wrapper">
+            <li>
               <NavLink
                 className={(navData) => (navData.isActive ? 'active' : '')}
-                to="/memories"
+                to={isAuthenticated ? '/memories' : '/'}
               >
-                Memories
+                {isAuthenticated ? 'Memories' : 'Home'}
               </NavLink>
-            </span>
-          ) : (
-            <span>
+            </li>
+            <li>
               <NavLink
                 className={(navData) => (navData.isActive ? 'active' : '')}
-                to="/"
+                to="/about"
               >
-                Home
+                About
               </NavLink>
-            </span>
-          )}
-
-          <span>
-            <NavLink
-              className={(navData) => (navData.isActive ? 'active' : '')}
-              to="/about"
-            >
-              About
-            </NavLink>
-          </span>
-
-          <span>
-            <NavLink
-              className={(navData) => (navData.isActive ? 'active' : '')}
-              to="/contact"
-            >
-              Contact
-            </NavLink>
-          </span>
-
-          {userInfo || googleUserInfo ? (
-            <span>
-              <LogoutComponent />
-            </span>
-          ) : (
-            <span>
+            </li>
+            <li>
               <NavLink
                 className={(navData) => (navData.isActive ? 'active' : '')}
-                to="/forms"
+                to="/contact"
               >
-                Login
+                Contact
               </NavLink>
-            </span>
-          )}
-        </nav>
-        {userInfo || googleUserInfo ? (
-          <>
-            <div className="header-user">
-              <div className="user-info-nav-link">
-                <NavLink to="/user-admin" className="header-user-name">
-                  DASHBOARD: {userDetails?.name}
+            </li>
+            <li>
+              {isAuthenticated ? (
+                <LogoutComponent />
+              ) : (
+                <NavLink
+                  className={(navData) => (navData.isActive ? 'active' : '')}
+                  to="/forms"
+                >
+                  Login
                 </NavLink>
-              </div>
+              )}
+            </li>
+          </ul>
+        </nav>
+        {isAuthenticated && (
+          <div className="header-user">
+            <div className="user-info-nav-link">
+              <NavLink to="/user-admin" className="header-user-name">
+                DASHBOARD: {userDetails?.name}
+              </NavLink>
             </div>
-          </>
-        ) : null}
+          </div>
+        )}
       </header>
     </>
   );

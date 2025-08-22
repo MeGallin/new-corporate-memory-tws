@@ -14,14 +14,14 @@ const ForgotPWSendEmailComponent = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
 
+  const isEmailInvalid = !emailRegEx.test(email);
+
   const handleOnChange = (e) => {
     setEmail(e.target.value);
   };
 
   const handleForgotPWSubmit = (e) => {
     e.preventDefault();
-    //Dispatch action
-    console.log(email);
     dispatch(userForgotPWSendEmailAction(email));
     setEmail('');
   };
@@ -64,11 +64,9 @@ const ForgotPWSendEmailComponent = () => {
 
               <ButtonComponent
                 type="submit"
-                text={
-                  !emailRegEx.test(email) ? 'Disabled' : 'send email address'
-                }
+                text={isEmailInvalid ? 'Disabled' : 'send email address'}
                 variant="info"
-                disabled={!emailRegEx.test(email)}
+                disabled={isEmailInvalid}
               />
             </form>
           </div>

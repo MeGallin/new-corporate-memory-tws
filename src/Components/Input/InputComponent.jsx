@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './InputComponent.scss';
 import PropTypes from 'prop-types';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -14,50 +14,35 @@ const InputComponent = ({
   className,
   onChange,
 }) => {
-  const inputFocus = useRef(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [onlyPassword, setOnlyPassword] = useState(true);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  useEffect(() => {
-    if (inputFocus.current.name === 'name') {
-      inputFocus.current.focus();
-    }
-    if (inputFocus.current.type !== 'password') {
-      setOnlyPassword(false);
-    }
-  }, [inputFocus]);
+  const isPasswordField = type === 'password';
+  const currentType = isPasswordField ? (isPasswordVisible ? 'text' : 'password') : type;
 
-  const handleShowHidePw = () => {
-    if (inputFocus.current.type === 'password') {
-      setShowPassword((prevState) => !prevState);
-      inputFocus.current.type = 'text';
-    } else {
-      setShowPassword((prevState) => !prevState);
-      inputFocus.current.type = 'password';
-    }
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev);
   };
 
   return (
     <div className="input-field-wrapper">
       <div className="input-icon-wrapper">
-        {label && <label htmlFor="input-field">{label}</label>}
-        {onlyPassword ? (
+        {label && <label htmlFor={id}>{label}</label>}
+        {isPasswordField && (
           <div
-            onClick={() => handleShowHidePw()}
-            title={!showPassword ? 'SHOW PASSWORD' : 'HIDE PASSWORD'}
+            onClick={togglePasswordVisibility}
+            title={isPasswordVisible ? 'HIDE PASSWORD' : 'SHOW PASSWORD'}
+            className="password-toggle-icon"
           >
-            {!showPassword ? <FaEye /> : <FaEyeSlash />}
+            {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
           </div>
-        ) : null}
+        )}
       </div>
       <input
         id={id}
-        ref={inputFocus}
-        type={type}
+        type={currentType}
         name={name}
         value={value}
         placeholder={placeholder}
-        error={error}
         className={className}
         onChange={onChange}
       />
@@ -68,16 +53,23 @@ const InputComponent = ({
 };
 
 InputComponent.defaultProps = {
-  type: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  type: 'text',
+  className: '',
+  placeholder: '',
+  error: null,
+  id: ''
 };
 
 InputComponent.propTypes = {
-  text: PropTypes.string,
-  name: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  label: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   placeholder: PropTypes.string,
   error: PropTypes.string,
-  onChange: PropTypes.func,
+  className: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default InputComponent;

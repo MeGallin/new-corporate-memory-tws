@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './DashboardComponent.scss';
@@ -18,49 +18,41 @@ import UserProfileImageComponent from '../UserProfileImages/UserProfileImageComp
 const DashboardComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-  const userInfoDetails = useSelector((state) => state.userInfoDetails);
-  const { userDetails } = userInfoDetails;
-  const userEditDetails = useSelector((state) => state.userEditDetails);
-  const { loading, success, error } = userEditDetails;
-  const memoriesGet = useSelector((state) => state.memoriesGet);
-  const { memories } = memoriesGet;
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const { userDetails } = useSelector((state) => state.userInfoDetails);
+  const { loading, success, error } = useSelector((state) => state.userEditDetails);
+  const { memories } = useSelector((state) => state.memoriesGet);
 
   useEffect(() => {
-    let ignore = false;
-    if (!userInfo && !userDetails?.isConfirmed) return navigate('/forms');
-    if (!memories) dispatch(memoriesGetAction());
-    if (!ignore);
-    return () => (ignore = true);
-  }, [userInfo, userDetails?.isConfirmed, navigate, memories, dispatch]);
-
-  const completedMemories = memories?.filter((memory) => {
-    if (memory.isComplete) {
-      return memory;
+    if (!userInfo && !userDetails?.isConfirmed) {
+      navigate('/forms');
     }
-    return false;
-  });
+    if (!memories) {
+      dispatch(memoriesGetAction());
+    }
+  }, [userInfo, userDetails, navigate, memories, dispatch]);
+
+  const completedMemories = useMemo(() => {
+    return memories?.filter((memory) => memory.isComplete) || [];
+  }, [memories]);
 
   return (
     <>
-      {error ? <ErrorComponent error={error} /> : null}
-      {success ? (
-        <SuccessComponent message={'Memory has bee successfully created.'} />
-      ) : null}
+      {error && <ErrorComponent error={error} />}
+      {success && (
+        <SuccessComponent message={'Your details have been successfully updated.'} />
+      )}
 
       {loading ? (
         <SpinnerComponent />
       ) : (
         <div className="dashboard-wrapper">
-          {userDetails?.isAdmin ? (
-            <>
-              <fieldset className="fieldSet">
-                <legend>Users at a glance</legend>
-                <AdminComponent />
-              </fieldset>
-            </>
-          ) : null}
+          {userDetails?.isAdmin && (
+            <fieldset className="fieldSet">
+              <legend>Users at a glance</legend>
+              <AdminComponent />
+            </fieldset>
+          )}
 
           <fieldset className="fieldSet">
             <legend>{userDetails?.name}</legend>
@@ -81,7 +73,7 @@ const DashboardComponent = () => {
                     <h3>Stats</h3>
                     <div>
                       <span className="details-label">Total Memories: </span>
-                      <span>{memories?.length}</span>
+                      <span>{memories?.length || 0}</span>
                     </div>
                     <div>
                       <span className="details-label">
@@ -201,25 +193,9 @@ const DashboardComponent = () => {
             <legend>Completed Memories</legend>
             {completedMemories?.length > 0 ? (
               <div className="dashboard-completed-component-wrapper">
-                {memories?.map((memory) => (
-                  <div
-                    key={memory._id}
-                    className={!memory.isComplete ? 'dashboard-completed' : ''}
-                  >
-                    <CardComponent
-                      id={memory._id}
-                      title={memory.title}
-                      dueDate={memory.dueDate}
-                      memory={memory.memory}
-                      voice={memory.memory}
-                      imgSrc={memory.memoryImage}
-                      setDueDate={memory.setDueDate}
-                      isComplete={memory.isComplete}
-                      priority={memory.priority}
-                      tag={memory.tag}
-                      created={memory.createdAt}
-                      updated={memory.updatedAt}
-                    />
+                {completedMemories.map((memory) => (
+                  <div key={memory._id}>
+                    <CardComponent memory={memory} />
                   </div>
                 ))}
               </div>

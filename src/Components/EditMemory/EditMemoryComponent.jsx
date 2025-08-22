@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './EditMemoryComponent.scss';
+import PropTypes from 'prop-types';
 
 import { memoryEditAction } from '../../Store/actions/memoriesActions';
 
@@ -12,29 +13,35 @@ import ButtonComponent from '../Button/ButtonComponent';
 
 const EditMemoryComponent = ({ updateMemory }) => {
   const dispatch = useDispatch();
-  const [showForm, setShowForm] = useState(false);
+  const { loading } = useSelector((state) => state.memoryEdit);
+
   const [formData, setFormData] = useState({
-    id: updateMemory._id,
-    title: updateMemory.title,
-    memory: updateMemory.memory,
-    dueDate: new Date(updateMemory.dueDate),
-    priority: updateMemory.priority,
-    tag: updateMemory.tag,
+    id: '',
+    title: '',
+    memory: '',
+    dueDate: new Date(),
+    priority: '',
+    tag: '',
   });
-  const { id, title, memory, dueDate, priority, tag } = formData;
+
+  useEffect(() => {
+    if (updateMemory) {
+      setFormData({
+        id: updateMemory._id,
+        title: updateMemory.title || '',
+        memory: updateMemory.memory || '',
+        dueDate: new Date(updateMemory.dueDate),
+        priority: updateMemory.priority || '',
+        tag: updateMemory.tag || '',
+      });
+    }
+  }, [updateMemory]);
+
+  const { title, memory, dueDate, priority, tag } = formData;
 
   const handleEditMemory = (e) => {
     e.preventDefault();
-
-    //Dispatch Action here
     dispatch(memoryEditAction(formData));
-    setFormData({
-      title: '',
-      memory: '',
-      priority: '',
-      tag: '',
-    });
-    setShowForm(false);
   };
 
   const handleOnchange = (e) => {
@@ -45,24 +52,16 @@ const EditMemoryComponent = ({ updateMemory }) => {
   };
 
   const handleOnChangeDate = (date) => {
-    setFormData({
-      id,
-      title,
-      memory,
-      dueDate: date,
-      priority,
-      tag,
-    });
+    setFormData((prev) => ({ ...prev, dueDate: date }));
   };
 
-  const memoryEdit = useSelector((state) => state.memoryEdit);
-  const { loading } = memoryEdit;
+  const isFormInvalid = !title || !memory || memory.length <= 8;
 
   return (
     <div className="update-memory-wrapper">
       {loading ? (
         <SpinnerComponent />
-      ) : !showForm ? (
+      ) : (
         <fieldset className="fieldSet">
           <legend>Update memory</legend>
 
@@ -119,17 +118,21 @@ const EditMemoryComponent = ({ updateMemory }) => {
               <div className="update-memory-button-wrapper">
                 <ButtonComponent
                   type="submit"
-                  text={memory.length <= 8 ? 'Disabled' : 'UPDATE'}
+                  text={isFormInvalid ? 'Disabled' : 'UPDATE'}
                   variant="dark"
-                  disabled={memory.length <= 8}
+                  disabled={isFormInvalid}
                 />
               </div>
             </form>
           </div>
         </fieldset>
-      ) : null}
+      )}
     </div>
   );
+};
+
+EditMemoryComponent.propTypes = {
+  updateMemory: PropTypes.object.isRequired,
 };
 
 export default EditMemoryComponent;

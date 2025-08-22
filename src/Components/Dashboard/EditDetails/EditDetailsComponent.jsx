@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { nameRegEx, emailRegEx, passwordRegEx } from '../../../Utils/regEx';
 import { userEditDetailAction } from '../../../Store/actions/userActions';
@@ -8,17 +8,25 @@ import ButtonComponent from '../../Button/ButtonComponent';
 
 const EditDetailsComponent = () => {
   const dispatch = useDispatch();
-  const userInfoDetails = useSelector((state) => state.userInfoDetails);
-  const { userDetails } = userInfoDetails;
-  const [editName, setEditName] = useState(false);
-  const [editEmail, setEditEmail] = useState(false);
-  const [editPassword, setEditPassword] = useState(false);
+  const { userDetails } = useSelector((state) => state.userInfoDetails);
 
+  const [editingField, setEditingField] = useState(null); // null, 'name', 'email', or 'password'
   const [formData, setFormData] = useState({
-    name: userDetails?.name,
-    email: userDetails?.email,
+    name: '',
+    email: '',
     password: '',
   });
+
+  useEffect(() => {
+    if (userDetails) {
+      setFormData({
+        name: userDetails.name || '',
+        email: userDetails.email || '',
+        password: '',
+      });
+    }
+  }, [userDetails]);
+
   const { name, email, password } = formData;
 
   const handleOnchange = (e) => {
@@ -28,146 +36,75 @@ const EditDetailsComponent = () => {
     }));
   };
 
-  const handleRegistrationSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    //Dispatch the Action
     dispatch(userEditDetailAction({ id: userDetails?._id }, formData));
-    setEditName(false);
+    setEditingField(null);
   };
+
+  const renderDisplayField = (field, title, value) => (
+    <div>
+      <span className="edit-title">{title}:</span>
+      <span
+        onClick={() => setEditingField(field)}
+        className="edit-input"
+        title={`Edit your ${field}`}
+      >
+        {value}
+      </span>
+    </div>
+  );
+
+  const renderEditField = (field, validationRegex) => {
+    let currentValidation = true;
+    if (formData[field]) {
+        currentValidation = validationRegex.test(formData[field]);
+    }
+
+    return (
+      <form onSubmit={handleSubmit}>
+        <InputComponent
+          label={`EDIT ${field}`}
+          value={formData[field]}
+          type={field === 'password' ? 'password' : 'text'}
+          name={field}
+          required
+          className={!currentValidation ? 'invalid' : 'entered'}
+          error={!currentValidation && formData[field].length > 0 ? `Invalid ${field}` : null}
+          onChange={handleOnchange}
+        />
+        <ButtonComponent
+          type="submit"
+          text={!currentValidation ? 'Disabled' : 'UPDATE'}
+          variant="dark"
+          disabled={!currentValidation}
+        />
+        <ButtonComponent
+          type="button"
+          text="Close"
+          variant="info"
+          disabled={false}
+          onClick={() => setEditingField(null)}
+        />
+      </form>
+    );
+  };
+
   return (
     <fieldset className="fieldSet">
       <legend>Edit Details</legend>
       <div className="edit-details-wrapper">
-        {editName ? (
-          <form onSubmit={handleRegistrationSubmit}>
-            <InputComponent
-              label="EDIT Name"
-              value={name}
-              type="text"
-              name="name"
-              required
-              className={!nameRegEx.test(name) ? 'invalid' : 'entered'}
-              error={
-                !nameRegEx.test(name) && name.length !== 0
-                  ? `Name field must contain a first name and surname both of which must start with a capital letter.`
-                  : null
-              }
-              onChange={handleOnchange}
-            />
-            <ButtonComponent
-              type="submit"
-              text={!nameRegEx.test(name) ? 'Disabled' : 'UPDATE'}
-              variant="dark"
-              disabled={!nameRegEx.test(name)}
-            />
+        {editingField === 'name'
+          ? renderEditField('name', nameRegEx)
+          : renderDisplayField('name', 'Name', userDetails?.name)}
 
-            <ButtonComponent
-              type="button"
-              text="Close"
-              variant="info"
-              disabled={false}
-              onClick={() => setEditName((prev) => !prev)}
-            />
-          </form>
-        ) : (
-          <div>
-            <span className="edit-title">Name:</span>
-            <span
-              onClick={() => setEditName((prev) => !prev)}
-              className="edit-input"
-              title="Edit your name"
-            >
-              {userDetails?.name}
-            </span>
-          </div>
-        )}
+        {editingField === 'email'
+          ? renderEditField('email', emailRegEx)
+          : renderDisplayField('email', 'Email', userDetails?.email)}
 
-        {editEmail ? (
-          <form onSubmit={handleRegistrationSubmit}>
-            <InputComponent
-              label="EDIT Email"
-              type="email"
-              name="email"
-              value={email}
-              className={!emailRegEx.test(email) ? 'invalid' : 'entered'}
-              error={
-                !emailRegEx.test(email) && email.length !== 0
-                  ? `Invalid email address.`
-                  : null
-              }
-              onChange={handleOnchange}
-            />
-
-            <ButtonComponent
-              type="submit"
-              text={!emailRegEx.test(email) ? 'Disabled' : 'UPDATE'}
-              variant="dark"
-              disabled={!emailRegEx.test(email)}
-            />
-            <ButtonComponent
-              type="button"
-              text="Close"
-              variant="info"
-              disabled={false}
-              onClick={() => setEditEmail((prev) => !prev)}
-            />
-          </form>
-        ) : (
-          <div>
-            <span className="edit-title">Email:</span>
-            <span
-              onClick={() => setEditEmail((prev) => !prev)}
-              className="edit-input"
-              title="Edit your Email"
-            >
-              {userDetails?.email}
-            </span>
-          </div>
-        )}
-
-        {editPassword ? (
-          <form onSubmit={handleRegistrationSubmit}>
-            <InputComponent
-              label="Password"
-              type="password"
-              name="password"
-              value={password}
-              required
-              className={!passwordRegEx.test(password) ? 'invalid' : 'entered'}
-              error={
-                !passwordRegEx.test(password) && password.length !== 0
-                  ? `Password must contain at least l Capital letter, 1 number and 1 special character.`
-                  : null
-              }
-              onChange={handleOnchange}
-            />
-
-            <ButtonComponent
-              type="submit"
-              text={!passwordRegEx.test(password) ? 'Disabled' : 'UPDATE'}
-              variant="dark"
-              disabled={!passwordRegEx.test(password)}
-            />
-            <ButtonComponent
-              type="button"
-              text="Close"
-              variant="info"
-              disabled={false}
-              onClick={() => setEditPassword((prev) => !prev)}
-            />
-          </form>
-        ) : (
-          <div>
-            <span className="edit-title">PASSWORD: </span>
-            <span
-              onClick={() => setEditPassword((prev) => !prev)}
-              className="edit-input"
-              title="Edit your Password"
-            >
-              ********
-            </span>
-          </div>
-        )}
+        {editingField === 'password'
+          ? renderEditField('password', passwordRegEx)
+          : renderDisplayField('password', 'Password', '********')}
       </div>
     </fieldset>
   );

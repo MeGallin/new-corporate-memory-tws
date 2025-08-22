@@ -1,0 +1,12 @@
+@import '../../index.scss';
+
+.login-actions-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.google-login-container {
+  padding: 2px 2px 4px 2px;
+  background-color: hsla(0deg, 0%, 45%, 0.1);
+}

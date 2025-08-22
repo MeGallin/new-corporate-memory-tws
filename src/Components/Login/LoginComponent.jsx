@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  loginAction,
-  googleUserLoginAction,
-} from '../../Store/actions/userActions';
+import {  loginAction,  googleUserLoginAction,} from '../../Store/actions/userActions';
 
 import { emailRegEx, passwordRegEx } from '../../Utils/regEx';
 
@@ -13,14 +10,16 @@ import ButtonComponent from '../../Components/Button/ButtonComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import ErrorComponent from '../Error/ErrorComponent';
 import SuccessComponent from '../Success/SuccessComponent';
-
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import './LoginComponent.scss';
 
 const LoginComponent = () => {
   const dispatch = useDispatch();
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, success } = userLogin;
+  const { loading, error, success } = useSelector((state) => state.userLogin);
+  const { loading: googleLoading, error: googleError } = useSelector(
+    (state) => state.googleUserLogin,
+  );
 
   const [formData, setFormData] = useState({
     email: '',
@@ -28,24 +27,20 @@ const LoginComponent = () => {
   });
   const { email, password } = formData;
 
+  const isFormInvalid = !emailRegEx.test(email) || password.length <= 5;
+
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    // Dispatch Action
     dispatch(loginAction(formData));
-
-    setFormData({
-      email: '',
-      password: '',
-    });
+    setFormData({ email: '', password: '' });
   };
 
-  //Google auth stuff
   const googleSuccess = async (googleRes) => {
-    //Dispatch action that save google info from googleRes.
     dispatch(googleUserLoginAction(googleRes));
   };
+
   const googleFailure = (error) => {
-    console.log('Error, with google login', error);
+    console.error('Error with Google login:', error);
   };
 
   const handleOnchange = (e) => {
@@ -54,28 +49,14 @@ const LoginComponent = () => {
       [e.target.name]: e.target.value,
     }));
   };
-  const googleUserLogin = useSelector((state) => state.googleUserLogin);
-  const {
-    loading: googleLoading,
-    success: googleSuccessState,
-    error: googleError,
-    userInfo: googleUserInfo,
-  } = googleUserLogin;
-  //Google auth stuff
 
   return (
     <div>
-      {error ? <ErrorComponent error={error} /> : null}
-      {success ? (
+      {error && <ErrorComponent error={error} />}
+      {googleError && <ErrorComponent error={googleError} />}
+      {success && (
         <SuccessComponent message={'You have successfully logged in.'} />
-      ) : null}
-
-      {googleError ? <ErrorComponent error={error} /> : null}
-      {googleSuccessState ? (
-        <SuccessComponent message="You have successfully logged in through GOOGLE" />
-      ) : null}
-
-      {googleUserInfo && googleSuccessState ? googleUserInfo?.username : null}
+      )}
 
       {loading ? (
         <SpinnerComponent />
@@ -86,6 +67,7 @@ const LoginComponent = () => {
           <div>
             <form onSubmit={handleLoginSubmit}>
               <InputComponent
+                id="login-email"
                 label="Email"
                 type="email"
                 name="email"
@@ -94,6 +76,7 @@ const LoginComponent = () => {
                 onChange={handleOnchange}
               />
               <InputComponent
+                id="login-password"
                 label="Password"
                 type="password"
                 name="password"
@@ -105,27 +88,18 @@ const LoginComponent = () => {
                 onChange={handleOnchange}
               />
 
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div className="login-actions-wrapper">
                 <ButtonComponent
                   type="submit"
-                  text={
-                    !emailRegEx.test(email) || password.length <= 5
-                      ? 'Disabled'
-                      : 'Login'
-                  }
+                  text={isFormInvalid ? 'Disabled' : 'Login'}
                   variant="dark"
-                  disabled={!emailRegEx.test(email) || password.length <= 5}
+                  disabled={isFormInvalid}
                 />
 
                 {googleLoading ? (
                   <SpinnerComponent />
                 ) : (
-                  <div
-                    style={{
-                      padding: '2px 2px 4px 2px',
-                      backgroundColor: 'hsla(0deg, 0%, 45%, 0.1)',
-                    }}
-                  >
+                  <div className="google-login-container">
                     <GoogleOAuthProvider
                       clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     >

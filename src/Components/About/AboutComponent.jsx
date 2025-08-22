@@ -2,8 +2,8 @@ import React from 'react';
 
 const AboutComponent = () => {
   return (
-    <fieldset className="fieldSet">
-      <legend>About Us</legend>
+    <div className="fieldSet">
+      <h1>About Us</h1>
       <p>
         YCM is a productivity tool that is easy to use and allows you to save,
         retrieve, and edit information in a secure environment.
@@ -15,7 +15,7 @@ const AboutComponent = () => {
       </p>
       <p>There is no limit to the number of memories that you can create.</p>
 
-      <h1>The Tech</h1>
+      <h2>The Tech</h2>
       <p>Construct using the MERN stack </p>
       <p>
         The MERN stack is a popular stack of technologies for building web
@@ -27,9 +27,9 @@ const AboutComponent = () => {
         web applications with a robust and scalable back-end, a powerful and
         flexible front-end, and a common language for both.
       </p>
-      <h1>Contact</h1>
+      <h2>Contact</h2>
       <p>Feel free to contact us via our contact form.</p>
-    </fieldset>
+    </div>
   );
 };
 

@@ -17,252 +17,198 @@ import AdminDeleteUserComponent from '../AdminDeleteUser/AdminDeleteUserComponen
 const AdminComponent = () => {
   const dispatch = useDispatch();
 
-  const userInfoDetails = useSelector((state) => state.userInfoDetails);
-  const { userDetails } = userInfoDetails;
-
-  const [userId, setUserId] = useState('');
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userIsAdmin, setUserIsAdmin] = useState('');
-  const [userIsConfirmed, setUserIsConfirmed] = useState('');
-  const [userLoginCounter, setUserLoginCounter] = useState('');
-  const [userIsSuspended, setUserIsSuspended] = useState('');
-  const [userIpAddress, setUserIpAddress] = useState('');
-  const [userCreatedAt, setUserCreatedAt] = useState('');
-  const [userUpdatedAt, setUserUpdatedAt] = useState('');
-
-  const [showNames, setShowNames] = useState(false);
-
-  useEffect(() => {
-    let ignore = false;
-    dispatch(adminGetAllUserDetailsAction());
-    if (!ignore);
-    return () => (ignore = true);
-  }, [dispatch]);
-
-  const adminGetAllUserDetails = useSelector(
+  const { userDetails } = useSelector((state) => state.userInfoDetails);
+  const { loading, success, error, users, memories } = useSelector(
     (state) => state.adminGetAllUserDetails,
   );
-  const { loading, success, error, users, memories } = adminGetAllUserDetails;
 
-  const userMemories = memories?.filter((obj) => obj?.user === userId);
+  const [selectedUser, setSelectedUser] = useState(null);
 
-  const handleIsAdmin = (id, value) => {
-    const toggledValue = (value = !value);
-    setUserIsAdmin(toggledValue);
-    dispatch(adminIsAdminAction({ id, toggledValue }));
-  };
-  const handleIsSuspended = (id, value) => {
-    const toggledValue = (value = !value);
-    setUserIsSuspended(toggledValue);
-    dispatch(adminIsSuspendedAction({ id, toggledValue }));
+  useEffect(() => {
+    dispatch(adminGetAllUserDetailsAction());
+  }, [dispatch]);
+
+  const handleUserSelect = (e) => {
+    const userId = e.target.value;
+    if (userId) {
+      const user = users.find((u) => u._id === userId);
+      setSelectedUser(user);
+    } else {
+      setSelectedUser(null);
+    }
   };
 
-  const handleUser = (
-    id,
-    userName,
-    userEmail,
-    userIsAdmin,
-    userIsSuspended,
-    userIsConfirmed,
-    userLoginCounter,
-    userIpAddress,
-    userCreatedAt,
-    userUpdatedAt,
-  ) => {
-    setUserId(id);
-    setUserName(userName);
-    setUserEmail(userEmail);
-    setUserIsAdmin(userIsAdmin);
-    setUserIsSuspended(userIsSuspended);
-    setUserIsConfirmed(userIsConfirmed);
-    setUserLoginCounter(userLoginCounter);
-    setUserIpAddress(userIpAddress);
-    setUserCreatedAt(userCreatedAt);
-    setUserUpdatedAt(userUpdatedAt);
-    setShowNames(false);
+  const handleIsAdmin = (id, isAdmin) => {
+    dispatch(adminIsAdminAction({ id, toggledValue: !isAdmin }));
   };
+
+  const handleIsSuspended = (id, isSuspended) => {
+    dispatch(adminIsSuspendedAction({ id, toggledValue: !isSuspended }));
+  };
+
+  const userMemories = selectedUser
+    ? memories?.filter((obj) => obj?.user === selectedUser._id)
+    : [];
 
   return (
     <>
-      {error ? <ErrorComponent error={error} /> : null}
+      {error && <ErrorComponent error={error} />}
       {loading && !success ? (
         <SpinnerComponent />
       ) : (
         <>
-          <h3
-            className="admin-component-select-name-dropdown"
-            onClick={() => setShowNames((prev) => !prev)}
-          >
-            Click to Select A User
-          </h3>
+          <div className="admin-user-selector">
+            <label htmlFor="user-select">Select a User:</label>
+            <select id="user-select" onChange={handleUserSelect} defaultValue="">
+              <option value="" disabled>
+                --Please choose a user--
+              </option>
+              {users?.map((user) => (
+                <option key={user._id} value={user._id}>
+                  {user.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          {users?.map((user) =>
-            showNames ? (
-              <div key={user?._id}>
-                <div
-                  className="admin-component-select-name"
-                  onClick={() =>
-                    handleUser(
-                      user?._id,
-                      user?.name,
-                      user?.email,
-                      user?.isAdmin,
-                      user?.isSuspended,
-                      user?.isConfirmed,
-                      user?.loginCounter,
-                      user?.ipAddress,
-                      user?.createdAt,
-                      user?.updatedAt,
-                    )
-                  }
-                >
-                  {user?.name}
-                </div>
-              </div>
-            ) : null,
-          )}
-
-          {userName ? (
+          {selectedUser && (
             <>
               <fieldset className="fieldSet">
-                <legend>{userName} Details</legend>
-                {userName ? (
-                  <>
-                    <div className="edit-details-wrapper">
-                      <div>
-                        <div>
-                          <span className="details-label">name: </span>
-                          <span>{userName}</span>
-                        </div>
-                        <div>
-                          <span className="details-label">email: </span>
-                          <span>{userEmail}</span>
-                        </div>
-                        <div>
-                          <span className="details-label">is Confirmed: </span>
-                          <span>
-                            {userIsConfirmed ? (
-                              <FaRegThumbsUp
-                                className="reg-thumbs-up-icon"
-                                size={22}
-                              />
-                            ) : (
-                              <FaRegThumbsDown
-                                className="reg-thumbs-down-icon"
-                                size={22}
-                              />
-                            )}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="is-admin-is-suspended-wrapper">
-                        <div>
-                          <ToggleSwitchComponent
-                            id="isAdmin"
-                            name="isAdmin"
-                            checked={userIsAdmin}
-                            disabled={
-                              userId !== userDetails?._id ? false : true
-                            }
-                            onChange={() => handleIsAdmin(userId, userIsAdmin)}
-                          />
-
-                          <span className="details-label">is admin: </span>
-                          <span>
-                            {userIsAdmin ? (
-                              <FaRegThumbsUp
-                                className="reg-thumbs-up-icon"
-                                size={22}
-                              />
-                            ) : (
-                              <FaRegThumbsDown
-                                className="reg-thumbs-down-icon"
-                                size={22}
-                              />
-                            )}
-                          </span>
-                        </div>
-                        <div>
-                          <ToggleSwitchComponent
-                            id="isSuspended"
-                            name="isSuspended"
-                            checked={userIsSuspended}
-                            disabled={
-                              userId !== userDetails?._id ? false : true
-                            }
-                            onChange={() =>
-                              handleIsSuspended(userId, userIsSuspended)
-                            }
-                          />
-
-                          <span className="details-label">is Suspended: </span>
-                          <span>
-                            {userIsSuspended ? (
-                              <FaRegThumbsUp
-                                className="reg-thumbs-up-icon"
-                                size={22}
-                              />
-                            ) : (
-                              <FaRegThumbsDown
-                                className="reg-thumbs-down-icon"
-                                size={22}
-                              />
-                            )}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div>
-                        <div>
-                          <span className="details-label">login Counter: </span>
-                          <span>{userLoginCounter}</span>
-                        </div>
-                        <div>
-                          <span className="details-label">ip: </span>
-                          <span>
-                            {userIpAddress === '::1' ? (
-                              <span>LOCALHOST</span>
-                            ) : (
-                              userIpAddress
-                            )}
-                          </span>
-                        </div>
-                      </div>
+                <legend>{selectedUser.name} Details</legend>
+                <div className="edit-details-wrapper">
+                  <div>
+                    <div>
+                      <span className="details-label">name: </span>
+                      <span>{selectedUser.name}</span>
                     </div>
-
-                    <div className="user-details-dates-wrapper">
-                      <div>
-                        <span className="details-label">created: </span>
-                        <span className="small-text">
-                          {moment(userUpdatedAt).diff(
-                            moment(userCreatedAt),
-                            'days',
-                          )}{' '}
-                          days ago.
-                        </span>
-                      </div>
-                      <div>
-                        <span className="details-label">updated: </span>
-                        <span className="small-text">
-                          {moment(userUpdatedAt).fromNow()}
-                        </span>
-                      </div>
+                    <div>
+                      <span className="details-label">email: </span>
+                      <span>{selectedUser.email}</span>
                     </div>
-                  </>
-                ) : null}
-                {userId !== userDetails?._id ? (
-                  <AdminDeleteUserComponent id={userId} name={userName} />
-                ) : null}
+                    <div>
+                      <span className="details-label">is Confirmed: </span>
+                      <span>
+                        {selectedUser.isConfirmed ? (
+                          <FaRegThumbsUp
+                            className="reg-thumbs-up-icon"
+                            size={22}
+                          />
+                        ) : (
+                          <FaRegThumbsDown
+                            className="reg-thumbs-down-icon"
+                            size={22}
+                          />
+                        )}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="is-admin-is-suspended-wrapper">
+                    <div>
+                      <ToggleSwitchComponent
+                        id="isAdmin"
+                        name="isAdmin"
+                        checked={selectedUser.isAdmin}
+                        disabled={selectedUser._id === userDetails?._id}
+                        onChange={() =>
+                          handleIsAdmin(selectedUser._id, selectedUser.isAdmin)
+                        }
+                      />
+                      <span className="details-label">is admin: </span>
+                      <span>
+                        {selectedUser.isAdmin ? (
+                          <FaRegThumbsUp
+                            className="reg-thumbs-up-icon"
+                            size={22}
+                          />
+                        ) : (
+                          <FaRegThumbsDown
+                            className="reg-thumbs-down-icon"
+                            size={22}
+                          />
+                        )}
+                      </span>
+                    </div>
+                    <div>
+                      <ToggleSwitchComponent
+                        id="isSuspended"
+                        name="isSuspended"
+                        checked={selectedUser.isSuspended}
+                        disabled={selectedUser._id === userDetails?._id}
+                        onChange={() =>
+                          handleIsSuspended(
+                            selectedUser._id,
+                            selectedUser.isSuspended,
+                          )
+                        }
+                      />
+                      <span className="details-label">is Suspended: </span>
+                      <span>
+                        {selectedUser.isSuspended ? (
+                          <FaRegThumbsUp
+                            className="reg-thumbs-up-icon"
+                            size={22}
+                          />
+                        ) : (
+                          <FaRegThumbsDown
+                            className="reg-thumbs-down-icon"
+                            size={22}
+                          />
+                        )}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <span className="details-label">login Counter: </span>
+                      <span>{selectedUser.loginCounter}</span>
+                    </div>
+                    <div>
+                      <span className="details-label">ip: </span>
+                      <span>
+                        {selectedUser.ipAddress === '::1' ? (
+                          <span>LOCALHOST</span>
+                        ) : (
+                          selectedUser.ipAddress
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="user-details-dates-wrapper">
+                  <div>
+                    <span className="details-label">created: </span>
+                    <span className="small-text">
+                      {moment(selectedUser.updatedAt).diff(
+                        moment(selectedUser.createdAt),
+                        'days',
+                      )}{' '}
+                      days ago.
+                    </span>
+                  </div>
+                  <div>
+                    <span className="details-label">updated: </span>
+                    <span className="small-text">
+                      {moment(selectedUser.updatedAt).fromNow()}
+                    </span>
+                  </div>
+                </div>
+                {selectedUser._id !== userDetails?._id && (
+                  <AdminDeleteUserComponent
+                    id={selectedUser._id}
+                    name={selectedUser.name}
+                  />
+                )}
               </fieldset>
 
               <fieldset className="fieldSet">
-                <legend> {userName}</legend>
-                {userName} has {userMemories?.length} Memories.
+                <legend> {selectedUser.name}</legend>
+                {selectedUser.name} has {userMemories?.length} Memories.
               </fieldset>
             </>
-          ) : null}
+          )}
         </>
       )}
     </>

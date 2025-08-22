@@ -1,70 +1,91 @@
-# Getting Started with Create React App
+# Your Corporate Memory - Client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This is the frontend for the "Your Corporate Memory" application, built with React. It provides a user interface for interacting with the backend API to manage personal and corporate memories. The application uses Redux for state management and React Router for navigation.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+*   **User Authentication:** User registration, login, and logout functionality.
+*   **Google OAuth:** "Login with Google" option.
+*   **Dashboard:** A personalized dashboard for logged-in users to view their profile information, stats, and completed memories.
+*   **Memory Management:**
+    *   Create, view, edit, and delete memories.
+    *   Search and sort memories.
+    *   Mark memories as complete.
+    *   Set due dates and priorities for memories.
+    *   Add and remove tags.
+*   **Image Uploads:** Users can upload and manage their profile picture and images associated with their memories.
+*   **Admin Panel:** An interface for administrators to manage users.
+*   **Responsive Design:** The UI is styled with SCSS and is designed to be responsive.
+*   **Notifications:** Users receive success and error notifications for various actions.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## State Management (Redux)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The application uses Redux to manage its global state. The Redux store is structured as follows:
 
-### `npm test`
+*   **`Store/actions/`**: Contains action creators that dispatch actions to the reducers. These actions handle asynchronous API calls using `redux-thunk`.
+*   **`Store/reducers/`**: Contains reducers that specify how the application's state changes in response to actions. Each feature (e.g., user auth, memories, admin) has its own reducer.
+*   **`Store/constants/`**: Defines constants for all action types to avoid typos and maintain consistency.
+*   **`Store/store.js`**: The main store configuration file where reducers are combined and middleware is applied.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Components and Views
 
-### `npm run build`
+The application is structured into reusable `Components` and page-level `Views`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+*   **`src/Components/`**: Contains individual UI pieces like `ButtonComponent`, `CardComponent`, `InputComponent`, `ModalComponent`, etc.
+*   **`src/Views/`**: Contains the main pages of the application, which are rendered by React Router. These include:
+    *   `HomeView`: The landing page.
+    *   `MemoriesView`: The main page for viewing and managing memories.
+    *   `UserAdminView`: The user's dashboard and admin panel.
+    *   `FormsView`: Handles login and registration.
+    *   And others for About, Contact, etc.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Environment Variables
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The client application is configured using environment variables. Create the following files in the root of the `client` directory:
 
-### `npm run eject`
+*   **`.env.development`**:
+    ```
+    REACT_APP_END_POINT=http://localhost:5000/
+    REACT_APP_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
+    ```
+*   **`.env.production`**:
+    ```
+    REACT_APP_END_POINT=YOUR_PRODUCTION_API_URL
+    REACT_APP_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Setup and Installation
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1.  Navigate to the `client` directory.
+2.  Install the dependencies:
+    ```bash
+    npm install
+    ```
+3.  Create the `.env.development` and `.env.production` files as described above.
+4.  Run the development server:
+    ```bash
+    npm start
+    ```
+    This will open the application at `http://localhost:3000`.
+5.  To create a production build:
+    ```bash
+    npm run build
+    ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Project Structure
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+/client
+├───public/         # Public assets and index.html
+└───src/
+    ├───Assets/     # Images and other static assets
+    ├───Components/ # Reusable React components
+    ├───Css/        # Global SCSS files
+    ├───Store/      # Redux state management (actions, reducers, constants)
+    ├───Utils/      # Utility functions (e.g., regex)
+    ├───Views/      # Page-level components
+    ├───App.js      # Main application component with routing
+    └───index.js    # Application entry point
+```

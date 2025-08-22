@@ -258,10 +258,10 @@ export const registerAction = (formData) => async (dispatch) => {
       return;
     }
 
-    if (!formData.firstName || !formData.lastName) {
+    if (!formData.name) {
       dispatch({
         type: USER_REGISTER_FAILURE,
-        payload: 'First name and last name are required',
+        payload: 'Name is required',
       });
       return;
     }

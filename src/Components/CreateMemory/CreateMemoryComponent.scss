@@ -4,5 +4,12 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+
+    // Add styles for number input here
+    input[type="number"] {
+      &:focus {
+        color: $main-font-colour;
+      }
+    }
   }
 }

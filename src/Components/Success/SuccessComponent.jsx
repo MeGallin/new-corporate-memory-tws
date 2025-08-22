@@ -13,7 +13,7 @@ const SuccessComponent = ({ message, onClose }) => {
   }, [onClose]);
 
   return (
-    <div className="animate__animated animate__bounceInLeft">
+    <div className="success-message-container animate__animated animate__bounceInLeft">
       <span className="success-component">{message}</span>
     </div>
   );

@@ -1,13 +1,15 @@
+// New styles for the container
 @import '../../index.scss';
-.success-component {
-  width: 100%;
-  font-size: $notice-message-size;
+.success-message-container {
+  position: fixed;
+  top: 120px;
+  z-index: 1000;
   background-color: $success;
   color: $main-bg-colour;
+  max-width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 0.2em;
   border: none;
   border-radius: 2px;
-}
-.clear {
-  display: none;
+  overflow: hidden;
 }

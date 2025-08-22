@@ -16,7 +16,7 @@ const INITIAL_FORM_STATE = {
   title: '',
   memory: '',
   dueDate: null,
-  priority: '',
+  priority: '1',
   tag: '',
 };
 

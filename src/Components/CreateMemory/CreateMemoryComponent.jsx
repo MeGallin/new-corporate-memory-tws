@@ -10,32 +10,29 @@ import InputComponent from '../Input/InputComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import ButtonComponent from '../Button/ButtonComponent';
 
+const INITIAL_FORM_STATE = {
+  title: '',
+  memory: '',
+  dueDate: new Date(),
+  priority: '',
+  tag: '',
+};
+
 const CreateMemoryComponent = () => {
   const dispatch = useDispatch();
-  const [startDate] = useState(new Date()); //Set initial date here to show time!
-  const [formData, setFormData] = useState({
-    title: '',
-    memory: '',
-    dueDate: startDate,
-    priority: '',
-    tag: '',
-  });
+  const [formData, setFormData] = useState(INITIAL_FORM_STATE);
   const { title, memory, dueDate, priority, tag } = formData;
+
+  const { loading } = useSelector((state) => state.memoryCreate);
 
   const handleCreateMemory = (e) => {
     e.preventDefault();
-    //Dispatch Action
     dispatch(memoryCreateAction(formData));
-    setFormData({
-      title: '',
-      memory: '',
-      priority: '',
-      tag: '',
-    });
+    setFormData(INITIAL_FORM_STATE); // Reset to initial state
   };
 
   const handleOnChangeDate = (date) => {
-    setFormData({ title, memory, dueDate: date, priority, tag });
+    setFormData((prev) => ({ ...prev, dueDate: date }));
   };
 
   const handleOnchange = (e) => {
@@ -45,8 +42,7 @@ const CreateMemoryComponent = () => {
     }));
   };
 
-  const memoryCreate = useSelector((state) => state.memoryCreate);
-  const { loading } = memoryCreate;
+  const isFormInvalid = !title || !memory || memory.length < 3;
 
   return (
     <div className="create-memory-wrapper">
@@ -113,11 +109,9 @@ const CreateMemoryComponent = () => {
 
               <ButtonComponent
                 type="submit"
-                text={
-                  !title || !memory || memory.length < 3 ? 'DISABLED' : 'CREATE'
-                }
+                text={isFormInvalid ? 'DISABLED' : 'CREATE'}
                 variant="dark"
-                disabled={!title || !memory || memory.length < 3}
+                disabled={isFormInvalid}
               />
             </form>
           </div>

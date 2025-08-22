@@ -2,129 +2,37 @@ import React from 'react';
 import './ButtonComponent.scss';
 import PropTypes from 'prop-types';
 
-const ButtonComponent = ({ id, type, text, onClick, variant, disabled }) => {
-  switch (variant) {
-    case 'primary':
-      return (
-        <button
-          className={`${variant}`}
-          id={id}
-          type={type}
-          text={text}
-          onClick={onClick}
-          disabled={disabled}
-        >
-          {text}
-        </button>
-      );
-    case 'secondary':
-      return (
-        <button
-          className={`${variant}`}
-          id={id}
-          type={type}
-          text={text}
-          onClick={onClick}
-          disabled={disabled}
-        >
-          {text}
-        </button>
-      );
-    case 'success':
-      return (
-        <button
-          className={`${variant}`}
-          id={id}
-          type={type}
-          text={text}
-          onClick={onClick}
-          disabled={disabled}
-        >
-          {text}
-        </button>
-      );
-    case 'danger':
-      return (
-        <button
-          className={`${variant}`}
-          id={id}
-          type={type}
-          text={text}
-          onClick={onClick}
-          disabled={disabled}
-        >
-          {text}
-        </button>
-      );
-    case 'warning':
-      return (
-        <button
-          className={`${variant}`}
-          id={id}
-          type={type}
-          text={text}
-          onClick={onClick}
-          disabled={disabled}
-        >
-          {text}
-        </button>
-      );
-    case 'info':
-      return (
-        <button
-          className={`${variant}`}
-          id={id}
-          type={type}
-          text={text}
-          onClick={onClick}
-          disabled={disabled}
-        >
-          {text}
-        </button>
-      );
-    case 'light':
-      return (
-        <button
-          className={`${variant}`}
-          id={id}
-          type={type}
-          text={text}
-          onClick={onClick}
-          disabled={disabled}
-        >
-          {text}
-        </button>
-      );
-    case 'dark':
-      return (
-        <button
-          className={`${variant}`}
-          id={id}
-          type={type}
-          text={text}
-          onClick={onClick}
-          disabled={disabled}
-        >
-          {text}
-        </button>
-      );
+const ButtonComponent = ({ id, type, text, onClick, variant, disabled, className }) => {
+  const buttonClasses = [variant, className].filter(Boolean).join(' ');
 
-    default:
-      break;
-  }
+  return (
+    <button
+      className={buttonClasses}
+      id={id}
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {text}
+    </button>
+  );
 };
 
 ButtonComponent.defaultProps = {
-  disabled: true,
+  disabled: false,
+  variant: 'primary',
+  className: '',
+  type: 'button',
 };
 
 ButtonComponent.propTypes = {
   id: PropTypes.string,
   type: PropTypes.string,
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   className: PropTypes.string,
   variant: PropTypes.string,
   onClick: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 export default ButtonComponent;

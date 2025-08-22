@@ -166,20 +166,7 @@ const Memories = () => {
                       : 'memories-card-wrapper'
                   }
                 >
-                  <CardComponent
-                    id={memory._id}
-                    title={memory.title}
-                    dueDate={memory.dueDate}
-                    memory={memory.memory}
-                    voice={memory.memory}
-                    imgSrc={memory.memoryImage}
-                    setDueDate={memory.setDueDate}
-                    isComplete={memory.isComplete}
-                    priority={memory.priority}
-                    tag={memory.tag}
-                    created={memory.createdAt}
-                    updated={memory.updatedAt}
-                  />
+                  <CardComponent memory={memory} />
                   <ModalComponent
                     className="edit-btn"
                     openButtonTitle="EDIT"

@@ -1,7 +1,9 @@
 @import '../../index.scss';
 
 .card-wrapper {
-  width: 460px;
+  width: 100%;
+  max-width: 460px;
+  min-width: 300px;
 
   .card-header {
     display: flex;
@@ -17,7 +19,6 @@
     }
   }
   .card-body {
-    height: 88%;
     .memories-priority-wrapper {
       display: flex;
       justify-content: space-between;
@@ -31,8 +32,4 @@
   }
 }
 
-@media (max-width: 812px) {
-  .card-wrapper {
-    width: auto;
-  }
-}
+

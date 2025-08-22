@@ -21,6 +21,8 @@ const ContactComponent = () => {
   });
   const { name, email, message } = formData;
 
+  const isFormInvalid = !nameRegEx.test(name) || !emailRegEx.test(email) || message.length <= 8;
+
   const handleOnChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -106,19 +108,9 @@ const ContactComponent = () => {
                 />
                 <ButtonComponent
                   type="submit"
-                  text={
-                    !emailRegEx.test(email) ||
-                    !nameRegEx.test(name) ||
-                    message.length <= 8
-                      ? 'Disabled'
-                      : 'Submit your Enquiry'
-                  }
+                  text={isFormInvalid ? 'Disabled' : 'Submit your Enquiry'}
                   variant="dark"
-                  disabled={
-                    !emailRegEx.test(email) ||
-                    !nameRegEx.test(name) ||
-                    message.length <= 8
-                  }
+                  disabled={isFormInvalid}
                 />
               </form>
             </div>

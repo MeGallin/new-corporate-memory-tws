@@ -13,7 +13,7 @@ const TextAreaComponent = ({
 }) => {
   return (
     <div className="input-field-wrapper">
-      {label && <label htmlFor="input-field">{label}</label>}
+      {label && <label htmlFor={id}>{label}</label>}
       <textarea
         id={id}
         name={name}
@@ -28,16 +28,22 @@ const TextAreaComponent = ({
 };
 
 TextAreaComponent.defaultProps = {
-  type: PropTypes.string,
+  id: '',
+  placeholder: '',
+  label: '',
+  error: null,
+  className: '',
 };
 
 TextAreaComponent.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
-  value: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  label: PropTypes.string,
   error: PropTypes.string,
-  onChange: PropTypes.func,
+  className: PropTypes.string,
 };
 
 export default TextAreaComponent;

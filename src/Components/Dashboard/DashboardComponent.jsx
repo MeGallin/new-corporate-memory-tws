@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './DashboardComponent.scss';
 
 import { memoriesGetAction } from '../../Store/actions/memoriesActions';
+import { USER_EDIT_DETAILS_RESET } from '../../Store/constants/userConstants';
 
 import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
 import moment from 'moment';
@@ -40,7 +41,10 @@ const DashboardComponent = () => {
     <>
       {error && <ErrorComponent error={error} />}
       {success && (
-        <SuccessComponent message={'Your details have been successfully updated.'} />
+        <SuccessComponent
+          message={'Your details have been successfully updated.'}
+          onClose={() => dispatch({ type: USER_EDIT_DETAILS_RESET })}
+        />
       )}
 
       {loading ? (

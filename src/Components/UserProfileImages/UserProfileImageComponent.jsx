@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import './UserProfileImageComponent.scss';
 
 import {
@@ -15,10 +16,12 @@ import SpinnerComponent from '../Spinner/SpinnerComponent';
 const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
   const dispatch = useDispatch();
 
-  const userProfileImageUpload = useSelector(
+  const { loading: userProfileImageUploading } = useSelector(
     (state) => state.userProfileImageUpload,
   );
-  const { loading: userProfileImageUploading } = userProfileImageUpload;
+  const { loading: userProfileDeleteImageLoading } = useSelector(
+    (state) => state.userProfileImageDelete,
+  );
 
   const [showUploadInput, setShowUploadInput] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -31,120 +34,130 @@ const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
       setPreviewImage(reader.result);
     };
   };
+
   const uploadFileHandler = (e) => {
     const imageFile = e.target.files[0];
-    setPreviewImageFile(imageFile);
-    previewFile(imageFile);
+    if (imageFile) {
+      setPreviewImageFile(imageFile);
+      previewFile(imageFile);
+    }
   };
-  const handelCancelUpload = () => {
-    document.querySelectorAll('[name="userProfileImage"]').value = '';
-    // document.getElementById('userProfileImage').value = null;
+
+  const handleCancelUpload = () => {
     setPreviewImage('');
+    setPreviewImageFile('');
     setShowUploadInput(false);
   };
+
   const handleImageUpdate = (e) => {
     e.preventDefault();
     const formImageData = new FormData();
     formImageData.append('userProfileImage', previewImageFile);
-    // Dispatch Profile image upload Action
     dispatch(userProfileImageUploadAction(id, formImageData));
-
-    setPreviewImage('');
-    setShowUploadInput(false);
+    handleCancelUpload(); // Reset state after upload
   };
-  const handleImageDelete = (id) => {
-    if (window.confirm(`Are you sure you want to delete this image ${id}`)) {
-      // Dispatch delete Image Action
+
+  const handleImageDelete = () => {
+    if (window.confirm(`Are you sure you want to delete this image?`)) {
       dispatch(userProfileImageDeleteAction(id));
     }
   };
 
-  const userProfileImageDelete = useSelector(
-    (state) => state.userProfileImageDelete,
+  const renderImagePreview = () => (
+    <form onSubmit={handleImageUpdate}>
+      <img
+        width="214"
+        height="214"
+        src={previewImage}
+        alt="New profile preview"
+        className="preview-image"
+      />
+      <ButtonComponent
+        type="submit"
+        text="Yes, like it!"
+        variant="success"
+        disabled={false}
+      />
+      <ButtonComponent
+        onClick={handleCancelUpload}
+        type="button"
+        text="No, Don't like it!"
+        variant="danger"
+        disabled={false}
+      />
+    </form>
   );
-  const { loading: userProfileDeleteImageLoading } = userProfileImageDelete;
+
+  const renderExistingImage = () => (
+    <div className="image-wrapper">
+      <img
+        width="214"
+        height="214"
+        src={imgSrc}
+        alt={altText}
+        className="user-profile-image"
+      />
+      <div className="image-icon-wrapper">
+        <FaTrash
+          onClick={handleImageDelete}
+          className="trash-icon"
+          size={22}
+          title="Delete this Image"
+        />
+        <FaPencilAlt
+          onClick={() => setShowUploadInput(!showUploadInput)}
+          className="pencil-icon"
+          size={22}
+          title="EDIT this Image"
+        />
+      </div>
+    </div>
+  );
+
+  const renderUploadState = () => (
+    <div className="image-wrapper">
+      <FaUpload
+        onClick={() => setShowUploadInput((prev) => !prev)}
+        size={22}
+        title="Upload an Image"
+        className="upload-icon"
+      />
+    </div>
+  );
+
+  if (userProfileImageUploading || userProfileDeleteImageLoading) {
+    return <SpinnerComponent />;
+  }
 
   return (
     <div className="user-profile-image-wrapper">
       {previewImage ? (
-        <>
-          {userProfileImageUploading || userProfileDeleteImageLoading ? (
-            <SpinnerComponent />
-          ) : (
-            <form onSubmit={handleImageUpdate}>
-              <img
-                width="214"
-                height="214"
-                src={previewImage}
-                alt="profile preview"
-                className="preview-image"
-              />
-              <ButtonComponent
-                type="submit"
-                text="Yes, like it!"
-                variant="success"
-                disabled={false}
-              />
-              <ButtonComponent
-                onClick={handelCancelUpload}
-                type="button"
-                text="No, Don't like it!"
-                variant="danger"
-                disabled={false}
-              />
-            </form>
-          )}
-        </>
-      ) : null}
+        renderImagePreview()
+      ) : imgSrc ? (
+        renderExistingImage()
+      ) : (
+        renderUploadState()
+      )}
 
-      <div className="image-wrapper">
-        {imgSrc && !previewImage ? (
-          <>
-            <img
-              width="214"
-              height="214"
-              src={imgSrc}
-              alt={altText}
-              className="user-profile-image"
-            />
-            <div className="image-icon-wrapper">
-              <FaTrash
-                onClick={() => handleImageDelete(id)}
-                className="trash-icon"
-                size={22}
-                title="Delete this Image"
-              />
-              <FaPencilAlt
-                onClick={() => setShowUploadInput(!showUploadInput)}
-                className="pencil-icon"
-                size={22}
-                title="EDIT this Image"
-              />
-            </div>
-          </>
-        ) : !previewImage ? (
-          <FaUpload
-            onClick={() => setShowUploadInput((prev) => !prev)}
-            size={22}
-            title="Upload an Image"
-            className="upload-icon"
-          />
-        ) : null}
-      </div>
-
-      {showUploadInput && !previewImage ? (
+      {showUploadInput && !previewImage && (
         <div className="user-profile-image-selector">
           <InputComponent
-            id="userProfileImage"
+            id={`userProfileImage-${id}`}
             label={imgSrc ? 'Change Image' : 'Add an Image'}
             type="file"
             name="userProfileImage"
             onChange={uploadFileHandler}
           />
         </div>
-      ) : null}
+      )}
     </div>
   );
+};
+
+UserProfileImageComponent.propTypes = {
+  id: PropTypes.string.isRequired,
+  imgSrc: PropTypes.string,
+  altText: PropTypes.string.isRequired,
 };
 
 export default UserProfileImageComponent;

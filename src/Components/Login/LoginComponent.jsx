@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {  loginAction,  googleUserLoginAction,} from '../../Store/actions/userActions';
+import {
+  loginAction,
+  googleUserLoginAction,
+} from '../../Store/actions/userActions';
 
 import { emailRegEx, passwordRegEx } from '../../Utils/regEx';
 
@@ -13,11 +16,16 @@ import SuccessComponent from '../Success/SuccessComponent';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import './LoginComponent.scss';
 
+import {
+  USER_LOGIN_RESET,
+  GOOGLE_USER_LOGIN_RESET,
+} from '../../Store/constants/userConstants';
+
 const LoginComponent = () => {
   const dispatch = useDispatch();
 
   const { loading, error, success } = useSelector((state) => state.userLogin);
-  const { loading: googleLoading, error: googleError } = useSelector(
+  const { loading: googleLoading, error: googleError, success: googleSuccessState } = useSelector(
     (state) => state.googleUserLogin,
   );
 
@@ -55,7 +63,16 @@ const LoginComponent = () => {
       {error && <ErrorComponent error={error} />}
       {googleError && <ErrorComponent error={googleError} />}
       {success && (
-        <SuccessComponent message={'You have successfully logged in.'} />
+        <SuccessComponent
+          message={'You have successfully logged in.'}
+          onClose={() => dispatch({ type: USER_LOGIN_RESET })}
+        />
+      )}
+      {googleSuccessState && (
+        <SuccessComponent
+          message="You have successfully logged in through GOOGLE"
+          onClose={() => dispatch({ type: GOOGLE_USER_LOGIN_RESET })}
+        />
       )}
 
       {loading ? (

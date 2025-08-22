@@ -5,6 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { passwordRegEx } from '../../Utils/regEx';
 
 import { userResetPasswordAction } from '../../Store/actions/userActions';
+import { USER_RESET_PASSWORD_RESET } from '../../Store/constants/userConstants';
 
 import InputComponent from '../Input/InputComponent';
 import ButtonComponent from '../Button/ButtonComponent';
@@ -22,10 +23,10 @@ const PasswordResetLinkComponent = () => {
     setPassword(e.target.value);
   };
 
+  const isPasswordInvalid = !passwordRegEx.test(password);
+
   const handlePasswordResetSubmit = (e) => {
     e.preventDefault();
-    //Dispatch action
-
     dispatch(
       userResetPasswordAction({
         password: password,
@@ -44,7 +45,10 @@ const PasswordResetLinkComponent = () => {
     <>
       {error ? <ErrorComponent error={error} /> : null}
       {success ? (
-        <SuccessComponent message="Password was successfully changed. You will be routed shortly" />
+        <SuccessComponent
+          message="Password was successfully changed. You will be routed shortly"
+          onClose={() => dispatch({ type: USER_RESET_PASSWORD_RESET })}
+        />
       ) : null}
       {loading ? (
         <SpinnerComponent />
@@ -59,12 +63,10 @@ const PasswordResetLinkComponent = () => {
                 name="password"
                 value={password}
                 required
-                className={
-                  !passwordRegEx.test(password) ? 'invalid' : 'entered'
-                }
+                className={isPasswordInvalid ? 'invalid' : 'entered'}
                 error={
-                  !passwordRegEx.test(password) && password.length !== 0
-                    ? `Password must contain at least l Capital letter, 1 number and 1 special character.`
+                  isPasswordInvalid && password.length !== 0
+                    ? `Password must contain at least 1 Capital letter, 1 number and 1 special character.`
                     : null
                 }
                 onChange={handleOnChange}
@@ -72,9 +74,9 @@ const PasswordResetLinkComponent = () => {
 
               <ButtonComponent
                 type="submit"
-                text="submit"
+                text={isPasswordInvalid ? 'Disabled' : 'Submit'}
                 variant="primary"
-                disabled={password.length <= 5}
+                disabled={isPasswordInvalid}
               />
             </form>
           </div>

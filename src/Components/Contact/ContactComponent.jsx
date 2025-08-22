@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { nameRegEx, emailRegEx } from '../../Utils/regEx';
 
 import { contactFormAction } from '../../Store/actions/ContactFormActions';
+import { CONTACT_FORM_RESET } from '../../Store/constants/contactFormConstants';
 
 import ButtonComponent from '../Button/ButtonComponent';
 import InputComponent from '../Input/InputComponent';
@@ -50,6 +51,7 @@ const ContactComponent = () => {
       {success ? (
         <SuccessComponent
           message={'Your enquiry have been successfully submitted.'}
+          onClose={() => dispatch({ type: CONTACT_FORM_RESET })}
         />
       ) : null}
 

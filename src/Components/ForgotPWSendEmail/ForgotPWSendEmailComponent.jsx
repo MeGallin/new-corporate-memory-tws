@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { emailRegEx } from '../../Utils/regEx';
 
 import { userForgotPWSendEmailAction } from '../../Store/actions/userActions';
+import { USER_FORGOT_PW_SEND_EMAIL_RESET } from '../../Store/constants/userConstants';
 
 import InputComponent from '../Input/InputComponent';
 import ButtonComponent from '../Button/ButtonComponent';
@@ -34,7 +35,10 @@ const ForgotPWSendEmailComponent = () => {
     <>
       {error ? <ErrorComponent error={error} /> : null}
       {success ? (
-        <SuccessComponent message="Your request was successfully. Please check your email!" />
+        <SuccessComponent
+          message="Your request was successfully. Please check your email!"
+          onClose={() => dispatch({ type: USER_FORGOT_PW_SEND_EMAIL_RESET })}
+        />
       ) : null}
       {loading ? (
         <SpinnerComponent />

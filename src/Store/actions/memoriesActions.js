@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { SORTED_MEMORIES_SUCCESS } from '../constants/sortedMemories';
+
 import {
   MEMORIES_CREATE_FAILURE,
   MEMORIES_CREATE_REQUEST,
@@ -155,6 +157,7 @@ export const memoriesGetAction = () => async (dispatch, getState) => {
     const { data } = await axios.get(buildMemoriesApiUrl('memories'), config);
 
     dispatch({ type: MEMORIES_GET_SUCCESS, payload: data });
+    dispatch({ type: SORTED_MEMORIES_SUCCESS, payload: data });
   } catch (error) {
     // Handle 401/403 errors - authentication/authorization issues
     if (error.response?.status === 401 || error.response?.status === 403) {

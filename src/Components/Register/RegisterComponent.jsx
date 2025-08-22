@@ -17,7 +17,6 @@ const RegisterComponent = () => {
   const userRegistration = useSelector((state) => state.userRegistration);
   const { loading, error, success } = userRegistration;
 
-  const [pwMessage, setPwMessage] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -26,23 +25,6 @@ const RegisterComponent = () => {
   });
   const { name, email, password, confirmPassword } = formData;
 
-  const handleRegistrationSubmit = (e) => {
-    e.preventDefault();
-    //Check that passwords match
-    if (password === confirmPassword) {
-      dispatch(registerAction(formData));
-      setPwMessage(true);
-      setFormData({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-      });
-    } else {
-      setPwMessage(false);
-    }
-  };
-
   const handleOnchange = (e) => {
     setFormData((previousState) => ({
       ...previousState,
@@ -50,99 +32,94 @@ const RegisterComponent = () => {
     }));
   };
 
+  const isNameInvalid = !nameRegEx.test(name) && name.length > 0;
+  const isEmailInvalid = !emailRegEx.test(email) && email.length > 0;
+  const isPasswordInvalid = !passwordRegEx.test(password) && password.length > 0;
+  const isConfirmPasswordInvalid = password !== confirmPassword && confirmPassword.length > 0;
+
+  const isFormInvalid =
+    !nameRegEx.test(name) ||
+    !emailRegEx.test(email) ||
+    !passwordRegEx.test(password) ||
+    password !== confirmPassword;
+
+  const handleRegistrationSubmit = (e) => {
+    e.preventDefault();
+    if (!isFormInvalid) {
+      dispatch(registerAction(formData));
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+      });
+    }
+  };
+
   return (
     <div>
-      {error ? <ErrorComponent error={error} /> : null}
-      {success ? (
-        <SuccessComponent message={'You have successfully registered.'} />
-      ) : null}
+      {error && <ErrorComponent error={error} />}
+      {success && <SuccessComponent message={'You have successfully registered.'} />}
       {loading ? (
         <SpinnerComponent />
       ) : (
         <fieldset className="fieldSet">
           <legend>Registration</legend>
-          {!pwMessage ? (
-            <ErrorComponent error="Seems like your password does not match" />
-          ) : null}
           <form onSubmit={handleRegistrationSubmit}>
             <InputComponent
+              id="register-name"
               label="Name"
               value={name}
               type="text"
               name="name"
               required
-              className={!nameRegEx.test(name) ? 'invalid' : 'entered'}
-              error={
-                !nameRegEx.test(name) && name.length !== 0
-                  ? `Name field must contain a first name and surname both of which must start with a capital letter.`
-                  : null
-              }
+              className={isNameInvalid ? 'invalid' : (name.length > 0 ? 'entered' : '')}
+              error={isNameInvalid ? `Name field must contain a first name and surname both of which must start with a capital letter.` : null}
               onChange={handleOnchange}
             />
 
             <InputComponent
+              id="register-email"
               label="Email"
               type="email"
               name="email"
               value={email}
-              className={!emailRegEx.test(email) ? 'invalid' : 'entered'}
-              error={
-                !emailRegEx.test(email) && email.length !== 0
-                  ? `Invalid email address.`
-                  : null
-              }
+              required
+              className={isEmailInvalid ? 'invalid' : (email.length > 0 ? 'entered' : '')}
+              error={isEmailInvalid ? `Invalid email address.` : null}
               onChange={handleOnchange}
             />
 
             <InputComponent
+              id="register-password"
               label="Password"
               type="password"
               name="password"
               value={password}
               required
-              className={!passwordRegEx.test(password) ? 'invalid' : 'entered'}
-              error={
-                !passwordRegEx.test(password) && password.length !== 0
-                  ? `Password must contain at least l Capital letter, 1 number and 1 special character.`
-                  : null
-              }
+              className={isPasswordInvalid ? 'invalid' : (password.length > 0 ? 'entered' : '')}
+              error={isPasswordInvalid ? `Password must contain at least 1 Capital letter, 1 number and 1 special character.` : null}
               onChange={handleOnchange}
             />
 
             <InputComponent
+              id="register-confirm-password"
               label="Confirm Password"
               type="password"
               name="confirmPassword"
               value={confirmPassword}
               required
-              className={
-                !passwordRegEx.test(confirmPassword) ? 'invalid' : 'entered'
-              }
-              error={
-                !passwordRegEx.test(confirmPassword) &&
-                confirmPassword.length !== 0
-                  ? `Password must contain at least l Capital letter, 1 number and 1 special character.`
-                  : null
-              }
+              className={isConfirmPasswordInvalid ? 'invalid' : (confirmPassword.length > 0 ? 'entered' : '')}
+              error={isConfirmPasswordInvalid ? `Passwords do not match.` : null}
               onChange={handleOnchange}
             />
 
             <div>
               <ButtonComponent
                 type="submit"
-                text={
-                  !emailRegEx.test(email) ||
-                  !nameRegEx.test(name) ||
-                  password.length <= 5
-                    ? 'Disabled'
-                    : 'Register'
-                }
+                text={isFormInvalid ? 'Disabled' : 'Register'}
                 variant="dark"
-                disabled={
-                  !emailRegEx.test(email) ||
-                  !nameRegEx.test(name) ||
-                  password.length <= 5
-                }
+                disabled={isFormInvalid}
               />
             </div>
           </form>

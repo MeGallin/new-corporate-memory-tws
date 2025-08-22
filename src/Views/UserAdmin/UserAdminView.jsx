@@ -1,9 +1,16 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DashboardComponent from '../../Components/Dashboard/DashboardComponent';
 import ErrorComponent from '../../Components/Error/ErrorComponent';
 import SuccessComponent from '../../Components/Success/SuccessComponent';
 
+import {
+  ADMIN_DELETE_ALL_USER_DATA_RESET,
+  ADMIN_IS_ADMIN_RESET,
+  ADMIN_IS_SUSPENDED_RESET,
+} from '../../Store/constants/adminConstants';
+
 const UserAdminView = () => {
+  const dispatch = useDispatch();
   const adminIsAdmin = useSelector((state) => state.adminIsAdmin);
   const { success: isAdminSuccess, error: isAdminError } = adminIsAdmin;
   const adminIsSuspended = useSelector((state) => state.adminIsSuspended);
@@ -17,15 +24,15 @@ const UserAdminView = () => {
       {isAdminError ? <ErrorComponent error={isAdminError} /> : null}
       {isAdminSuccess ? (
         <SuccessComponent
-          type={'ADMIN_IS_ADMIN_SUCCESS'}
           message={'User admin status has been updated.'}
+          onClose={() => dispatch({ type: ADMIN_IS_ADMIN_RESET })}
         />
       ) : null}
       {isSuspendedError ? <ErrorComponent error={isSuspendedError} /> : null}
       {isSuspendedSuccess ? (
         <SuccessComponent
-          type={'ADMIN_IS_ADMIN_SUCCESS'}
           message={'User Suspension status has been updated.'}
+          onClose={() => dispatch({ type: ADMIN_IS_SUSPENDED_RESET })}
         />
       ) : null}
       {deleteAllUserDataError ? (
@@ -33,10 +40,10 @@ const UserAdminView = () => {
       ) : null}
       {deleteAllUserDataSuccess ? (
         <SuccessComponent
-          type={'ADMIN_DELETE_ALL_USER_DATA_SUCCESS'}
           message={
             'User account and all their memories have been successfully deleted.'
           }
+          onClose={() => dispatch({ type: ADMIN_DELETE_ALL_USER_DATA_RESET })}
         />
       ) : null}
       <DashboardComponent />

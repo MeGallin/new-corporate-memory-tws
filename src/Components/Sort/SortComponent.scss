@@ -1,0 +1,13 @@
+@import '../../index.scss';
+
+.sort-component-wrapper {
+  border: 2px solid lightGrey;
+  border-radius: 4px;
+  background-color: white;
+  padding: 4px 4px;
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.2em;
+}

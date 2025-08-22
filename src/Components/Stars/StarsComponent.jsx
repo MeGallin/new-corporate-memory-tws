@@ -1,21 +1,23 @@
 import './StarsComponent.scss';
 import { FaStar } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 
 const StarsComponent = ({ priority }) => {
-  const numberOfStars = () => {
-    const numItems = priority;
-    const array = [];
-    for (let i = 0; i < numItems; i++) {
-      array.push(
+  const numStars = Math.max(0, Number(priority) || 0);
+
+  return (
+    <>
+      {Array.from({ length: numStars }, (_, i) => (
         <span key={i} className="start-component-wrapper">
           <FaStar />
-        </span>,
-      );
-    }
-    return array;
-  };
+        </span>
+      ))}
+    </>
+  );
+};
 
-  return numberOfStars();
+StarsComponent.propTypes = {
+  priority: PropTypes.number,
 };
 
 export default StarsComponent;

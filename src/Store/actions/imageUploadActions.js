@@ -41,11 +41,7 @@ export const userProfileImageUploadAction =
           formData,
           config,
         );
-        dispatch({
-          type: USER_PROFILE_IMAGE_UPLOAD_SUCCESS,
-          payload: data,
-        });
-        dispatch(userInfoDetailsAction());
+        dispatch({ type: USER_PROFILE_IMAGE_UPLOAD_SUCCESS, payload: data });
       }
 
       if (getState().googleUserLogin.userInfo) {
@@ -65,11 +61,7 @@ export const userProfileImageUploadAction =
           formData,
           config,
         );
-        dispatch({
-          type: USER_PROFILE_IMAGE_UPLOAD_SUCCESS,
-          payload: data,
-        });
-        dispatch(userInfoDetailsAction());
+        dispatch({ type: USER_PROFILE_IMAGE_UPLOAD_SUCCESS, payload: data });
       }
     } catch (error) {
       dispatch({

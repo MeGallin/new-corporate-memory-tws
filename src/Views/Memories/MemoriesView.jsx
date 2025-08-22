@@ -1,8 +1,24 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ErrorComponent from '../../Components/Error/ErrorComponent';
 import MemoriesComponent from '../../Components/Memories/MemoriesComponent';
 import SuccessComponent from '../../Components/Success/SuccessComponent';
+
+import {
+  MEMORIES_CREATE_RESET,
+  MEMORIES_EDIT_RESET,
+  MEMORIES_DELETE_RESET,
+  MEMORIES_DELETE_TAG_RESET,
+  MEMORIES_SET_DUE_DATE_RESET,
+  MEMORIES_IS_COMPETE_RESET,
+} from '../../Store/constants/memoriesConstants';
+
+import {
+  MEMORY_IMAGE_DELETE_RESET,
+  MEMORY_IMAGE_UPLOAD_RESET,
+} from '../../Store/constants/imageUploadConstants';
+
 const MemoriesView = () => {
+  const dispatch = useDispatch();
   const memoryCreate = useSelector((state) => state.memoryCreate);
   const { success: CreateSuccess, error: CreateError } = memoryCreate;
   const memoryEdit = useSelector((state) => state.memoryEdit);
@@ -29,54 +45,54 @@ const MemoriesView = () => {
       {setDueDateError ? <ErrorComponent error={setDueDateError} /> : null}
       {setDueDateSuccess ? (
         <SuccessComponent
-          type={'MEMORIES_SET_DUE_DATE_SUCCESS'}
           message={'Memory Due Date has been changed.'}
+          onClose={() => dispatch({ type: MEMORIES_SET_DUE_DATE_RESET })}
         />
       ) : null}
 
       {deleteTagError ? <ErrorComponent error={deleteTagError} /> : null}
       {deleteTagSuccess ? (
         <SuccessComponent
-          type={'MEMORIES_DELETE_TAG_SUCCESS'}
           message={'TAG has been successfully Deleted.'}
+          onClose={() => dispatch({ type: MEMORIES_DELETE_TAG_RESET })}
         />
       ) : null}
 
       {isCompleteError ? <ErrorComponent error={isCompleteError} /> : null}
       {isCompleteSuccess ? (
         <SuccessComponent
-          type={'MEMORIES_IS_COMPETE_SUCCESS'}
           message={'Memory has been MARKED as Complete.'}
+          onClose={() => dispatch({ type: MEMORIES_IS_COMPETE_RESET })}
         />
       ) : null}
 
       {CreateError ? <ErrorComponent error={CreateError} /> : null}
       {CreateSuccess ? (
         <SuccessComponent
-          type={'MEMORIES_CREATE_SUCCESS'}
           message={'Memory has been successfully created.'}
+          onClose={() => dispatch({ type: MEMORIES_CREATE_RESET })}
         />
       ) : null}
 
       {editError ? <ErrorComponent error={editError} /> : null}
       {editSuccess ? (
         <SuccessComponent
-          type={'MEMORIES_EDIT_SUCCESS'}
           message={'Memory has been successfully updated.'}
+          onClose={() => dispatch({ type: MEMORIES_EDIT_RESET })}
         />
       ) : null}
       {deleteError ? <ErrorComponent error={deleteError} /> : null}
       {deleteSuccess ? (
         <SuccessComponent
-          type={'MEMORIES_DELETE_SUCCESS'}
           message={'Memory has been successfully Deleted.'}
+          onClose={() => dispatch({ type: MEMORIES_DELETE_RESET })}
         />
       ) : null}
       {memoryImageError ? <ErrorComponent error={memoryImageError} /> : null}
       {memoryImageSuccess ? (
         <SuccessComponent
-          type={'MEMORY_IMAGE_UPLOAD_SUCCESS'}
           message={'You have successfully uploaded your image.'}
+          onClose={() => dispatch({ type: MEMORY_IMAGE_UPLOAD_RESET })}
         />
       ) : null}
       {memoryDeleteImageError ? (
@@ -84,8 +100,8 @@ const MemoriesView = () => {
       ) : null}
       {memoryDeleteImageSuccess ? (
         <SuccessComponent
-          type={'MEMORY_IMAGE_DELETE_SUCCESS'}
           message={'You have successfully Deleted your image.'}
+          onClose={() => dispatch({ type: MEMORY_IMAGE_DELETE_RESET })}
         />
       ) : null}
 

@@ -17,8 +17,8 @@
   animation-name: expand-modal;
   animation-duration: 0.8s;
   button.modal-close-button {
-    background-color: $main-font-colour !important;
-    color: $main-bg-colour !important;
+    background-color: $main-font-colour;
+    color: $main-bg-colour;
   }
 }
 @keyframes expand-modal {
@@ -44,8 +44,8 @@
 /* Modal styling END */
 
 .modal-btn {
-  background-color: $success !important;
-  color: $main-bg-colour !important;
+  background-color: $success;
+  color: $main-bg-colour;
   display: flex;
   align-items: baseline;
   opacity: 0.6;

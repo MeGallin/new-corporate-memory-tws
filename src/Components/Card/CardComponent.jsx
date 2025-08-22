@@ -4,11 +4,18 @@ import PropTypes from 'prop-types';
 import { FaBullhorn } from 'react-icons/fa';
 import moment from 'moment';
 
-import {  memorySetDueDateAction,  memoryIsCompleteAction,} from '../../Store/actions/memoriesActions';
+import {
+  memorySetDueDateAction,
+  memoryIsCompleteAction,
+} from '../../Store/actions/memoriesActions';
 
 import StarsComponent from '../Stars/StarsComponent';
 import { TagsComponent } from '../Tags/TagsComponent';
 import MemoriesImagesComponent from '../MemoriesImages/MemoriesImagesComponent';
+
+import ModalComponent from '../Modal/ModalComponent';
+import EditMemoryComponent from '../EditMemory/EditMemoryComponent';
+import DeleteMemoryComponent from '../DeleteMemory/DeleteMemoryComponent';
 
 const CardComponent = ({ memory }) => {
   const {
@@ -72,15 +79,19 @@ const CardComponent = ({ memory }) => {
           <StarsComponent priority={priority} />
 
           <div className="memories-priority-wrapper small-text">
-            <label>
-              Set Due Date:
-              <input
-                type="checkbox"
-                name="setDueDate"
-                checked={setDueDate}
-                onChange={handleSetDueDate}
-              />
-            </label>
+            {setDueDate ? (
+              <label>
+                Set Due Date:
+                <input
+                  type="checkbox"
+                  name="setDueDate"
+                  checked={setDueDate}
+                  onChange={handleSetDueDate}
+                />
+              </label>
+            ) : (
+              <p className="small-text">Edit memory to set a due date.</p>
+            )}
 
             <label>
               <input
@@ -96,6 +107,18 @@ const CardComponent = ({ memory }) => {
         <div className="card-footer">
           <div>Created: {moment(createdAt).format('Do MMM YYYY')}</div>
           <div>Updated: {moment(updatedAt).format('Do MMM YYYY')}</div>
+        </div>
+
+        <div className="card-buttons">
+          <ModalComponent
+            className="edit-btn"
+            openButtonTitle="EDIT"
+            closeButtonTitle="X"
+            variant={'warning'}
+          >
+            <EditMemoryComponent updateMemory={memory} />
+          </ModalComponent>
+          <DeleteMemoryComponent id={memory._id} />
         </div>
       </div>
     </div>
@@ -119,4 +142,3 @@ CardComponent.propTypes = {
 };
 
 export default CardComponent;
-

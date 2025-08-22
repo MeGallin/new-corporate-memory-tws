@@ -19,21 +19,25 @@ const EditMemoryComponent = ({ updateMemory }) => {
     id: '',
     title: '',
     memory: '',
-    dueDate: new Date(),
+    dueDate: null,
     priority: '',
     tag: '',
   });
 
+  const [addDueDate, setAddDueDate] = useState(false); // New state for toggle
+
   useEffect(() => {
     if (updateMemory) {
+      const hasDueDate = updateMemory.dueDate && !isNaN(new Date(updateMemory.dueDate));
       setFormData({
         id: updateMemory._id,
         title: updateMemory.title || '',
         memory: updateMemory.memory || '',
-        dueDate: new Date(updateMemory.dueDate),
+        dueDate: hasDueDate ? new Date(updateMemory.dueDate) : null,
         priority: updateMemory.priority || '',
         tag: updateMemory.tag || '',
       });
+      setAddDueDate(updateMemory.setDueDate); // Initialize toggle based on existing setDueDate
     }
   }, [updateMemory]);
 
@@ -55,7 +59,14 @@ const EditMemoryComponent = ({ updateMemory }) => {
     setFormData((prev) => ({ ...prev, dueDate: date }));
   };
 
-  const isFormInvalid = !title || !memory || memory.length <= 8;
+  const handleToggleDueDate = () => {
+    setAddDueDate((prev) => !prev);
+    if (addDueDate) {
+      setFormData((prev) => ({ ...prev, dueDate: null }));
+    }
+  };
+
+  const isFormInvalid = !title || !memory || memory.length < 5;
 
   return (
     <div className="update-memory-wrapper">
@@ -106,13 +117,22 @@ const EditMemoryComponent = ({ updateMemory }) => {
               </div>
 
               <div>
-                Set Reminder
-                <DatePicker
-                  selected={dueDate}
-                  onChange={handleOnChangeDate}
-                  minDate={new Date()}
-                  showTimeInput
-                />
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={addDueDate}
+                    onChange={handleToggleDueDate}
+                  />
+                  Set Reminder
+                </label>
+                {addDueDate && (
+                  <DatePicker
+                    selected={dueDate}
+                    onChange={handleOnChangeDate}
+                    minDate={new Date()}
+                    showTimeInput
+                  />
+                )}
               </div>
 
               <div className="update-memory-button-wrapper">

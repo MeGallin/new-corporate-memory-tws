@@ -15,7 +15,7 @@ import ButtonComponent from '../Button/ButtonComponent';
 const INITIAL_FORM_STATE = {
   title: '',
   memory: '',
-  dueDate: new Date(),
+  dueDate: null,
   priority: '',
   tag: '',
 };
@@ -25,7 +25,16 @@ const CreateMemoryComponent = ({ onCloseModal }) => {
   const [formData, setFormData] = useState(INITIAL_FORM_STATE);
   const { title, memory, dueDate, priority, tag } = formData;
 
+  const [addDueDate, setAddDueDate] = useState(false);
+
   const { loading, success } = useSelector((state) => state.memoryCreate);
+
+  const handleToggleDueDate = () => {
+    setAddDueDate((prev) => !prev);
+    if (addDueDate) {
+      setFormData((prev) => ({ ...prev, dueDate: null }));
+    }
+  };
 
   // State to control whether to close modal after successful submission
   const [shouldCloseModal, setShouldCloseModal] = useState(true);
@@ -125,13 +134,22 @@ const CreateMemoryComponent = ({ onCloseModal }) => {
               </div>
 
               <div>
-                Set Reminder
-                <DatePicker
-                  selected={dueDate}
-                  onChange={handleOnChangeDate}
-                  minDate={new Date()}
-                  showTimeInput
-                />
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={addDueDate}
+                    onChange={handleToggleDueDate}
+                  />
+                  Add Due Date
+                </label>
+                {addDueDate && (
+                  <DatePicker
+                    selected={dueDate}
+                    onChange={handleOnChangeDate}
+                    minDate={new Date()}
+                    showTimeInput
+                  />
+                )}
               </div>
 
               <div className="update-memory-button-wrapper">

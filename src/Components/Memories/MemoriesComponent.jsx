@@ -10,8 +10,6 @@ import SpinnerComponent from '../Spinner/SpinnerComponent';
 import SearchComponent from '../Search/SearchComponent';
 import ModalComponent from '../Modal/ModalComponent';
 import CreateMemoryComponent from '../CreateMemory/CreateMemoryComponent';
-import EditMemoryComponent from '../EditMemory/EditMemoryComponent';
-import DeleteMemoryComponent from '../DeleteMemory/DeleteMemoryComponent';
 import SortComponent from '../Sort/SortComponent';
 
 const Memories = () => {
@@ -20,11 +18,20 @@ const Memories = () => {
   const [keyword, setKeyword] = useState('');
 
   const { userInfo } = useSelector((state) => state.userLogin);
-  const { userInfo: googleUserInfo } = useSelector((state) => state.googleUserLogin);
-  const { loading, memories: fetchedMemories, error } = useSelector((state) => state.memoriesGet);
-  const { memories: sortedMemories } = useSelector((state) => state.sortedMemories);
+  const { userInfo: googleUserInfo } = useSelector(
+    (state) => state.googleUserLogin,
+  );
+  const {
+    loading,
+    memories: fetchedMemories,
+    error,
+  } = useSelector((state) => state.memoriesGet);
+  const { memories: sortedMemories } = useSelector(
+    (state) => state.sortedMemories,
+  );
 
-  const memories = sortedMemories?.length > 0 ? sortedMemories : fetchedMemories;
+  const memories =
+    sortedMemories?.length > 0 ? sortedMemories : fetchedMemories;
   const { userDetails } = useSelector((state) => state.userInfoDetails);
 
   const isAuthenticated = !!(userInfo || googleUserInfo);
@@ -71,7 +78,7 @@ const Memories = () => {
           <SortComponent memories={memories || []} />
         </div>
         <p>
-          [{searchedMemories.length}] {' '}
+          [{searchedMemories.length}]{' '}
           {searchedMemories.length === 1 ? 'memory found' : 'memories'} and [
           {completedMemoriesCount}] marked as complete.
         </p>
@@ -95,7 +102,9 @@ const Memories = () => {
       return (
         <div className="error-message">
           <p>Error loading memories: {error}</p>
-          <button onClick={() => dispatch(memoriesGetAction())}>Try Again</button>
+          <button onClick={() => dispatch(memoriesGetAction())}>
+            Try Again
+          </button>
         </div>
       );
     }
@@ -104,7 +113,8 @@ const Memories = () => {
         <div className="empty-state-message">
           <h3>No memories yet!</h3>
           <p>
-            Start creating your first memory by clicking the "Create" button above.
+            Start creating your first memory by clicking the "Create" button
+            above.
           </p>
         </div>
       );
@@ -128,15 +138,6 @@ const Memories = () => {
         {visibleSearchedMemories.map((memory) => (
           <div key={memory._id}>
             <CardComponent memory={memory} />
-            <ModalComponent
-              className="edit-btn"
-              openButtonTitle="EDIT"
-              closeButtonTitle="X"
-              variant={'warning'}
-            >
-              <EditMemoryComponent updateMemory={memory} />
-            </ModalComponent>
-            <DeleteMemoryComponent id={memory._id} />
           </div>
         ))}
       </div>

@@ -27,8 +27,6 @@ const EditDetailsComponent = () => {
     }
   }, [userDetails]);
 
-  const { name, email, password } = formData;
-
   const handleOnchange = (e) => {
     setFormData((previousState) => ({
       ...previousState,

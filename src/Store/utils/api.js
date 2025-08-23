@@ -18,16 +18,16 @@ const ENDPOINTS = {
 
   // Memories related
   memories: 'api/memories',
-  createMemory: 'api/create-memory',
-  editMemory: 'api/edit-memory',
-  deleteMemory: 'api/delete-memory',
-  deleteMemoryTag: 'api/delete-memory-tag',
+  
+  
+  
+  
 
   // Image Upload related
   userProfileUploadImage: 'api/user-profile-upload-image',
   userProfileDeleteImage: 'api/user-profile-image-delete',
   memoryUploadImage: 'api/memory-upload-image',
-  memoryDeleteImage: 'api/delete-memory-image',
+  
 
   // Contact Form related
   contactForm: 'api/contact-form',

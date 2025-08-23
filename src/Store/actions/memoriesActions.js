@@ -171,7 +171,7 @@ export const memoryCreateAction = (formData) => async (dispatch, getState) => {
     const config = createAuthConfig(userInfo);
 
     const { data } = await axios.post(
-      buildApiUrl('createMemory'),
+      buildApiUrl('memories'),
       formData,
       config,
     );
@@ -233,7 +233,7 @@ export const memoryEditAction = (formData) => async (dispatch, getState) => {
     const config = createAuthConfig(userInfo);
 
     const { data } = await axios.put(
-      buildApiUrl('editMemory', formData.id),
+      buildApiUrl('memories', formData.id),
       formData,
       config,
     );
@@ -300,7 +300,7 @@ export const memoryDeleteAction = (id) => async (dispatch, getState) => {
     const config = createAuthConfig(userInfo);
 
     const { data } = await axios.delete(
-      buildApiUrl('deleteMemory', id),
+      buildApiUrl('memories', id),
       config,
     );
 
@@ -370,7 +370,7 @@ export const memoryDeleteTagAction = (id) => async (dispatch, getState) => {
     const config = createAuthConfig(userInfo);
 
     const { data } = await axios.delete(
-      buildApiUrl('deleteMemoryTag', id),
+      buildApiUrl('memories', id) + '/tag',
       config,
     );
 
@@ -463,7 +463,7 @@ export const memorySetDueDateAction =
       };
 
       const { data } = await axios.put(
-        buildApiUrl('editMemory', memoryData.id),
+        buildApiUrl('memories', memoryData.id),
         requestBody,
         config,
       );
@@ -560,7 +560,7 @@ export const memoryIsCompleteAction =
       };
 
       const { data } = await axios.put(
-        buildApiUrl('editMemory', memoryData.id),
+        buildApiUrl('memories', memoryData.id),
         requestBody,
         config,
       );

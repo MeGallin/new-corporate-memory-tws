@@ -163,7 +163,7 @@ export const deleteMemoryImageAction = (id) => async (dispatch, getState) => {
     const config = createAuthConfig(userInfo);
 
     await axios.delete(
-      buildApiUrl('memoryDeleteImage', id),
+      buildApiUrl('memories', id) + '/image',
       config,
     );
     dispatch({ type: MEMORY_IMAGE_DELETE_SUCCESS });

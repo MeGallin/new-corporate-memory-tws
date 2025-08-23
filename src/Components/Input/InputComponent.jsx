@@ -8,7 +8,7 @@ const InputComponent = ({
   type,
   label,
   name,
-  value,
+  value = '',
   placeholder,
   error,
   className,
@@ -57,7 +57,7 @@ InputComponent.defaultProps = {
   className: '',
   placeholder: '',
   error: null,
-  id: ''
+  id: '',
 };
 
 InputComponent.propTypes = {
@@ -65,7 +65,7 @@ InputComponent.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
   error: PropTypes.string,
   className: PropTypes.string,

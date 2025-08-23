@@ -58,140 +58,142 @@ const DashboardComponent = () => {
             </fieldset>
           )}
 
-          <fieldset className="fieldSet">
-            <legend>{userDetails?.name}</legend>
-            <div>
-              <EditDetailsComponent />
-              <fieldset className="fieldSet">
-                <legend>Details</legend>
-                <div className="flex-wrapper-dates">
-                  <div>
-                    <UserProfileImageComponent
-                      id={userDetails?._id}
-                      imgSrc={userDetails?.profileImage}
-                      altText={userDetails?.name}
-                    />
+          {userDetails && (
+            <fieldset className="fieldSet">
+              <legend>{userDetails.name}</legend>
+              <div>
+                <EditDetailsComponent />
+                <fieldset className="fieldSet">
+                  <legend>Details</legend>
+                  <div className="flex-wrapper-dates">
+                    <div>
+                      <UserProfileImageComponent
+                        id={userDetails._id}
+                        imgSrc={userDetails.profileImage}
+                        altText={userDetails.name}
+                      />
+                    </div>
+
+                    <div>
+                      <h3>Stats</h3>
+                      <div>
+                        <span className="details-label">Total Memories: </span>
+                        <span>{memories?.length || 0}</span>
+                      </div>
+                      <div>
+                        <span className="details-label">
+                          Completed Memories:{' '}
+                        </span>
+                        <span>{completedMemories?.length}</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3>Basic Info</h3>
+                      <div>
+                        <span className="details-label">ID: </span>
+                        <span>{userDetails._id}</span>
+                      </div>
+
+                      <div>
+                        <span className="details-label">
+                          your current IP Address:{' '}
+                        </span>
+                        {userDetails.ipAddress === '::1' ? (
+                          <span>LOCALHOST</span>
+                        ) : (
+                          userDetails.ipAddress
+                        )}
+                      </div>
+
+                      <div>
+                        <span className="details-label">Joined: </span>
+                        <span>
+                          {moment(userDetails.updatedAt).diff(
+                            moment(userDetails.createdAt),
+                            'days',
+                          )}
+                        </span>
+                        <span> day ago.</span>
+                      </div>
+
+                      <div>
+                        <span className="details-label">Login Count: </span>
+                        <span>{userDetails.loginCounter}</span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div>
-                    <h3>Stats</h3>
+                  <div className="flex-wrapper">
                     <div>
-                      <span className="details-label">Total Memories: </span>
-                      <span>{memories?.length || 0}</span>
-                    </div>
-                    <div>
-                      <span className="details-label">
-                        Completed Memories:{' '}
-                      </span>
-                      <span>{completedMemories?.length}</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3>Basic Info</h3>
-                    <div>
-                      <span className="details-label">ID: </span>
-                      <span>{userDetails?._id}</span>
-                    </div>
-
-                    <div>
-                      <span className="details-label">
-                        your current IP Address:{' '}
-                      </span>
-                      {userDetails?.ipAddress === '::1' ? (
-                        <span>LOCALHOST</span>
-                      ) : (
-                        userDetails?.ipAddress
-                      )}
-                    </div>
-
-                    <div>
-                      <span className="details-label">Joined: </span>
+                      <span className="details-label">Is Admin: </span>
                       <span>
-                        {moment(userDetails?.updatedAt).diff(
-                          moment(userDetails?.createdAt),
-                          'days',
+                        {userDetails.isAdmin ? (
+                          <FaRegThumbsUp
+                            className="reg-thumbs-up-icon"
+                            size={22}
+                          />
+                        ) : (
+                          <FaRegThumbsDown
+                            className="reg-thumbs-down-icon"
+                            size={22}
+                          />
                         )}
                       </span>
-                      <span> day ago.</span>
+                    </div>
+                    <div>
+                      <span className="details-label">Is Confirmed: </span>
+                      <span>
+                        {userDetails.isConfirmed ? (
+                          <FaRegThumbsUp
+                            className="reg-thumbs-up-icon"
+                            size={22}
+                          />
+                        ) : (
+                          <FaRegThumbsDown
+                            className="reg-thumbs-down-icon"
+                            size={22}
+                          />
+                        )}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="details-label">Is Suspended: </span>
+                      <span>
+                        {userDetails.isSuspended ? (
+                          <FaRegThumbsUp
+                            className="reg-thumbs-up-icon"
+                            size={22}
+                          />
+                        ) : (
+                          <FaRegThumbsDown
+                            className="reg-thumbs-down-icon"
+                            size={22}
+                          />
+                        )}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex-wrapper-dates">
+                    <div>
+                      <span className="details-label">Created: </span>
+                      <span>
+                        {moment(userDetails.createdAt).format('Do MMMM YYYY')}
+                      </span>
                     </div>
 
                     <div>
-                      <span className="details-label">Login Count: </span>
-                      <span>{userDetails?.loginCounter}</span>
+                      <span className="details-label">Updated: </span>
+                      <span>
+                        {moment(userDetails.updatedAt).format('Do MMMM YYYY')}
+                      </span>
                     </div>
                   </div>
-                </div>
-
-                <div className="flex-wrapper">
-                  <div>
-                    <span className="details-label">Is Admin: </span>
-                    <span>
-                      {userDetails?.isAdmin ? (
-                        <FaRegThumbsUp
-                          className="reg-thumbs-up-icon"
-                          size={22}
-                        />
-                      ) : (
-                        <FaRegThumbsDown
-                          className="reg-thumbs-down-icon"
-                          size={22}
-                        />
-                      )}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="details-label">Is Confirmed: </span>
-                    <span>
-                      {userDetails?.isConfirmed ? (
-                        <FaRegThumbsUp
-                          className="reg-thumbs-up-icon"
-                          size={22}
-                        />
-                      ) : (
-                        <FaRegThumbsDown
-                          className="reg-thumbs-down-icon"
-                          size={22}
-                        />
-                      )}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="details-label">Is Suspended: </span>
-                    <span>
-                      {userDetails?.isSuspended ? (
-                        <FaRegThumbsUp
-                          className="reg-thumbs-up-icon"
-                          size={22}
-                        />
-                      ) : (
-                        <FaRegThumbsDown
-                          className="reg-thumbs-down-icon"
-                          size={22}
-                        />
-                      )}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex-wrapper-dates">
-                  <div>
-                    <span className="details-label">Created: </span>
-                    <span>
-                      {moment(userDetails?.createdAt).format('Do MMMM YYYY')}
-                    </span>
-                  </div>
-
-                  <div>
-                    <span className="details-label">Updated: </span>
-                    <span>
-                      {moment(userDetails?.updatedAt).format('Do MMMM YYYY')}
-                    </span>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-          </fieldset>
+                </fieldset>
+              </div>
+            </fieldset>
+          )}
 
           <fieldset className="fieldSet">
             <legend>Completed Memories</legend>

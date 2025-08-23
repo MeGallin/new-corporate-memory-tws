@@ -366,8 +366,7 @@ export const userResetPasswordAction = (updatedInfo) => async (dispatch) => {
 };
 
 //PUT: User EDIT Details
-export const userEditDetailAction =
-  (id, formData) => async (dispatch, getState) => {
+export const userEditDetailAction = (formData) => async (dispatch, getState) => {
     try {
       dispatch({
         type: USER_EDIT_DETAILS_REQUEST,
@@ -393,7 +392,7 @@ export const userEditDetailAction =
       };
 
       const { data } = await axios.put(
-        buildApiUrl('user', id.id),
+        buildApiUrl('userDetails'),
         formData,
         config,
       );

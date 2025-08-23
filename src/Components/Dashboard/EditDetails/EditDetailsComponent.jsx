@@ -36,7 +36,7 @@ const EditDetailsComponent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(userEditDetailAction({ id: userDetails?._id }, formData));
+    dispatch(userEditDetailAction(formData));
     setEditingField(null);
   };
 

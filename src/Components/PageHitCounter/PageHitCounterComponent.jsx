@@ -12,7 +12,7 @@ const PageHitCounterComponent = () => {
     if (!ignore) return () => (ignore = true);
   }, [dispatch]);
   const pageHits = useSelector((state) => state.pageHits);
-  const { loading, error, hits } = pageHits;
+  const { loading, error, count } = pageHits;
   return (
     <>
       {' '}
@@ -21,7 +21,7 @@ const PageHitCounterComponent = () => {
       ) : error ? (
         'There was an error loading the page hit counter'
       ) : (
-        `${100 + hits?.length} unique hits.`
+        `${100 + count} unique hits.`
       )}
     </>
   );

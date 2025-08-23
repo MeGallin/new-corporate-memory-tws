@@ -49,6 +49,7 @@ export const userProfileImageUploadAction =
         config,
       );
       dispatch({ type: USER_PROFILE_IMAGE_UPLOAD_SUCCESS, payload: data });
+      dispatch(userInfoDetailsAction());
     } catch (error) {
       dispatch({
         type: USER_PROFILE_IMAGE_UPLOAD_FAILURE,

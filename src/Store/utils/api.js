@@ -11,7 +11,7 @@ const ENDPOINTS = {
   user: 'api/user',
 
   // Admin related
-  adminGetAllUserDetails: 'api/admin/user-details-memories',
+  adminGetAllUserDetails: 'api/admin/users',
   adminToggleAdmin: 'api/admin/user-is-admin',
   adminToggleSuspended: 'api/admin/user-is-suspended',
   adminDeleteUserData: 'api/admin/user-memories-delete',

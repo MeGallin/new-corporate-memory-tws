@@ -28,6 +28,17 @@ const AdminComponent = () => {
     dispatch(adminGetAllUserDetailsAction());
   }, [dispatch]);
 
+  // This effect synchronizes the local selectedUser state with the user list from Redux.
+  // It runs whenever the main 'users' list is updated.
+  useEffect(() => {
+    if (selectedUser && users) {
+      const updatedUser = users.find((u) => u._id === selectedUser._id);
+      if (updatedUser) {
+        setSelectedUser(updatedUser);
+      }
+    }
+  }, [users, selectedUser]);
+
   const handleUserSelect = (e) => {
     const userId = e.target.value;
     if (userId) {

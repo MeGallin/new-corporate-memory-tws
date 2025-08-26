@@ -12,6 +12,7 @@ import { FaUpload, FaTrash, FaPencilAlt } from 'react-icons/fa';
 import InputComponent from '../Input/InputComponent';
 import ButtonComponent from '../Button/ButtonComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
+import ModalComponent from '../Modal/ModalComponent';
 
 const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
   const [showUploadInput, setShowUploadInput] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewImageFile, setPreviewImageFile] = useState('');
+  const [isImageModalOpen, setImageModalOpen] = useState(false);
 
   const previewFile = (file) => {
     const reader = new FileReader();
@@ -83,7 +85,9 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
 
   const renderExistingImage = () => (
     <div className="image-wrapper">
-      <img src={imgSrc} alt={altText} className="memories-image" />
+      <div onClick={() => setImageModalOpen(true)} className="clickable-image">
+        <img src={imgSrc} alt={altText} className="memories-image" />
+      </div>
       <div className="image-icon-wrapper">
         <FaTrash
           onClick={handleImageDelete}
@@ -137,6 +141,9 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
           />
         </div>
       )}
+      <ModalComponent isOpen={isImageModalOpen} onClose={() => setImageModalOpen(false)}>
+        <img src={imgSrc} alt={altText} className="modal-image-large" />
+      </ModalComponent>
     </div>
   );
 };

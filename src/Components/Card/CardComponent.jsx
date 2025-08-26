@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import './CardComponent.scss';
 import PropTypes from 'prop-types';
@@ -16,8 +17,10 @@ import MemoriesImagesComponent from '../MemoriesImages/MemoriesImagesComponent';
 import ModalComponent from '../Modal/ModalComponent';
 import EditMemoryComponent from '../EditMemory/EditMemoryComponent';
 import DeleteMemoryComponent from '../DeleteMemory/DeleteMemoryComponent';
+import ButtonComponent from '../Button/ButtonComponent';
 
 const CardComponent = ({ memory }) => {
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
   const {
     _id,
     title,
@@ -110,14 +113,21 @@ const CardComponent = ({ memory }) => {
         </div>
 
         <div className="card-buttons">
-          <ModalComponent
-            className="edit-btn"
-            openButtonTitle="EDIT"
-            closeButtonTitle="X"
-            variant={'warning'}
-          >
-            <EditMemoryComponent updateMemory={memory} />
-          </ModalComponent>
+          <>
+            <ButtonComponent
+              onClick={() => setEditModalOpen(true)}
+              type="button"
+              text="EDIT"
+              variant="warning"
+            />
+            <ModalComponent
+              isOpen={isEditModalOpen}
+              onClose={() => setEditModalOpen(false)}
+              closeButtonTitle="X"
+            >
+              <EditMemoryComponent updateMemory={memory} />
+            </ModalComponent>
+          </>
           <DeleteMemoryComponent id={memory._id} />
         </div>
       </div>

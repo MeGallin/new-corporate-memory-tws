@@ -11,11 +11,13 @@ import SearchComponent from '../Search/SearchComponent';
 import ModalComponent from '../Modal/ModalComponent';
 import CreateMemoryComponent from '../CreateMemory/CreateMemoryComponent';
 import SortComponent from '../Sort/SortComponent';
+import ButtonComponent from '../Button/ButtonComponent';
 
 const Memories = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState('');
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
 
   const { userInfo } = useSelector((state) => state.userLogin);
   const { userInfo: googleUserInfo } = useSelector(
@@ -84,13 +86,18 @@ const Memories = () => {
         </p>
       </div>
       <div>
+        <ButtonComponent
+          onClick={() => setCreateModalOpen(true)}
+          type="button"
+          text="Create"
+          variant="success"
+        />
         <ModalComponent
-          className="create-btn"
-          openButtonTitle="Create"
+          isOpen={isCreateModalOpen}
+          onClose={() => setCreateModalOpen(false)}
           closeButtonTitle="X"
-          variant={'success'}
         >
-          {(closeModal) => <CreateMemoryComponent onCloseModal={closeModal} />}
+          <CreateMemoryComponent onCloseModal={() => setCreateModalOpen(false)} />
         </ModalComponent>
       </div>
     </div>

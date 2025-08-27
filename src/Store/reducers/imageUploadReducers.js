@@ -59,40 +59,55 @@ export const userProfileImageDeleteReducer = (state = {}, action) => {
 // USER profile images
 
 //Memories images
-export const memoryImageUploadReducer = (state = {}, action) => {
+export const memoryImageUploadReducer = (state = { loading: {} }, action) => {
   switch (action.type) {
     case MEMORY_IMAGE_UPLOAD_REQUEST:
-      return { loading: true };
+      return {
+        ...state,
+        loading: { ...state.loading, [action.payload.memoryId]: true },
+      };
     case MEMORY_IMAGE_UPLOAD_SUCCESS:
       return {
-        loading: false,
+        ...state,
+        loading: { ...state.loading, [action.payload.memoryId]: false },
         success: true,
-        ...action.payload,
+        uploadedImage: action.payload.data,
       };
     case MEMORY_IMAGE_UPLOAD_RESET:
-      return {};
+      return { loading: {} };
     case MEMORY_IMAGE_UPLOAD_FAILURE:
-      return { loading: false, error: action.payload };
+      return {
+        ...state,
+        loading: { ...state.loading, [action.payload.memoryId]: false },
+        error: action.payload,
+      };
     default:
       return { ...state };
   }
 };
 
 //Memories Image Delete
-export const memoryDeleteImageReducer = (state = {}, action) => {
+export const memoryDeleteImageReducer = (state = { loading: {} }, action) => {
   switch (action.type) {
     case MEMORY_IMAGE_DELETE_REQUEST:
-      return { loading: true };
+      return {
+        ...state,
+        loading: { ...state.loading, [action.payload.id]: true },
+      };
     case MEMORY_IMAGE_DELETE_SUCCESS:
       return {
-        loading: false,
+        ...state,
+        loading: { ...state.loading, [action.payload.id]: false },
         success: true,
-        ...action.payload,
       };
     case MEMORY_IMAGE_DELETE_RESET:
-      return {};
+      return { loading: {} };
     case MEMORY_IMAGE_DELETE_FAILURE:
-      return { loading: false, error: action.payload };
+      return {
+        ...state,
+        loading: { ...state.loading, [action.payload.id]: false },
+        error: action.payload,
+      };
     default:
       return { ...state };
   }

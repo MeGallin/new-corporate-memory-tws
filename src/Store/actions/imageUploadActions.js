@@ -103,6 +103,7 @@ export const memoryImageUploadAction =
     try {
       dispatch({
         type: MEMORY_IMAGE_UPLOAD_REQUEST,
+        payload: { memoryId },
       });
 
       const userInfo = getAuthenticatedUser(getState());
@@ -129,7 +130,7 @@ export const memoryImageUploadAction =
       );
       dispatch({
         type: MEMORY_IMAGE_UPLOAD_SUCCESS,
-        payload: data,
+        payload: { data, memoryId },
       });
       // Update the state of the state
       dispatch(memoriesGetAction());
@@ -149,6 +150,7 @@ export const deleteMemoryImageAction = (id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: MEMORY_IMAGE_DELETE_REQUEST,
+      payload: { id },
     });
 
     const userInfo = getAuthenticatedUser(getState());
@@ -166,7 +168,7 @@ export const deleteMemoryImageAction = (id) => async (dispatch, getState) => {
       buildApiUrl('memories', id) + '/image',
       config,
     );
-    dispatch({ type: MEMORY_IMAGE_DELETE_SUCCESS });
+    dispatch({ type: MEMORY_IMAGE_DELETE_SUCCESS, payload: { id } });
     dispatch(memoriesGetAction());
   } catch (error) {
     dispatch({

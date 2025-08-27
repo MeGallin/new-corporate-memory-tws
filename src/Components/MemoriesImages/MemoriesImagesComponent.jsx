@@ -23,6 +23,8 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
     (state) => state.memoryDeleteImage,
   );
 
+  const isCurrentMemoryLoading = memoryImageUploadLoading[id] || memoryDeleteImageLoading[id];
+
   const [showUploadInput, setShowUploadInput] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewImageFile, setPreviewImageFile] = useState('');
@@ -122,7 +124,7 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
     </div>
   );
 
-  if (memoryImageUploadLoading || memoryDeleteImageLoading) {
+  if (isCurrentMemoryLoading) {
     return <SpinnerComponent />;
   }
 

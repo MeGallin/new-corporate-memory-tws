@@ -1,7 +1,8 @@
 @import '../../index.scss';
 
 .memories-image-wrapper {
-  // border: 1px solid $danger;
+  display: flex;
+  align-items: flex-end;
 
   .memories-image {
     box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,

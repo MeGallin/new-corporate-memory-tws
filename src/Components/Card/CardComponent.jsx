@@ -67,18 +67,23 @@ const CardComponent = ({ memory }) => {
         </div>
         <div className="card-body">
           <p>{memoryText}</p>
-          <div onClick={() => activateVoice(memoryText)}>
-            <FaBullhorn
-              size={22}
-              title="Activate voice text"
-              className="bullhorn-icon"
-            />
+          <div className="icon-wrapper">
+            <div onClick={() => activateVoice(memoryText)}>
+              <FaBullhorn
+                size={22}
+                title="Activate voice text"
+                className="bullhorn-icon"
+              />
+            </div>
+            <div>
+              <MemoriesImagesComponent
+                id={_id}
+                imgSrc={memoryImage}
+                altText={`Image for ${title}`}
+              />
+            </div>
           </div>
-          <MemoriesImagesComponent
-            id={_id}
-            imgSrc={memoryImage}
-            altText={`Image for ${title}`}
-          />
+
           <StarsComponent priority={priority} />
 
           <div className="memories-priority-wrapper small-text">

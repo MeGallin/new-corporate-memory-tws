@@ -66,7 +66,11 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
 
   const renderImagePreview = () => (
     <form onSubmit={handleImageUpdate}>
-      <img src={previewImage} alt="New memory preview" className="preview-image" />
+      <img
+        src={previewImage}
+        alt="New memory preview"
+        className="preview-image"
+      />
       <ButtonComponent
         type="submit"
         text="Yes, like it!"
@@ -93,12 +97,14 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
           onClick={handleImageDelete}
           className="trash-icon"
           size={22}
+          color="red"
           title="Delete this Image"
         />
         <FaPencilAlt
           onClick={() => setShowUploadInput(!showUploadInput)}
           className="pencil-icon"
           size={22}
+          color="green"
           title="EDIT this Image"
         />
       </div>
@@ -122,13 +128,11 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
 
   return (
     <div className="memories-image-wrapper">
-      {previewImage ? (
-        renderImagePreview()
-      ) : imgSrc ? (
-        renderExistingImage()
-      ) : (
-        renderUploadState()
-      )}
+      {previewImage
+        ? renderImagePreview()
+        : imgSrc
+        ? renderExistingImage()
+        : renderUploadState()}
 
       {showUploadInput && !previewImage && (
         <div className="memories-image-selector">
@@ -141,7 +145,10 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
           />
         </div>
       )}
-      <ModalComponent isOpen={isImageModalOpen} onClose={() => setImageModalOpen(false)}>
+      <ModalComponent
+        isOpen={isImageModalOpen}
+        onClose={() => setImageModalOpen(false)}
+      >
         <img src={imgSrc} alt={altText} className="modal-image-large" />
       </ModalComponent>
     </div>

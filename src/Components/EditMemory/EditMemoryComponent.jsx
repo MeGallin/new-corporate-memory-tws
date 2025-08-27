@@ -49,10 +49,20 @@ const EditMemoryComponent = ({ updateMemory }) => {
   };
 
   const handleOnchange = (e) => {
-    setFormData((previousState) => ({
-      ...previousState,
-      [e.target.name]: e.target.value,
-    }));
+    const { name, value } = e.target;
+    setFormData((previousState) => {
+      if (name === 'priority') {
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue) || numValue < 1) {
+          return { ...previousState, [name]: 1 }; // Default to 1 if invalid or too low
+        }
+        if (numValue > 5) {
+          return { ...previousState, [name]: 5 }; // Cap at 5 if too high
+        }
+        return { ...previousState, [name]: numValue };
+      }
+      return { ...previousState, [name]: value };
+    });
   };
 
   const handleOnChangeDate = (date) => {

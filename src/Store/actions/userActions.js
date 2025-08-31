@@ -44,8 +44,6 @@ const validatePassword = (password) => {
   return password && password.length >= 8;
 };
 
-
-
 // Token management utilities
 const setSecureToken = (tokenData) => {
   localStorage.setItem('userInfo', JSON.stringify(tokenData));
@@ -202,7 +200,7 @@ export const googleUserLoginAction = (googleRes) => async (dispatch) => {
       },
     };
 
-  const { data } = await axios.post(buildApiUrl('googleLogin'), {}, config);
+    const { data } = await axios.post(buildApiUrl('googleLogin'), {}, config);
 
     dispatch({ type: GOOGLE_USER_LOGIN_SUCCESS, payload: data });
     setSecureToken(data);
@@ -366,7 +364,8 @@ export const userResetPasswordAction = (updatedInfo) => async (dispatch) => {
 };
 
 //PUT: User EDIT Details
-export const userEditDetailAction = (formData) => async (dispatch, getState) => {
+export const userEditDetailAction =
+  (formData) => async (dispatch, getState) => {
     try {
       dispatch({
         type: USER_EDIT_DETAILS_REQUEST,

@@ -202,7 +202,7 @@ export const googleUserLoginAction = (googleRes) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.post(buildApiUrl('googleLogin'), config);
+  const { data } = await axios.post(buildApiUrl('googleLogin'), {}, config);
 
     dispatch({ type: GOOGLE_USER_LOGIN_SUCCESS, payload: data });
     setSecureToken(data);

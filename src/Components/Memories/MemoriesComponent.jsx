@@ -12,6 +12,7 @@ import ModalComponent from '../Modal/ModalComponent';
 import CreateMemoryComponent from '../CreateMemory/CreateMemoryComponent';
 import SortComponent from '../Sort/SortComponent';
 import ButtonComponent from '../Button/ButtonComponent';
+import AgentChatComponent from '../AgentChat/AgentChatComponent';
 
 const Memories = () => {
   const dispatch = useDispatch();
@@ -154,6 +155,7 @@ const Memories = () => {
   return (
     <>
       {renderHeader()}
+      <AgentChatComponent />
       {renderContent()}
     </>
   );

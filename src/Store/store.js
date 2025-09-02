@@ -38,6 +38,7 @@ import {
 import { sortedMemoriesReducer } from './reducers/sortedMemories';
 
 import { pageHitsReducer } from './reducers/pageHitCounterReducers';
+import { agentChatReducer } from './reducers/agentReducers';
 
 //Initialise state to hold user info if logged in.
 const userInfoFromStorage = localStorage.getItem('userInfo')
@@ -70,6 +71,7 @@ const reducer = combineReducers({
   memoryDeleteImage: memoryDeleteImageReducer,
   sortedMemories: sortedMemoriesReducer,
   pageHits: pageHitsReducer,
+  agentChat: agentChatReducer,
 });
 
 const initialState = {

@@ -18,6 +18,8 @@ const ENDPOINTS = {
 
   // Memories related
   memories: 'api/memories',
+  // Agent related
+  agentMemoriesChat: 'api/agent/memories/chat',
   
   
   

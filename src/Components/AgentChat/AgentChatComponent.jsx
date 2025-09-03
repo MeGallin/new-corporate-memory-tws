@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { agentChatAction } from '../../Store/actions/agentActions';
 import ButtonComponent from '../Button/ButtonComponent';
+import SpinnerComponent from '../Spinner/SpinnerComponent';
 import './AgentChatComponent.scss';
 
 const AgentChatComponent = () => {
@@ -21,6 +22,10 @@ const AgentChatComponent = () => {
     if (!isAuthenticated) return;
     const payload = { question: question.trim() };
     setLastQuestion(payload.question);
+    try {
+      // Persist the last asked question separately from the draft
+      if (payload.question) localStorage.setItem('agentChat.lastQ', payload.question);
+    } catch {}
     const cleanedFilters = {};
     if (filters.tags?.length) cleanedFilters.tags = filters.tags;
     if (filters.priority?.length) cleanedFilters.priority = filters.priority;
@@ -47,31 +52,43 @@ const AgentChatComponent = () => {
     setFilters((f) => ({ ...f, priority: parts }));
   };
 
-  // Load last question from localStorage on mount
+  // Load draft input and last asked question from localStorage on mount
   useEffect(() => {
     try {
-      const last = localStorage.getItem('agentChat.lastQuestion');
-      if (last && !question) setQuestion(last);
+      const draft = localStorage.getItem('agentChat.draft');
+      if (draft && !question) setQuestion(draft);
+      const lastQ = localStorage.getItem('agentChat.lastQ');
+      if (lastQ) setLastQuestion(lastQ);
     } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Persist question while typing
+  // Persist non-empty draft while typing; clear when empty
   useEffect(() => {
     try {
-      localStorage.setItem('agentChat.lastQuestion', question);
+      const trimmed = question.trim();
+      if (trimmed) localStorage.setItem('agentChat.draft', question);
+      else localStorage.removeItem('agentChat.draft');
     } catch {}
   }, [question]);
 
-  // Clear the input once a successful response arrives
+  // Clear only the draft once a successful response arrives; keep lastQ
   useEffect(() => {
     if (!loading && data && !error) {
       setQuestion('');
       try {
-        localStorage.removeItem('agentChat.lastQuestion');
+        localStorage.removeItem('agentChat.draft');
       } catch {}
     }
   }, [loading, data, error]);
+
+  // On logout, clear in-memory state for question and lastQuestion
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setQuestion('');
+      setLastQuestion('');
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="agent-chat">
@@ -102,8 +119,8 @@ const AgentChatComponent = () => {
             <ButtonComponent
               type="button"
               text="Clear Input"
-              variant="light"
-              onClick={() => { setQuestion(''); try { localStorage.removeItem('agentChat.lastQuestion'); } catch {} }}
+              variant="warning"
+              onClick={() => { setQuestion(''); try { localStorage.removeItem('agentChat.draft'); } catch {} }}
               disabled={!question}
             />
           </div>
@@ -139,10 +156,42 @@ const AgentChatComponent = () => {
 
       {error && <div className="agent-chat__error">{error}</div>}
 
-      {data?.answerText && (
-        <div className="agent-chat__answer">
+      {loading && (
+        <div className="agent-chat__qa">
           {lastQuestion && (
-            <div className="agent-chat__question">{`Q. ${lastQuestion}`}</div>
+            <>
+              <span className="agent-chat__pill agent-chat__pill--last">Last question asked</span>
+              <div className="agent-chat__question">
+                <div className="agent-chat__question-row">
+                  <div className="agent-chat__question-text">
+                    <span className="agent-chat__question-label">Q.</span>
+                    <span className="agent-chat__question-content">{lastQuestion}</span>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+          <div className="agent-chat__answer-row">
+            <div className="agent-chat__answer-label">A.</div>
+            <div className="agent-chat__answer-body"><SpinnerComponent /></div>
+          </div>
+        </div>
+      )}
+
+      {!loading && data?.answerText && (
+        <div className="agent-chat__qa">
+          {lastQuestion && (
+            <>
+              <span className="agent-chat__pill agent-chat__pill--last">Last question asked</span>
+              <div className="agent-chat__question">
+                <div className="agent-chat__question-row">
+                  <div className="agent-chat__question-text">
+                    <span className="agent-chat__question-label">Q.</span>
+                    <span className="agent-chat__question-content">{lastQuestion}</span>
+                  </div>
+                </div>
+              </div>
+            </>
           )}
           <div className="agent-chat__answer-row">
             <div className="agent-chat__answer-label">A.</div>

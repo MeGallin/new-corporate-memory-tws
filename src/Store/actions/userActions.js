@@ -2,6 +2,7 @@ import axios from 'axios';
 import { buildApiUrl } from '../utils/api';
 import { MEMORIES_GET_RESET } from '../constants/memoriesConstants';
 import { CONTACT_FORM_RESET } from '../constants/contactFormConstants';
+import { AGENT_CHAT_RESET } from '../constants/agentConstants';
 import {
   GOOGLE_USER_LOGIN_FAILURE,
   GOOGLE_USER_LOGIN_REQUEST,
@@ -168,6 +169,12 @@ export const loginAction = (formData) => async (dispatch) => {
     const { data } = await axios.post(buildApiUrl('login'), formData, config);
 
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+    // Clear Agent Chat artifacts on user switch/login
+    try {
+      localStorage.removeItem('agentChat.draft');
+      localStorage.removeItem('agentChat.lastQ');
+    } catch {}
+    dispatch({ type: AGENT_CHAT_RESET });
     setSecureToken(data);
     dispatch(userInfoDetailsAction());
   } catch (error) {
@@ -203,6 +210,12 @@ export const googleUserLoginAction = (googleRes) => async (dispatch) => {
     const { data } = await axios.post(buildApiUrl('googleLogin'), {}, config);
 
     dispatch({ type: GOOGLE_USER_LOGIN_SUCCESS, payload: data });
+    // Clear Agent Chat artifacts on user switch/login
+    try {
+      localStorage.removeItem('agentChat.draft');
+      localStorage.removeItem('agentChat.lastQ');
+    } catch {}
+    dispatch({ type: AGENT_CHAT_RESET });
     setSecureToken(data);
     dispatch(userInfoDetailsAction());
   } catch (error) {
@@ -218,6 +231,11 @@ export const logoutAction = () => (dispatch) => {
   // Clear all stored authentication data
   localStorage.removeItem('userInfo');
   localStorage.removeItem('tokenExpiration');
+  // Clear Agent Chat local storage
+  try {
+    localStorage.removeItem('agentChat.draft');
+    localStorage.removeItem('agentChat.lastQ');
+  } catch {}
 
   // Reset all user-related Redux state
   dispatch({ type: USER_LOGOUT });
@@ -230,6 +248,8 @@ export const logoutAction = () => (dispatch) => {
   dispatch({ type: USER_FORGOT_PW_SEND_EMAIL_RESET });
   dispatch({ type: USER_RESET_PASSWORD_RESET });
   dispatch({ type: CONTACT_FORM_RESET });
+  // Clear Agent Chat Redux state
+  dispatch({ type: AGENT_CHAT_RESET });
 };
 
 // User Registration

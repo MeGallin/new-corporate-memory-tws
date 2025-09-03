@@ -1,6 +1,6 @@
 .agent-chat {
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 0;
   padding: 12px;
   margin: 12px 0 20px 0;
   background: #fff;
@@ -22,7 +22,7 @@
   flex: 1;
   padding: 8px 10px;
   border: 1px solid #d1d5db;
-  border-radius: 6px;
+  border-radius: 0;
 }
 
 /* Buttons use shared ButtonComponent styles. */
@@ -34,7 +34,7 @@
   margin-top: 10px;
   padding: 10px;
   border: 1px solid #e5e7eb;
-  border-radius: 6px;
+  border-radius: 0;
   background: #fafafa;
 }
 
@@ -49,7 +49,7 @@
   width: 100%;
   padding: 8px 10px;
   border: 1px solid #d1d5db;
-  border-radius: 6px;
+  border-radius: 0;
 }
 
 .agent-chat__checkbox {
@@ -68,28 +68,76 @@
   color: #b91c1c;
 }
 
-.agent-chat__answer {
+.agent-chat__qa {
   margin-top: 12px;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 0;
+  padding: 10px;
 }
 
 .agent-chat__answer-row {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: flex-start;
 }
 
 .agent-chat__question {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   font-weight: 600;
   font-size: 14px;
-  color: #374151;
+  color: #1e40af;
+}
+
+/* Clearfix to contain the floated pill */
+.agent-chat__question::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.agent-chat__question-row {
+  display: block;
+}
+
+.agent-chat__question-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+
+.agent-chat__pill {
+  background: #eef2ff;
+  color: #1e40af;
+  border: 1px solid #c7d2fe;
+  border-radius: 0;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.agent-chat__pill--last {
+  background: #1e3a8a; /* stronger indigo */
+  color: #ffffff;
+  border-color: #1e3a8a;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .agent-chat__answer-label {
-  margin-bottom: 6px;
-  font-weight: 600;
+  flex: 0 0 auto;
+  font-weight: 700;
   font-size: 14px;
-  color: #374151;
+  color: #1e3a8a;
+  background: #dbeafe;
+  border: 1px solid #bfdbfe;
+  border-radius: 0;
+  padding: 2px 8px;
+  line-height: 1.5;
 }
 
 /* Copy actions removed */
@@ -129,7 +177,7 @@
   background: #eef2ff;
   color: #1e40af;
   border: 1px solid #c7d2fe;
-  border-radius: 999px;
+  border-radius: 0;
   padding: 2px 6px;
   font-size: 12px;
 }
@@ -138,7 +186,7 @@
   font-weight: 500;
   display: inline-block;
   padding: 2px 6px;
-  border-radius: 999px;
+  border-radius: 0;
   background: #f9fafb;
   border: 1px solid #e5e7eb;
 }
@@ -190,7 +238,22 @@
   background: #eef2ff;
   color: #1e40af;
   border: 1px solid #c7d2fe;
-  border-radius: 999px;
+  border-radius: 0;
   padding: 4px 8px;
   font-size: 12px;
+}
+.agent-chat__question-label {
+  flex: 0 0 auto;
+  font-weight: 700;
+  font-size: 14px;
+  color: #1e3a8a;
+  background: #dbeafe;
+  border: 1px solid #bfdbfe;
+  border-radius: 0;
+  padding: 2px 8px;
+  line-height: 1.5;
+}
+
+.agent-chat__question-content {
+  color: #1e40af;
 }

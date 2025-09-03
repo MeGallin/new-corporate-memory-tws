@@ -11,6 +11,12 @@ const HomeComponent = () => {
         records of the organization's activities, such as meeting minutes,
         financial records, and communication logs.
       </p>
+      <h2>AI</h2>
+      <p>
+        We use AI to enhance discovery and recall across your corporate memory,
+        helping turn stored knowledge into actionable insight. For a deeper
+        description of how this works, see the About page.
+      </p>
       <h2>Knowledge</h2>
       <p>
         The abilities and knowledge of your employees. Generally speaking, when
@@ -73,4 +79,3 @@ const HomeComponent = () => {
 };
 
 export default HomeComponent;
-

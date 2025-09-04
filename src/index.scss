@@ -69,8 +69,9 @@ body {
   line-height: 1.5;
   font-size: 'min(18px, 4.2vw)';
   margin: 0;
-  padding: 0.2em;
-  overflow: hidden;
+  /* Remove top padding to avoid gap above sticky header */
+  padding: 0 0.2em 0.2em 0.2em;
+  overflow: auto;
   display: flex;
   flex-direction: column;
 }

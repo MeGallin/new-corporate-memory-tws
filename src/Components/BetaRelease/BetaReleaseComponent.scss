@@ -1,8 +1,9 @@
 @import '../../index.scss';
 .badge {
-  position: absolute;
+  position: fixed;
   left: -7px;
   top: 20px;
+  z-index: 2001;
   background-color: $secondary-bg-colour;
   transform: rotate(-45deg) scale(1) skew(0deg) translate(10px);
   text-align: center;

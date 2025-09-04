@@ -18,8 +18,7 @@ $grid__bp-md: 1280;
   }
 }
 .content-wrapper {
-  height: calc(100vh - #{$header-height + $footer-height});
-  overflow-y: auto;
+  min-height: calc(100vh - #{$header-height});
   max-width: $grid__bp-md * 1px;
   margin: 0 auto;
   padding: 0 1em;

@@ -1,6 +1,10 @@
 @import '../../index.scss';
 
 header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   a {
@@ -73,6 +77,6 @@ header {
 @media (max-width: 812px) {
   header nav {
     font-size: 0.9em;
-    padding: 6px 0;
+    padding: 0;
   }
 }

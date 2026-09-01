@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_END_POINT;
+const API_BASE_URL = import.meta.env.VITE_END_POINT;
 
 const ENDPOINTS = {
   // User related

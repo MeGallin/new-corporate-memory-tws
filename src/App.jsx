@@ -25,17 +25,17 @@ function App() {
         <Suspense fallback={<SpinnerComponent />}>
           <div className="content-wrapper">
             <Routes>
-              <Route path="/" element={<HomeView />} exact />
-              <Route path="/memories" element={<MemoriesView />} exact />
-              <Route path="/about" element={<AboutView />} exact />
-              <Route path="/contact" element={<ContactView />} exact />
-              <Route path="/forms" element={<FormsView />} exact />
-              <Route path="/user-admin" element={<UserAdminView />} exact />
+              <Route path="/" element={<HomeView />} />
+              <Route path="/memories" element={<MemoriesView />} />
+              <Route path="/about" element={<AboutView />} />
+              <Route path="/contact" element={<ContactView />} />
+              <Route path="/forms" element={<FormsView />} />
+              <Route path="/user-admin" element={<UserAdminView />} />
               <Route
                 path="/password-reset/:token"
                 element={<PasswordResetLinkView />}
               />
-              <Route path="*" element={<ErrorView />} exact />
+              <Route path="*" element={<ErrorView />} />
             </Routes>
           </div>
         </Suspense>

@@ -3,20 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { memoryDeleteAction } from '../../Store/actions/memoriesActions';
 import DeleteMemoryComponent from './DeleteMemoryComponent';
 
-jest.mock('react-redux', () => ({
-  useDispatch: jest.fn(),
-  useSelector: jest.fn(),
+vi.mock('react-redux', () => ({
+  useDispatch: vi.fn(),
+  useSelector: vi.fn(),
 }));
 
-jest.mock('../../Store/actions/memoriesActions', () => ({
-  memoryDeleteAction: jest.fn((id) => ({
+vi.mock('../../Store/actions/memoriesActions', () => ({
+  memoryDeleteAction: vi.fn((id) => ({
     type: 'TEST_MEMORY_DELETE',
     payload: id,
   })),
 }));
 
 describe('DeleteMemoryComponent', () => {
-  const dispatch = jest.fn();
+  const dispatch = vi.fn();
 
   beforeEach(() => {
     document.body.innerHTML = '<div id="root"></div><div id="modal-root"></div>';

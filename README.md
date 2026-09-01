@@ -1,4 +1,16 @@
 
+## Local development
+
+The client uses Vite and React 18.
+
+1. Copy `.env.example` to `.env.development` and supply the local API endpoint and Google web client ID.
+2. Install locked dependencies with `npm ci`.
+3. Start the development server with `npm start` (port 3000).
+
+Run `npm test` for the focused client tests, `npm run build` to create the production site in `build/`, and `npm run preview` to serve that build locally.
+
+Vite loads `.env.development` for the development server and `.env.production` for production builds. Both files remain ignored because their values are deployment-specific.
+
 ## Recent Improvements
 
 *   **State Management Refinement:**

@@ -1,6 +1,4 @@
-@import '../../index.scss';
-
-@import '../../App.scss';
+@use '../../Css/tokens' as *;
 
 .modal-wrapper {
   background-color: $main-font-colour;

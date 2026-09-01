@@ -1,5 +1,5 @@
 // New styles for the container
-@import '../../index.scss';
+@use '../../Css/tokens' as *;
 .success-message-container {
   position: fixed;
   top: 120px;

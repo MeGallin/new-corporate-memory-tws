@@ -1,4 +1,4 @@
-@import '../../index.scss';
+@use '../../Css/tokens' as *;
 
 .memories-image-wrapper {
   display: flex;

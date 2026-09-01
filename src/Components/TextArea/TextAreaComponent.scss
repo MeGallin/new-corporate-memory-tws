@@ -1,4 +1,4 @@
-@import '../../index.scss';
+@use '../../Css/tokens' as *;
 .input-field-wrapper {
   label[for='input-field'] {
     text-transform: uppercase;

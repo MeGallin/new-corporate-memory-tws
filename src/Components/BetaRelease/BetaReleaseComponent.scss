@@ -1,4 +1,4 @@
-@import '../../index.scss';
+@use '../../Css/tokens' as *;
 .badge {
   position: fixed;
   left: -7px;

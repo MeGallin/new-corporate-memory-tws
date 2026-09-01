@@ -1,11 +1,9 @@
-@import './index.scss';
-@import './Css/scssMixIn.scss';
-
-@import './Css/componentWrapper.scss';
-@import './Css/fieldSet.scss';
-@import './Css/icons.scss';
-@import './Css/scrollBar.scss';
-@import './Css/textArea.scss';
+@use './Css/tokens' as *;
+@use './Css/componentWrapper';
+@use './Css/fieldSet';
+@use './Css/icons';
+@use './Css/scrollBar';
+@use './Css/textArea';
 
 $grid__bp-md: 1280;
 

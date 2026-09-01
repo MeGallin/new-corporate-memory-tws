@@ -1,4 +1,4 @@
-@import '../../index.scss';
+@use '../../Css/tokens' as *;
 .forms-text-wrapper {
   display: flex;
   flex-wrap: wrap;

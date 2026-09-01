@@ -1,4 +1,4 @@
-@import '../../index.scss';
+@use '../../Css/tokens' as *;
 
 .start-component-wrapper {
   color: $rating-colour;

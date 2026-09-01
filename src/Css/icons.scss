@@ -1,3 +1,5 @@
+@use './tokens' as *;
+
 .upload-icon {
   color: $main-font-colour;
   opacity: 0.4;

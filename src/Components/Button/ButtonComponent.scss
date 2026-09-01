@@ -1,5 +1,5 @@
 /* Button style */
-@import '../../index.scss';
+@use '../../Css/tokens' as *;
 
 $btn-primary: #3b71ca;
 $btn-secondary: #9fa6b2;

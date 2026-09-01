@@ -1,4 +1,4 @@
-@import '../../index.scss';
+@use '../../Css/tokens' as *;
 
 .admin-component-select-name-dropdown {
   color: $warning;

@@ -2,14 +2,14 @@ import PropTypes from 'prop-types';
 import './TextAreaComponent.scss';
 
 const TextAreaComponent = ({
-  id,
+  id = '',
   name,
   value,
-  placeholder,
+  placeholder = '',
   onChange,
-  label,
-  error,
-  className,
+  label = '',
+  error = null,
+  className = '',
 }) => {
   return (
     <div className="input-field-wrapper">
@@ -25,14 +25,6 @@ const TextAreaComponent = ({
       {error && <p className="validation-error">{error}</p>}
     </div>
   );
-};
-
-TextAreaComponent.defaultProps = {
-  id: '',
-  placeholder: '',
-  label: '',
-  error: null,
-  className: '',
 };
 
 TextAreaComponent.propTypes = {

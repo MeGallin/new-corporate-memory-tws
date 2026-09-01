@@ -2,13 +2,13 @@ import './SearchComponent.scss';
 import PropTypes from 'prop-types';
 
 const SearchComponent = ({
-  id,
-  type,
-  placeholder,
+  id = '',
+  type = 'search',
+  placeholder = '',
   onChange,
-  className,
+  className = '',
   value,
-  label,
+  label = '',
 }) => {
   return (
     <div className="search-input-wrapper">
@@ -23,14 +23,6 @@ const SearchComponent = ({
       />
     </div>
   );
-};
-
-SearchComponent.defaultProps = {
-  id: '',
-  type: 'search',
-  className: '',
-  placeholder: '',
-  label: '',
 };
 
 SearchComponent.propTypes = {

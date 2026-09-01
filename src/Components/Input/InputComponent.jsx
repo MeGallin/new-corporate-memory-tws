@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const InputComponent = ({
-  id,
-  type,
+  id = '',
+  type = 'text',
   label,
   name,
   value = '',
-  placeholder,
-  error,
-  className,
+  placeholder = '',
+  error = null,
+  className = '',
   onChange,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -50,14 +50,6 @@ const InputComponent = ({
       {error && <p className="validation-error">{error}</p>}
     </div>
   );
-};
-
-InputComponent.defaultProps = {
-  type: 'text',
-  className: '',
-  placeholder: '',
-  error: null,
-  id: '',
 };
 
 InputComponent.propTypes = {

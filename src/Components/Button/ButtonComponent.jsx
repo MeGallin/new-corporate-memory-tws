@@ -2,7 +2,15 @@ import React from 'react';
 import './ButtonComponent.scss';
 import PropTypes from 'prop-types';
 
-const ButtonComponent = ({ id, type, text, onClick, variant, disabled, className }) => {
+const ButtonComponent = ({
+  id,
+  type = 'button',
+  text,
+  onClick,
+  variant = 'primary',
+  disabled = false,
+  className = '',
+}) => {
   const buttonClasses = [variant, className].filter(Boolean).join(' ');
 
   return (
@@ -16,13 +24,6 @@ const ButtonComponent = ({ id, type, text, onClick, variant, disabled, className
       {text}
     </button>
   );
-};
-
-ButtonComponent.defaultProps = {
-  disabled: false,
-  variant: 'primary',
-  className: '',
-  type: 'button',
 };
 
 ButtonComponent.propTypes = {

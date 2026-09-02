@@ -1,25 +1,35 @@
 @use '../../Css/tokens' as *;
 
-.badge {
+.beta-release-badge {
   position: fixed;
-  top: 18px;
-  left: 12px;
+  top: 13px;
+  left: -25px;
   z-index: 2001;
-  padding: 0.26rem 0.5rem;
+  width: 94px;
+  padding: 0.3rem 0;
   border: 1px solid rgba($surface, 0.3);
-  border-radius: 4px;
+  border-radius: 2px;
   background: $brand;
+  box-shadow: 0 2px 8px rgba($shell, 0.45);
   color: $on-brand;
+  pointer-events: none;
   font-family: $font-label;
   font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   line-height: 1;
+  text-align: center;
   text-transform: uppercase;
+  transform: rotate(-45deg);
+  transform-origin: center;
 }
 
 @media (max-width: 640px) {
-  .badge {
-    display: none;
+  .beta-release-badge {
+    top: 9px;
+    left: -21px;
+    width: 76px;
+    padding: 0.24rem 0;
+    font-size: 0.56rem;
   }
 }

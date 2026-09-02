@@ -12,7 +12,7 @@
 }
 
 .content-wrapper {
-  width: min(100% - 2rem, 1240px);
+  width: calc(100% - 2rem);
   min-height: calc(100dvh - #{$header-height});
   margin: 0 auto;
   padding: clamp(1.25rem, 3vw, 2.5rem) 0 3rem;
@@ -21,7 +21,7 @@
 
 @media (max-width: 640px) {
   .content-wrapper {
-    width: min(100% - 1rem, 1240px);
+    width: calc(100% - 1rem);
     padding-top: 1rem;
   }
 }

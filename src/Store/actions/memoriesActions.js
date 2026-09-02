@@ -49,7 +49,9 @@ const handleMemoriesApiError = (error) => {
 
   if (error.response) {
     errorMessage =
-      error.response.data?.message || `Server Error: ${error.response.status}`;
+      error.response.data?.message ||
+      error.response.data?.error ||
+      `Server Error: ${error.response.status}`;
   } else if (error.request) {
     errorMessage = 'Network error. Please check your connection.';
   } else {

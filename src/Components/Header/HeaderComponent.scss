@@ -11,7 +11,7 @@ header {
   color: $ink;
 
   nav {
-    width: min(100% - 2rem, 1240px);
+    width: calc(100% - 2rem);
     margin: 0 auto;
   }
 
@@ -69,7 +69,7 @@ header {
     text-align: center;
 
     .user-info-nav-link {
-      width: min(100% - 2rem, 1240px);
+      width: calc(100% - 2rem);
       margin: 0 auto;
       padding: 0.35rem 0;
     }
@@ -104,7 +104,7 @@ header {
     }
 
     .header-user .user-info-nav-link {
-      width: min(100% - 1rem, 1240px);
+      width: calc(100% - 1rem);
     }
   }
 }

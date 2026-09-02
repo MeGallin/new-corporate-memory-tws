@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 
 import {
   loginAction,
@@ -138,14 +138,10 @@ const LoginComponent = () => {
               <SpinnerComponent />
             ) : (
               <div className="google-login-container">
-                <GoogleOAuthProvider
-                  clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
-                >
-                  <GoogleLogin
-                    onSuccess={googleSuccess}
-                    onError={googleFailure}
-                  />
-                </GoogleOAuthProvider>
+                <GoogleLogin
+                  onSuccess={googleSuccess}
+                  onError={googleFailure}
+                />
               </div>
             )}
           </form>

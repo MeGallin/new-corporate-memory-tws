@@ -1,7 +1,7 @@
 @use '../../Css/tokens' as *;
 
 footer {
-  padding: 1.25rem max(1rem, calc((100% - 1240px) / 2));
+  padding: 1.25rem 1rem;
   border-top: 1px solid $border-colour-light;
   background: $shell;
   color: $ink-soft;

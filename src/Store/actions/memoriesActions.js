@@ -82,6 +82,22 @@ const validateMemoryOperation = (
     if (!data.memory || data.memory.trim().length === 0) {
       return { isValid: false, error: 'Memory content is required' };
     }
+
+    if (data.memory.trim().length < 5) {
+      return {
+        isValid: false,
+        error: 'Memory content must contain at least 5 characters',
+      };
+    }
+
+    const priority = Number(data.priority);
+    if (!Number.isInteger(priority) || priority < 1 || priority > 5) {
+      return { isValid: false, error: 'Memory priority must be between 1 and 5' };
+    }
+
+    if (data.dueDate && !isValidDate(data.dueDate)) {
+      return { isValid: false, error: 'Please provide a valid due date' };
+    }
   }
 
   return { isValid: true };

@@ -4,6 +4,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './EditMemoryComponent.scss';
 import PropTypes from 'prop-types';
+import {
+  isValidMemoryNote,
+  isValidMemoryTitle,
+  isValidPriority,
+} from '../../Utils/validation';
 
 import { memoryEditAction } from '../../Store/actions/memoriesActions';
 
@@ -34,7 +39,7 @@ const EditMemoryComponent = ({ updateMemory }) => {
         title: updateMemory.title || '',
         memory: updateMemory.memory || '',
         dueDate: hasDueDate ? new Date(updateMemory.dueDate) : null,
-        priority: updateMemory.priority || '',
+        priority: updateMemory.priority || '1',
         tag: updateMemory.tag || '',
       });
       setAddDueDate(updateMemory.setDueDate); // Initialize toggle based on existing setDueDate
@@ -76,7 +81,14 @@ const EditMemoryComponent = ({ updateMemory }) => {
     }
   };
 
-  const isFormInvalid = !title || !memory || memory.length < 5;
+  const isTitleInvalid = title.length > 0 && !isValidMemoryTitle(title);
+  const isMemoryInvalid = memory.length > 0 && !isValidMemoryNote(memory);
+  const isReminderInvalid = addDueDate && !dueDate;
+  const isFormInvalid =
+    !isValidMemoryTitle(title) ||
+    !isValidMemoryNote(memory) ||
+    !isValidPriority(priority) ||
+    isReminderInvalid;
 
   return (
     <div className="update-memory-wrapper">
@@ -100,6 +112,8 @@ const EditMemoryComponent = ({ updateMemory }) => {
                 name="title"
                 placeholder="Give this memory a clear title"
                 required
+                className={isTitleInvalid ? 'invalid' : title ? 'entered' : ''}
+                error={isTitleInvalid ? 'Enter a memory title.' : null}
                 onChange={handleOnchange}
               />
 
@@ -107,7 +121,7 @@ const EditMemoryComponent = ({ updateMemory }) => {
                 <div>
                   <label htmlFor="edit-memory-note">Memory note</label>
                   <span id="edit-memory-note-help">
-                    {memory.length} characters, 5 minimum
+                    {memory.trim().length} characters, 5 minimum
                   </span>
                 </div>
                 <textarea
@@ -115,10 +129,22 @@ const EditMemoryComponent = ({ updateMemory }) => {
                   name="memory"
                   value={memory}
                   placeholder="Write the information you want to remember"
-                  aria-describedby="edit-memory-note-help"
+                  aria-describedby={
+                    isMemoryInvalid
+                      ? 'edit-memory-note-help edit-memory-note-error'
+                      : 'edit-memory-note-help'
+                  }
                   required
+                  minLength={5}
+                  className={isMemoryInvalid ? 'invalid' : memory ? 'entered' : ''}
+                  aria-invalid={isMemoryInvalid ? 'true' : undefined}
                   onChange={handleOnchange}
                 />
+                {isMemoryInvalid && (
+                  <p id="edit-memory-note-error" className="validation-error">
+                    Memory note must contain at least 5 characters.
+                  </p>
+                )}
               </div>
 
               <div className="memory-form-grid">
@@ -165,6 +191,9 @@ const EditMemoryComponent = ({ updateMemory }) => {
                   placeholderText="Choose a due date"
                   showTimeInput
                 />
+              )}
+              {isReminderInvalid && (
+                <p className="validation-error">Choose a due date or turn off the reminder.</p>
               )}
             </fieldset>
 

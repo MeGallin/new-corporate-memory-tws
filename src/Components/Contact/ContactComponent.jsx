@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { nameRegEx, emailRegEx } from '../../Utils/regEx';
+import { isValidEmail, isValidName } from '../../Utils/validation';
 
 import { contactFormAction } from '../../Store/actions/ContactFormActions';
 import { CONTACT_FORM_RESET } from '../../Store/constants/contactFormConstants';
@@ -11,7 +11,7 @@ import TextAreaComponent from '../TextArea/TextAreaComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import SuccessComponent from '../Success/SuccessComponent';
 import ErrorComponent from '../Error/ErrorComponent';
-import AboutComponent from '../About/AboutComponent';
+import './ContactComponent.scss';
 
 const ContactComponent = () => {
   const dispatch = useDispatch();
@@ -22,7 +22,11 @@ const ContactComponent = () => {
   });
   const { name, email, message } = formData;
 
-  const isFormInvalid = !nameRegEx.test(name) || !emailRegEx.test(email) || message.length <= 8;
+  const isNameInvalid = name.length > 0 && !isValidName(name);
+  const isEmailInvalid = email.length > 0 && !isValidEmail(email);
+  const isMessageInvalid = message.length > 0 && message.trim().length < 9;
+  const isFormInvalid =
+    !isValidName(name) || !isValidEmail(email) || message.trim().length < 9;
 
   const handleOnChange = (e) => {
     setFormData((prev) => ({
@@ -33,7 +37,7 @@ const ContactComponent = () => {
 
   const handleSubmitContactForm = (e) => {
     e.preventDefault();
-    //Dispatch Action here
+    if (isFormInvalid) return;
     dispatch(contactFormAction(formData));
     setFormData({
       name: '',
@@ -50,7 +54,7 @@ const ContactComponent = () => {
       {error ? <ErrorComponent error={error} /> : null}
       {success ? (
         <SuccessComponent
-          message={'Your enquiry have been successfully submitted.'}
+          message="Your enquiry has been successfully submitted."
           onClose={() => dispatch({ type: CONTACT_FORM_RESET })}
         />
       ) : null}
@@ -58,68 +62,125 @@ const ContactComponent = () => {
       {loading ? (
         <SpinnerComponent />
       ) : (
-        <div className="component-wrapper">
-          <fieldset className="fieldSet">
-            <legend>Get In Touch</legend>
+        <section className="contact-workbench" aria-labelledby="contact-heading">
+          <div className="contact-workbench__header">
             <div>
-              <p>
-                If you have any questions or need help, please fill out the form
-                below.
-              </p>
-              <form onSubmit={handleSubmitContactForm}>
-                <InputComponent
-                  label="Name"
-                  value={name}
-                  type="text"
-                  name="name"
-                  required
-                  className={!nameRegEx.test(name) ? 'invalid' : 'entered'}
-                  error={
-                    !nameRegEx.test(name) && name.length !== 0
-                      ? `Name must contain at least 5 characters`
-                      : null
-                  }
-                  onChange={handleOnChange}
-                />
-                <InputComponent
-                  label="EMAIL"
-                  value={email}
-                  type="email"
-                  name="email"
-                  required
-                  className={!emailRegEx.test(email) ? 'invalid' : 'entered'}
-                  error={
-                    !emailRegEx.test(email) && email.length !== 0
-                      ? `Invalid email address.`
-                      : null
-                  }
-                  onChange={handleOnChange}
-                />
-                <TextAreaComponent
-                  label="How can we help you?"
-                  id="message"
-                  name="message"
-                  value={message}
-                  className={message.length <= 8 ? 'invalid' : 'entered'}
-                  error={
-                    message.length <= 8 && message?.length !== 0
-                      ? `Message must contain at least 8 characters`
-                      : null
-                  }
-                  onChange={handleOnChange}
-                />
-                <ButtonComponent
-                  type="submit"
-                  text={isFormInvalid ? 'Disabled' : 'Submit your Enquiry'}
-                  variant="dark"
-                  disabled={isFormInvalid}
-                />
-              </form>
+              <p>Support and general enquiries</p>
+              <h1 id="contact-heading">Contact workspace</h1>
             </div>
-          </fieldset>
+            <span>Public enquiry</span>
+          </div>
 
-          <AboutComponent />
-        </div>
+          <div className="contact-workbench__grid">
+            <aside className="contact-guidance" aria-label="Enquiry guidance">
+              <fieldset className="query-fieldset">
+                <legend>Before you send</legend>
+                <div className="contact-guidance__intro">
+                  <h2>How can we help?</h2>
+                  <p>
+                    Share the issue or question clearly and provide an email
+                    address where we can reply.
+                  </p>
+                </div>
+                <dl className="contact-guidance__list">
+                  <div>
+                    <dt>Be specific</dt>
+                    <dd>Include the page, action, or feature involved.</dd>
+                  </div>
+                  <div>
+                    <dt>Protect your account</dt>
+                    <dd>Do not include passwords, tokens, or secret keys.</dd>
+                  </div>
+                  <div>
+                    <dt>Check your email</dt>
+                    <dd>Use an address where you can receive our response.</dd>
+                  </div>
+                </dl>
+              </fieldset>
+            </aside>
+
+            <form className="contact-form" onSubmit={handleSubmitContactForm}>
+              <fieldset className="query-fieldset">
+                <legend>Send an enquiry</legend>
+                <div className="contact-form__intro">
+                  <h2>Tell us what you need</h2>
+                  <p>Complete all three fields before sending your enquiry.</p>
+                </div>
+
+                <div className="contact-form__identity">
+                  <InputComponent
+                    id="contact-name"
+                    label="Name"
+                    value={name}
+                    type="text"
+                    name="name"
+                    placeholder="Your name"
+                    required
+                    className={isNameInvalid ? 'invalid' : name ? 'entered' : ''}
+                    error={
+                      isNameInvalid
+                        ? 'Enter your first name and surname.'
+                        : null
+                    }
+                    onChange={handleOnChange}
+                  />
+                  <InputComponent
+                    id="contact-email"
+                    label="Email"
+                    value={email}
+                    type="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                    className={isEmailInvalid ? 'invalid' : email ? 'entered' : ''}
+                    error={
+                      isEmailInvalid
+                        ? 'Enter a valid email address.'
+                        : null
+                    }
+                    onChange={handleOnChange}
+                  />
+                </div>
+
+                <div className="contact-form__message">
+                  <div>
+                    <label htmlFor="contact-message">Message</label>
+                    <span id="contact-message-help">
+                      {message.trim().length} characters, 9 minimum
+                    </span>
+                  </div>
+                  <TextAreaComponent
+                    id="contact-message"
+                    name="message"
+                    value={message}
+                    placeholder="Describe your question or the help you need"
+                    aria-describedby="contact-message-help"
+                    required
+                    minLength={9}
+                    className={
+                      isMessageInvalid ? 'invalid' : message ? 'entered' : ''
+                    }
+                    error={
+                      isMessageInvalid
+                        ? 'Message must contain at least 9 characters.'
+                        : null
+                    }
+                    onChange={handleOnChange}
+                  />
+                </div>
+
+                <div className="contact-form__actions">
+                  <ButtonComponent
+                    type="submit"
+                    text="Send enquiry"
+                    variant="success"
+                    disabled={isFormInvalid}
+                  />
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </section>
       )}
     </>
   );

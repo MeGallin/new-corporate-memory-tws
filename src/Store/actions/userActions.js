@@ -1,5 +1,11 @@
 import axios from 'axios';
 import { buildApiUrl } from '../utils/api';
+import {
+  PASSWORD_REQUIREMENT,
+  isValidEmail,
+  isValidName,
+  isValidNewPassword,
+} from '../../Utils/validation';
 import { MEMORIES_GET_RESET } from '../constants/memoriesConstants';
 import { CONTACT_FORM_RESET } from '../constants/contactFormConstants';
 import { AGENT_CHAT_RESET } from '../constants/agentConstants';
@@ -37,12 +43,11 @@ import {
 
 // Utility functions for validation
 const validateEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  return isValidEmail(email);
 };
 
 const validatePassword = (password) => {
-  return password && password.length >= 8;
+  return isValidNewPassword(password);
 };
 
 // Token management utilities
@@ -267,15 +272,23 @@ export const registerAction = (formData) => async (dispatch) => {
     if (!formData.password || !validatePassword(formData.password)) {
       dispatch({
         type: USER_REGISTER_FAILURE,
-        payload: 'Password must be at least 8 characters long',
+        payload: PASSWORD_REQUIREMENT,
       });
       return;
     }
 
-    if (!formData.name) {
+    if (!isValidName(formData.name)) {
       dispatch({
         type: USER_REGISTER_FAILURE,
-        payload: 'Name is required',
+        payload: 'Enter your first name and surname.',
+      });
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      dispatch({
+        type: USER_REGISTER_FAILURE,
+        payload: 'Passwords do not match.',
       });
       return;
     }
@@ -346,7 +359,7 @@ export const userResetPasswordAction = (updatedInfo) => async (dispatch) => {
     if (!updatedInfo.password || !validatePassword(updatedInfo.password)) {
       dispatch({
         type: USER_RESET_PASSWORD_FAILURE,
-        payload: 'Password must be at least 8 characters long',
+        payload: PASSWORD_REQUIREMENT,
       });
       return;
     }
@@ -390,6 +403,31 @@ export const userEditDetailAction =
       dispatch({
         type: USER_EDIT_DETAILS_REQUEST,
       });
+
+      if (formData.name !== undefined && !isValidName(formData.name)) {
+        dispatch({
+          type: USER_EDIT_DETAILS_FAILURE,
+          payload: 'Enter your first name and surname.',
+        });
+        return;
+      }
+      if (formData.email !== undefined && !isValidEmail(formData.email)) {
+        dispatch({
+          type: USER_EDIT_DETAILS_FAILURE,
+          payload: 'Enter a valid email address.',
+        });
+        return;
+      }
+      if (
+        formData.password !== undefined &&
+        !isValidNewPassword(formData.password)
+      ) {
+        dispatch({
+          type: USER_EDIT_DETAILS_FAILURE,
+          payload: PASSWORD_REQUIREMENT,
+        });
+        return;
+      }
 
       const state = getState();
       const userInfo =

@@ -12,6 +12,7 @@ import { FaUpload, FaTrash, FaPencilAlt } from 'react-icons/fa';
 import InputComponent from '../Input/InputComponent';
 import ButtonComponent from '../Button/ButtonComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
+import { getImageFileError, IMAGE_ACCEPT } from '../../Utils/validation';
 
 const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
   const [showUploadInput, setShowUploadInput] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewImageFile, setPreviewImageFile] = useState('');
+  const [fileError, setFileError] = useState(null);
 
   const previewFile = (file) => {
     const reader = new FileReader();
@@ -37,20 +39,32 @@ const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
 
   const uploadFileHandler = (e) => {
     const imageFile = e.target.files[0];
-    if (imageFile) {
-      setPreviewImageFile(imageFile);
-      previewFile(imageFile);
+    const validationError = getImageFileError(imageFile);
+    setFileError(validationError);
+    if (validationError) {
+      e.target.value = '';
+      setPreviewImage('');
+      setPreviewImageFile('');
+      return;
     }
+    setPreviewImageFile(imageFile);
+    previewFile(imageFile);
   };
 
   const handleCancelUpload = () => {
     setPreviewImage('');
     setPreviewImageFile('');
+    setFileError(null);
     setShowUploadInput(false);
   };
 
   const handleImageUpdate = (e) => {
     e.preventDefault();
+    const validationError = getImageFileError(previewImageFile);
+    if (validationError) {
+      setFileError(validationError);
+      return;
+    }
     const formImageData = new FormData();
     formImageData.append('userProfileImage', previewImageFile);
     dispatch(userProfileImageUploadAction(id, formImageData));
@@ -76,7 +90,7 @@ const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
         type="submit"
         text="Yes, like it!"
         variant="success"
-        disabled={false}
+        disabled={!previewImageFile}
       />
       <ButtonComponent
         onClick={handleCancelUpload}
@@ -160,6 +174,8 @@ const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
             label={imgSrc ? 'Change Image' : 'Add an Image'}
             type="file"
             name="userProfileImage"
+            accept={IMAGE_ACCEPT}
+            error={fileError}
             onChange={uploadFileHandler}
           />
         </div>

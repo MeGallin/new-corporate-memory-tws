@@ -1,88 +1,123 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { passwordRegEx } from '../../Utils/regEx';
-
 import { userResetPasswordAction } from '../../Store/actions/userActions';
 import { USER_RESET_PASSWORD_RESET } from '../../Store/constants/userConstants';
+import {
+  PASSWORD_REQUIREMENT,
+  isValidNewPassword,
+} from '../../Utils/validation';
 
 import InputComponent from '../Input/InputComponent';
 import ButtonComponent from '../Button/ButtonComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import ErrorComponent from '../Error/ErrorComponent';
 import SuccessComponent from '../Success/SuccessComponent';
+import '../../Css/authWorkspace.scss';
 
 const PasswordResetLinkComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
   const [password, setPassword] = useState('');
+  const isPasswordInvalid = !isValidNewPassword(password);
+  const { loading, error, success } = useSelector(
+    (state) => state.userResetPassword,
+  );
 
-  const handleOnChange = (e) => {
-    setPassword(e.target.value);
+  useEffect(() => {
+    if (!success) {
+      return undefined;
+    }
+
+    const redirectTimer = setTimeout(() => {
+      navigate('/forms');
+    }, 6000);
+
+    return () => clearTimeout(redirectTimer);
+  }, [success, navigate]);
+
+  const handleOnChange = (event) => {
+    setPassword(event.target.value);
   };
 
-  const isPasswordInvalid = !passwordRegEx.test(password);
-
-  const handlePasswordResetSubmit = (e) => {
-    e.preventDefault();
+  const handlePasswordResetSubmit = (event) => {
+    event.preventDefault();
+    if (isPasswordInvalid || !params.token) return;
     dispatch(
       userResetPasswordAction({
-        password: password,
+        password,
         resetPasswordToken: params.token,
       }),
     );
     setPassword('');
-    setTimeout(() => {
-      navigate('/forms');
-    }, 6000);
   };
-  const userResetPassword = useSelector((state) => state.userResetPassword);
-  const { loading, error, success } = userResetPassword;
 
   return (
-    <>
-      {error ? <ErrorComponent error={error} /> : null}
-      {success ? (
+    <section className="auth-reset-workbench" aria-labelledby="reset-heading">
+      <div className="auth-workbench__header">
+        <div>
+          <p>Secure account recovery</p>
+          <h1 id="reset-heading">Password workspace</h1>
+        </div>
+        <span>Reset password</span>
+      </div>
+
+      {error && <ErrorComponent error={error} />}
+      {success && (
         <SuccessComponent
-          message="Password was successfully changed. You will be routed shortly"
+          message="Your password was changed successfully. You will be redirected shortly."
           onClose={() => dispatch({ type: USER_RESET_PASSWORD_RESET })}
         />
-      ) : null}
+      )}
       {loading ? (
         <SpinnerComponent />
       ) : (
-        <fieldset className="fieldSet">
-          <legend>Reset Password</legend>
-          <div>
-            <form onSubmit={handlePasswordResetSubmit}>
-              <InputComponent
-                label="Password"
-                type="password"
-                name="password"
-                value={password}
-                required
-                className={isPasswordInvalid ? 'invalid' : 'entered'}
-                error={
-                  isPasswordInvalid && password.length !== 0
-                    ? `Password must contain at least 1 Capital letter, 1 number and 1 special character.`
-                    : null
-                }
-                onChange={handleOnChange}
-              />
+        <fieldset className="query-fieldset auth-form-section">
+          <legend>Choose a new password</legend>
+          <div className="auth-form-header">
+            <h2>Protect your account</h2>
+            <p>{PASSWORD_REQUIREMENT}</p>
+          </div>
 
+          <form onSubmit={handlePasswordResetSubmit}>
+            <InputComponent
+              id="reset-password"
+              label="New password"
+              type="password"
+              name="password"
+              value={password}
+              placeholder="Enter a secure password"
+              autoComplete="new-password"
+              required
+              className={
+                password && isPasswordInvalid
+                  ? 'invalid'
+                  : password
+                    ? 'entered'
+                    : ''
+              }
+              error={
+                isPasswordInvalid && password.length !== 0
+                  ? PASSWORD_REQUIREMENT
+                  : null
+              }
+              onChange={handleOnChange}
+            />
+
+            <div className="auth-form-actions">
               <ButtonComponent
                 type="submit"
-                text={isPasswordInvalid ? 'Disabled' : 'Submit'}
-                variant="primary"
+                text="Update password"
+                variant="success"
                 disabled={isPasswordInvalid}
               />
-            </form>
-          </div>
+            </div>
+          </form>
         </fieldset>
       )}
-    </>
+    </section>
   );
 };
 

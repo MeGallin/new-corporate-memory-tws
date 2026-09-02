@@ -12,6 +12,7 @@ const AgentChatComponent = ({ actions = null }) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [lastQuestion, setLastQuestion] = useState('');
   const [filters, setFilters] = useState({ tags: [], priority: [], dueOnly: false });
+  const [priorityError, setPriorityError] = useState('');
 
   const { loading, error, data } = useSelector((state) => state.agentChat);
   const { userInfo } = useSelector((state) => state.userLogin);
@@ -20,7 +21,7 @@ const AgentChatComponent = ({ actions = null }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || !question.trim() || priorityError) return;
     const payload = { question: question.trim() };
     setLastQuestion(payload.question);
     try {
@@ -48,8 +49,14 @@ const AgentChatComponent = ({ actions = null }) => {
     const val = e.target.value;
     const parts = val
       .split(',')
-      .map((p) => p.trim())
+      .map((p) => p.trim().toLowerCase())
       .filter(Boolean);
+    const invalidPriorities = parts.filter(
+      (priority) => !['low', 'med', 'high'].includes(priority.toLowerCase()),
+    );
+    setPriorityError(
+      invalidPriorities.length ? 'Use only low, med, or high.' : '',
+    );
     setFilters((f) => ({ ...f, priority: parts }));
   };
 
@@ -96,11 +103,15 @@ const AgentChatComponent = ({ actions = null }) => {
       <legend>Ask AI</legend>
       <form onSubmit={onSubmit} className="agent-chat__form">
         <input
+          id="agent-chat-question"
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Ask AI about your memories"
           className="agent-chat__input"
+          aria-label="Ask AI about your memories"
+          required
+          maxLength={500}
         />
         {question.trim() && (
           <div className="agent-chat__actions">
@@ -108,7 +119,7 @@ const AgentChatComponent = ({ actions = null }) => {
               type="submit"
               text={loading ? 'Asking...' : 'Ask'}
               variant="success"
-              disabled={!question.trim() || !isAuthenticated || loading}
+              disabled={!question.trim() || !isAuthenticated || loading || !!priorityError}
             />
             <ButtonComponent
               type="button"
@@ -134,12 +145,24 @@ const AgentChatComponent = ({ actions = null }) => {
       {showAdvanced && (
         <div id="agent-chat-filters" className="agent-chat__filters">
           <div className="agent-chat__field">
-            <label>Tags (comma-separated)</label>
-            <input type="text" onChange={handleTagsChange} placeholder="e.g., project-x, finance" />
+            <label htmlFor="agent-chat-tags">Tags (comma-separated)</label>
+            <input id="agent-chat-tags" type="text" onChange={handleTagsChange} placeholder="e.g., project-x, finance" />
           </div>
           <div className="agent-chat__field">
-            <label>Priority (comma-separated: low, med, high)</label>
-            <input type="text" onChange={handlePriorityChange} placeholder="e.g., high" />
+            <label htmlFor="agent-chat-priority">Priority (comma-separated: low, med, high)</label>
+            <input
+              id="agent-chat-priority"
+              type="text"
+              onChange={handlePriorityChange}
+              placeholder="e.g., high"
+              aria-invalid={priorityError ? 'true' : undefined}
+              aria-describedby={priorityError ? 'agent-chat-priority-error' : undefined}
+            />
+            {priorityError && (
+              <p id="agent-chat-priority-error" className="validation-error">
+                {priorityError}
+              </p>
+            )}
           </div>
           <div className="agent-chat__field agent-chat__checkbox">
             <label>

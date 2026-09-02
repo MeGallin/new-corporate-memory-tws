@@ -19,6 +19,10 @@ const InputComponent = ({
 
   const isPasswordField = type === 'password';
   const currentType = isPasswordField ? (isPasswordVisible ? 'text' : 'password') : type;
+  const errorId = id ? `${id}-error` : undefined;
+  const describedBy = [inputProps['aria-describedby'], error ? errorId : null]
+    .filter(Boolean)
+    .join(' ') || undefined;
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prev) => !prev);
@@ -29,13 +33,15 @@ const InputComponent = ({
       <div className="input-icon-wrapper">
         {label && <label htmlFor={id}>{label}</label>}
         {isPasswordField && (
-          <div
+          <button
+            type="button"
             onClick={togglePasswordVisibility}
             title={isPasswordVisible ? 'HIDE PASSWORD' : 'SHOW PASSWORD'}
             className="password-toggle-icon"
+            aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
           >
             {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-          </div>
+          </button>
         )}
       </div>
       <input
@@ -47,9 +53,11 @@ const InputComponent = ({
         className={className}
         onChange={onChange}
         {...inputProps}
+        aria-describedby={describedBy}
+        aria-invalid={error ? 'true' : undefined}
       />
 
-      {error && <p className="validation-error">{error}</p>}
+      {error && <p id={errorId} className="validation-error">{error}</p>}
     </div>
   );
 };

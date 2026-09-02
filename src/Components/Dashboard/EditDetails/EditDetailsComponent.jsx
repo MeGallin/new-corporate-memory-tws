@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { nameRegEx, emailRegEx, passwordRegEx } from '../../../Utils/regEx';
+import {
+  PASSWORD_REQUIREMENT,
+  isValidEmail,
+  isValidName,
+  isValidNewPassword,
+} from '../../../Utils/validation';
 import { userEditDetailAction } from '../../../Store/actions/userActions';
 import './EditDetailsComponent.scss';
 import InputComponent from '../../Input/InputComponent';
@@ -36,7 +41,21 @@ const EditDetailsComponent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(userEditDetailAction(formData));
+    if (!editingField) return;
+
+    const validators = {
+      name: isValidName,
+      email: isValidEmail,
+      password: isValidNewPassword,
+    };
+    const value = formData[editingField];
+    if (!validators[editingField](value)) return;
+
+    dispatch(
+      userEditDetailAction({
+        [editingField]: editingField === 'password' ? value : value.trim(),
+      }),
+    );
     setEditingField(null);
   };
 
@@ -55,27 +74,33 @@ const EditDetailsComponent = () => {
     </div>
   );
 
-  const renderEditField = (field, validationRegex) => {
-    let currentValidation = true;
-    if (formData[field]) {
-        currentValidation = validationRegex.test(formData[field]);
-    }
+  const renderEditField = (field, validator) => {
+    const currentValidation = validator(formData[field]);
+    const errorMessages = {
+      name: 'Enter your first name and surname.',
+      email: 'Enter a valid email address.',
+      password: PASSWORD_REQUIREMENT,
+    };
 
     return (
       <form className="edit-details-form" onSubmit={handleSubmit}>
         <InputComponent
+          id={`edit-account-${field}`}
           label={`EDIT ${field}`}
           value={formData[field]}
-          type={field === 'password' ? 'password' : 'text'}
+          type={field === 'password' ? 'password' : field === 'email' ? 'email' : 'text'}
           name={field}
+          autoComplete={
+            field === 'password' ? 'new-password' : field === 'email' ? 'email' : 'name'
+          }
           required
           className={!currentValidation ? 'invalid' : 'entered'}
-          error={!currentValidation && formData[field].length > 0 ? `Invalid ${field}` : null}
+          error={!currentValidation ? errorMessages[field] : null}
           onChange={handleOnchange}
         />
         <ButtonComponent
           type="submit"
-          text={!currentValidation ? 'Disabled' : 'Update'}
+          text="Update"
           variant="dark"
           disabled={!currentValidation}
         />
@@ -95,15 +120,15 @@ const EditDetailsComponent = () => {
       <legend>Edit Details</legend>
       <div className="account-edit-grid">
         {editingField === 'name'
-          ? renderEditField('name', nameRegEx)
+          ? renderEditField('name', isValidName)
           : renderDisplayField('name', 'Name', userDetails?.name)}
 
         {editingField === 'email'
-          ? renderEditField('email', emailRegEx)
+          ? renderEditField('email', isValidEmail)
           : renderDisplayField('email', 'Email', userDetails?.email)}
 
         {editingField === 'password'
-          ? renderEditField('password', passwordRegEx)
+          ? renderEditField('password', isValidNewPassword)
           : renderDisplayField('password', 'Password', '********')}
       </div>
     </fieldset>

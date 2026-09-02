@@ -10,7 +10,13 @@ const TextAreaComponent = ({
   label = '',
   error = null,
   className = '',
+  ...textareaProps
 }) => {
+  const errorId = id ? `${id}-error` : undefined;
+  const describedBy = [textareaProps['aria-describedby'], error ? errorId : null]
+    .filter(Boolean)
+    .join(' ') || undefined;
+
   return (
     <div className="input-field-wrapper">
       {label && <label htmlFor={id}>{label}</label>}
@@ -21,8 +27,11 @@ const TextAreaComponent = ({
         placeholder={placeholder}
         className={className}
         onChange={onChange}
+        {...textareaProps}
+        aria-describedby={describedBy}
+        aria-invalid={error ? 'true' : undefined}
       />
-      {error && <p className="validation-error">{error}</p>}
+      {error && <p id={errorId} className="validation-error">{error}</p>}
     </div>
   );
 };
@@ -36,6 +45,9 @@ TextAreaComponent.propTypes = {
   label: PropTypes.string,
   error: PropTypes.string,
   className: PropTypes.string,
+  required: PropTypes.bool,
+  minLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  'aria-describedby': PropTypes.string,
 };
 
 export default TextAreaComponent;

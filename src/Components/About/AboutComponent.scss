@@ -1,26 +1,263 @@
 @use '../../Css/tokens' as *;
 
-.fieldSet ul:not([class]) {
+.about-workbench {
   display: grid;
-  gap: 0.7rem;
-  margin: 1rem 0;
-  padding-left: 1.2rem;
-}
-
-.fieldSet code {
-  padding: 0.12rem 0.3rem;
-  border-radius: 4px;
-  background: $surface-muted;
-  color: $brand-strong;
-  font-family: $font-label;
-  font-size: 0.85em;
-}
-
-.highlight-box {
-  margin: 1.25rem 0;
+  gap: 1rem;
+  margin-bottom: 1rem;
   padding: 1rem;
-  border: 1px solid rgba($brand, 0.28);
-  border-left: 4px solid $brand;
+  border: 1px solid $border-colour-light;
   border-radius: $radius-control;
-  background: $brand-soft;
+  background: $shell;
+  box-shadow: 0 10px 28px rgba($shell, 0.28);
+
+  > .query-fieldset,
+  fieldset.query-fieldset {
+    border-radius: $radius-control;
+    background: $surface;
+    box-shadow: none;
+  }
+}
+
+.about-workbench__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.15rem 0.85rem;
+  border-bottom: 1px solid $border-colour-light;
+
+  > div {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  p,
+  span {
+    color: $text-muted;
+    font-family: $font-label;
+    font-size: 0.64rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    color: $ink;
+    font-size: clamp(1.25rem, 2.2vw, 1.7rem);
+    letter-spacing: -0.035em;
+  }
+}
+
+.about-overview-grid,
+.about-platform-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+
+  > .query-fieldset {
+    display: grid;
+    align-content: start;
+    gap: 0.65rem;
+  }
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    color: $ink;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    color: $text-muted;
+  }
+}
+
+.about-steps {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  counter-reset: about-step;
+  list-style: none;
+
+  li {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 0.65rem;
+    align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid $border-colour-light;
+    color: $ink-soft;
+    counter-increment: about-step;
+  }
+
+  li::before {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    place-items: center;
+    border: 1px solid $border-colour;
+    border-radius: $radius-control;
+    background: $shell;
+    color: $brand-strong;
+    content: counter(about-step);
+    font-family: $font-label;
+    font-size: 0.68rem;
+    font-weight: 600;
+  }
+
+  li:last-child {
+    border-bottom: 0;
+  }
+}
+
+.about-ai-panel {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.about-panel-heading {
+  display: grid;
+  gap: 0.3rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid $border-colour-light;
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    color: $ink;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    color: $text-muted;
+  }
+}
+
+.about-feature-grid,
+.about-technology-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+
+  > div {
+    display: grid;
+    gap: 0.2rem;
+    padding: 0.7rem;
+    border: 1px solid $border-colour-light;
+    border-radius: $radius-control;
+    background: $shell;
+  }
+
+  dt {
+    color: $ink-soft;
+    font-family: $font-label;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    color: $text-muted;
+    font-size: 0.86rem;
+  }
+}
+
+.about-technology-list {
+  grid-template-columns: 1fr;
+}
+
+.about-workbench .about-security-panel {
+  border-left-color: $brand;
+}
+
+.about-contact-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  > div {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    color: $ink;
+    font-size: 1rem;
+  }
+
+  p {
+    color: $text-muted;
+  }
+}
+
+.about-contact-link {
+  display: inline-flex;
+  min-height: 40px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0.62rem 0.9rem;
+  border: 1px solid $brand-strong;
+  border-radius: $radius-control;
+  background: $brand-strong;
+  color: $on-brand;
+  font-family: $font-label;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.035em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: $brand-hover;
+    background: $brand-hover;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $brand;
+    outline-offset: 2px;
+  }
+}
+
+@media (max-width: 760px) {
+  .about-workbench {
+    padding: 0.75rem;
+  }
+
+  .about-overview-grid,
+  .about-platform-grid,
+  .about-feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .about-workbench__header,
+  .about-contact-panel {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .about-contact-link {
+    width: 100%;
+  }
 }

@@ -66,6 +66,13 @@
   width: 100%;
 }
 
+.agent-chat__field .validation-error {
+  margin-top: 0.35rem;
+  color: $danger;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
 .agent-chat__checkbox {
   display: flex;
   align-items: center;

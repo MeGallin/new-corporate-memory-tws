@@ -38,13 +38,26 @@ export const agentChatAction = (payload) => async (dispatch, getState) => {
       ...(payload?.filters ? { filters: payload.filters } : {}),
     };
 
-    if (!body.question || typeof body.question !== 'string') {
+    if (
+      !body.question ||
+      typeof body.question !== 'string' ||
+      !body.question.trim()
+    ) {
       dispatch({
         type: AGENT_CHAT_FAILURE,
         payload: 'Please provide a question to ask the agent.',
       });
       return;
     }
+    if (body.question.trim().length > 500) {
+      dispatch({
+        type: AGENT_CHAT_FAILURE,
+        payload: 'Questions must be 500 characters or fewer.',
+      });
+      return;
+    }
+
+    body.question = body.question.trim();
 
     const { data } = await axios.post(
       buildApiUrl('agentMemoriesChat'),

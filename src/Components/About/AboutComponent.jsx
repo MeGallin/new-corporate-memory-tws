@@ -1,105 +1,124 @@
-import React from 'react';
+import { NavLink } from 'react-router-dom';
 import './AboutComponent.scss';
 
 const AboutComponent = () => {
   return (
-    <div className="fieldSet">
-      <h1>About</h1>
-      <p>
-        YCM is a productivity tool that is easy to use and allows you to save,
-        retrieve, and edit information in a secure environment.
-      </p>
-      <p>
-        To get started, create an account, confirm your email address, and log
-        into your secure dashboard. From there, you can create new memories, add
-        optional tags, and set reminders.
-      </p>
-      <p>There is no limit to the number of memories that you can create.</p>
-
-      <h2>AI Features</h2>
-      <p>
-        An authenticated AI assistant lets you ask questions about your own
-        memories. Requests use your signed-in session, and no chat history is
-        stored on the server.
-      </p>
-      <ul>
-        <li>
-          <strong>Agent Chat</strong>: Ask natural questions about your saved
-          memories from the Memories page. The assistant formats structured
-          answers with clear lists and highlights for date-like values.
-        </li>
-        <li>
-          <strong>Secure by default</strong>: Requests go to a protected
-          endpoint using your signed-in session (Bearer token). Only your data
-          is queried for your answers.
-        </li>
-        <li>
-          <strong>Private UI state</strong>: We do not store your chat history
-          on the server. The UI keeps a small, local-only state for convenience:
-          a temporary draft (<code>agentChat.draft</code>) and the last question
-          label (<code>agentChat.lastQ</code>). Both clear automatically on
-          logout and when switching accounts.
-        </li>
-        <li>
-          <strong>Clean presentation</strong>: The assistant removes inline
-          citations, shows your last question as “Q.” and the reply as “A.”, and
-          displays a spinner while processing.
-        </li>
-        <li>
-          <strong>Mobile-friendly</strong>: The chat input, filter controls, and
-          answers are fully responsive with accessible labels and keyboard
-          support.
-        </li>
-      </ul>
-
-      <h2>The Tech</h2>
-      <p>
-        Our application is built on the MERN stack, a powerful and widely
-        adopted technology stack for modern web development. MERN brings
-        together four open-source components:
-      </p>
-      <ul>
-        <li>
-          <strong>MongoDB</strong>: a flexible NoSQL database for storing and
-          managing data.
-        </li>
-        <li>
-          <strong>Express.js</strong>: a lightweight Node.js framework for
-          building efficient APIs and server logic.
-        </li>
-        <li>
-          <strong>React</strong>: a dynamic JavaScript library for creating
-          interactive, responsive user interfaces.
-        </li>
-        <li>
-          <strong>Node.js</strong>: a fast and scalable JavaScript runtime for
-          executing server-side code.
-        </li>
-      </ul>
-      <p>
-        By combining these technologies, we deliver a seamless experience with a
-        robust, scalable back end and a flexible, intuitive front end. It is all
-        powered by a single language across the stack.
-      </p>
-      <div className="highlight-box">
-        <p>
-          To further strengthen our platform, we’ve introduced{' '}
-          <strong>field-level encryption</strong> for sensitive data. This means
-          that even though your information is stored securely in MongoDB,
-          critical fields such as user memories are{' '}
-          <strong>encrypted before they ever touch the database</strong>. The
-          result is a system that not only scales and performs but also protects
-          user data by design.
-        </p>
+    <section className="about-workbench" aria-labelledby="about-heading">
+      <div className="about-workbench__header">
+        <div>
+          <p>Product and platform</p>
+          <h1 id="about-heading">About YCM</h1>
+        </div>
+        <span>Your Corporate Memory</span>
       </div>
-      <p>
-        Together, the MERN stack and our enhanced encryption ensure that our
-        application is fast, secure, and future-ready.
-      </p>
 
-      <h2>Contact</h2>
-      <p>Feel free to contact us via our contact form.</p>
-    </div>
+      <div className="about-overview-grid">
+        <fieldset className="query-fieldset">
+          <legend>What YCM does</legend>
+          <h2>Keep important information within reach</h2>
+          <p>
+            YCM is a productivity tool that allows you to save, retrieve, and
+            edit information in a secure environment.
+          </p>
+          <p>
+            There is no limit to the number of memories that you can create,
+            helping your useful information grow with you.
+          </p>
+        </fieldset>
+
+        <fieldset className="query-fieldset">
+          <legend>Getting started</legend>
+          <h2>From account to first memory</h2>
+          <ol className="about-steps">
+            <li>Create your account.</li>
+            <li>Confirm your email address.</li>
+            <li>Log in to your secure dashboard.</li>
+            <li>Add memories, tags, priorities, and reminders.</li>
+          </ol>
+        </fieldset>
+      </div>
+
+      <fieldset className="query-fieldset about-ai-panel">
+        <legend>AI features</legend>
+        <div className="about-panel-heading">
+          <h2>Ask questions about your own memories</h2>
+          <p>
+            The authenticated assistant helps you discover information already
+            stored in your account.
+          </p>
+        </div>
+        <dl className="about-feature-grid">
+          <div>
+            <dt>Agent chat</dt>
+            <dd>Ask natural questions from the Memories page.</dd>
+          </div>
+          <div>
+            <dt>Secure by default</dt>
+            <dd>Your signed-in session limits answers to your own data.</dd>
+          </div>
+          <div>
+            <dt>Private UI state</dt>
+            <dd>Draft and last-question details remain local to your browser.</dd>
+          </div>
+          <div>
+            <dt>Clear presentation</dt>
+            <dd>Structured answers highlight useful lists and date information.</dd>
+          </div>
+        </dl>
+      </fieldset>
+
+      <div className="about-platform-grid">
+        <fieldset className="query-fieldset">
+          <legend>Technology foundation</legend>
+          <div className="about-panel-heading">
+            <h2>The MERN stack</h2>
+            <p>One JavaScript-based platform across the client and API.</p>
+          </div>
+          <dl className="about-technology-list">
+            <div>
+              <dt>MongoDB</dt>
+              <dd>Flexible data storage and management.</dd>
+            </div>
+            <div>
+              <dt>Express.js</dt>
+              <dd>Efficient API and server logic.</dd>
+            </div>
+            <div>
+              <dt>React</dt>
+              <dd>Responsive, interactive user interfaces.</dd>
+            </div>
+            <div>
+              <dt>Node.js</dt>
+              <dd>JavaScript execution across the back end.</dd>
+            </div>
+          </dl>
+        </fieldset>
+
+        <fieldset className="query-fieldset about-security-panel">
+          <legend>Data protection</legend>
+          <h2>Protection by design</h2>
+          <p>
+            Sensitive memory fields are encrypted before they reach the
+            database, strengthening protection for stored information.
+          </p>
+          <p>
+            Authentication and account boundaries keep retrieval focused on the
+            signed-in user's memories.
+          </p>
+        </fieldset>
+      </div>
+
+      <fieldset className="query-fieldset about-contact-panel">
+        <legend>Contact</legend>
+        <div>
+          <h2>Need help or want to ask a question?</h2>
+          <p>Use the contact workspace to send us an enquiry.</p>
+        </div>
+        <NavLink className="about-contact-link" to="/contact">
+          Contact us
+        </NavLink>
+      </fieldset>
+    </section>
   );
 };
 

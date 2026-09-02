@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './MemoriesComponent.scss';
 
 import { memoriesGetAction } from '../../Store/actions/memoriesActions';
+import { userInfoDetailsAction } from '../../Store/actions/userActions';
 
 import CardComponent from '../Card/CardComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
@@ -35,17 +36,38 @@ const Memories = () => {
 
   const memories =
     sortedMemories?.length > 0 ? sortedMemories : fetchedMemories;
-  const { userDetails } = useSelector((state) => state.userInfoDetails);
+  const {
+    loading: userDetailsLoading,
+    error: userDetailsError,
+    userDetails,
+  } = useSelector((state) => state.userInfoDetails);
 
   const isAuthenticated = !!(userInfo || googleUserInfo);
 
   useEffect(() => {
-    if (isAuthenticated && userDetails?.isConfirmed) {
-      dispatch(memoriesGetAction());
-    } else if (userDetails && !userDetails.isConfirmed) {
-      navigate('/forms');
+    if (!isAuthenticated) return;
+
+    if (!userDetails) {
+      if (!userDetailsLoading && !userDetailsError) {
+        dispatch(userInfoDetailsAction());
+      }
+      return;
     }
-  }, [isAuthenticated, userDetails, navigate, dispatch]);
+
+    if (!userDetails.isConfirmed) {
+      navigate('/forms');
+      return;
+    }
+
+    dispatch(memoriesGetAction());
+  }, [
+    dispatch,
+    isAuthenticated,
+    navigate,
+    userDetails,
+    userDetailsError,
+    userDetailsLoading,
+  ]);
 
   const searchedMemories = useMemo(() => {
     if (!memories) return [];
@@ -129,6 +151,19 @@ const Memories = () => {
   );
 
   const renderContent = () => {
+    if (isAuthenticated && userDetailsLoading && !userDetails) {
+      return <SpinnerComponent />;
+    }
+    if (userDetailsError && !userDetails) {
+      return (
+        <div className="error-message">
+          <p>Error loading your account: {userDetailsError}</p>
+          <button onClick={() => dispatch(userInfoDetailsAction())}>
+            Try Again
+          </button>
+        </div>
+      );
+    }
     if (loading) return <SpinnerComponent />;
     if (error) {
       return (

@@ -166,6 +166,51 @@
   white-space: pre-wrap;
 }
 
+.agent-chat__citation-marker {
+  margin-left: 0.16rem;
+  color: $brand-strong;
+  font-family: $font-label;
+  font-size: 0.72em;
+  font-weight: 700;
+  text-decoration: none;
+  vertical-align: super;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+.agent-chat__sources {
+  margin-top: 0.9rem;
+  background: $surface;
+
+  ol {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0;
+    padding-left: 1.4rem;
+  }
+
+  li {
+    padding-left: 0.2rem;
+    color: $ink-soft;
+  }
+
+  span {
+    overflow-wrap: anywhere;
+  }
+
+  small {
+    display: block;
+    margin-top: 0.12rem;
+    color: $text-muted;
+    font-family: $font-label;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+  }
+}
+
 .agent-chat__intro {
   margin-bottom: 0.7rem;
   font-weight: 600;

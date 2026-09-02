@@ -6,6 +6,56 @@ import ButtonComponent from '../Button/ButtonComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import './AgentChatComponent.scss';
 
+const citationMarkerPattern = /\[M-([^\]]+)\]/g;
+
+const getCitationPresentation = (answerText, citations) => {
+  if (!Array.isArray(citations) || !citations.length) {
+    return { citations: [], hasInlineReferences: false };
+  }
+
+  const referencedIds = new Set(
+    [...String(answerText || '').matchAll(citationMarkerPattern)].map(
+      (match) => match[1],
+    ),
+  );
+  const referencedCitations = citations.filter((citation) =>
+    referencedIds.has(String(citation.id)),
+  );
+
+  return {
+    citations: referencedCitations.length
+      ? referencedCitations
+      : citations.slice(0, 3),
+    hasInlineReferences: referencedCitations.length > 0,
+  };
+};
+
+const renderCitedText = (text, citations) => {
+  const citationIndexes = new Map(
+    citations.map((citation, index) => [String(citation.id), index + 1]),
+  );
+
+  return String(text || '')
+    .split(citationMarkerPattern)
+    .map((part, index) => {
+      if (index % 2 === 0) return part;
+
+      const citationNumber = citationIndexes.get(part);
+      if (!citationNumber) return null;
+
+      return (
+        <a
+          key={`${part}-${index}`}
+          href={`#agent-chat-source-${citationNumber}`}
+          className="agent-chat__citation-marker"
+          aria-label={`Source ${citationNumber}`}
+        >
+          [{citationNumber}]
+        </a>
+      );
+    });
+};
+
 const AgentChatComponent = ({ actions = null }) => {
   const dispatch = useDispatch();
   const [question, setQuestion] = useState('');
@@ -18,6 +68,10 @@ const AgentChatComponent = ({ actions = null }) => {
   const { userInfo } = useSelector((state) => state.userLogin);
   const { userInfo: googleUserInfo } = useSelector((state) => state.googleUserLogin);
   const isAuthenticated = !!(userInfo || googleUserInfo);
+  const citationPresentation = getCitationPresentation(
+    data?.answerText,
+    data?.citations,
+  );
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -224,9 +278,7 @@ const AgentChatComponent = ({ actions = null }) => {
             <div className="agent-chat__answer-label">A.</div>
             <div className="agent-chat__answer-body">
           {(() => {
-             const cleaned = data.answerText
-               .replace(/\[M-[^\]]+\]/g, '')
-               .trim();
+             const cleaned = data.answerText.trim();
 
             // Try to split an intro (before first colon) from the body
             let intro = '';
@@ -252,7 +304,11 @@ const AgentChatComponent = ({ actions = null }) => {
             if (items.length >= 2) {
               return (
                 <>
-                  {intro && <div className="agent-chat__intro">{intro}</div>}
+                  {intro && (
+                    <div className="agent-chat__intro">
+                      {renderCitedText(intro, citationPresentation.citations)}
+                    </div>
+                  )}
                   <ol className="agent-chat__list">
                     {items.map((content, idx) => {
                       const titleMatch = content.match(/\*\*(.+?)\*\*/);
@@ -266,7 +322,9 @@ const AgentChatComponent = ({ actions = null }) => {
                         .filter(Boolean);
                       return (
                         <li key={idx} className="agent-chat__item">
-                          <div className="agent-chat__item-title">{title}</div>
+                          <div className="agent-chat__item-title">
+                            {renderCitedText(title, citationPresentation.citations)}
+                          </div>
                           {meta.length > 0 && (
                             <ul className="agent-chat__item-meta">
                               {meta.map((m, i) => {
@@ -290,11 +348,23 @@ const AgentChatComponent = ({ actions = null }) => {
                                   return (
                                     <li key={i}>
                                       <span className="agent-chat__label">{label}:</span>{' '}
-                                      <span className={valueClass}>{value}</span>
+                                      <span className={valueClass}>
+                                        {renderCitedText(
+                                          value,
+                                          citationPresentation.citations,
+                                        )}
+                                      </span>
                                     </li>
                                   );
                                 }
-                                return <li key={i}>{m}</li>;
+                                return (
+                                  <li key={i}>
+                                    {renderCitedText(
+                                      m,
+                                      citationPresentation.citations,
+                                    )}
+                                  </li>
+                                );
                               })}
                             </ul>
                           )}
@@ -308,10 +378,46 @@ const AgentChatComponent = ({ actions = null }) => {
 
             // Fallback: show cleaned text with normalized whitespace
             const normalized = cleaned.replace(/\s{2,}/g, ' ');
-            return <div className="agent-chat__answer-text">{normalized}</div>;
+            return (
+              <div className="agent-chat__answer-text">
+                {renderCitedText(
+                  normalized,
+                  citationPresentation.citations,
+                )}
+              </div>
+            );
           })()}
             </div>
           </div>
+          {citationPresentation.citations.length > 0 && (
+            <fieldset className="agent-chat__sources compact-fieldset">
+              <legend>
+                {citationPresentation.hasInlineReferences
+                  ? 'Referenced memories'
+                  : 'Relevant memories'}
+              </legend>
+              <ol>
+                {citationPresentation.citations.map((citation, index) => {
+                  const score = Number(citation.score);
+                  const rankingScore = Number.isFinite(score)
+                    ? score.toFixed(2)
+                    : null;
+
+                  return (
+                    <li
+                      id={`agent-chat-source-${index + 1}`}
+                      key={citation.id || `${citation.title}-${index}`}
+                    >
+                      <span>{citation.title || 'Untitled memory'}</span>
+                      {rankingScore !== null && (
+                        <small>Ranking score {rankingScore}</small>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </fieldset>
+          )}
         </div>
       )}
     </fieldset>

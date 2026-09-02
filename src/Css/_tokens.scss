@@ -1,16 +1,16 @@
 @use 'sass:color';
 
-// Corporate Memory four-colour system. Every interface colour is one of these
-// four anchors or a calculated shade between them.
+// Corporate Memory surface system. The runtime accent variables replace the
+// default orange while these black, blue, and white anchors stay fixed.
 $palette-black: #080b10;
 $palette-blue: #101d2f;
 $palette-orange: #ff6200;
 $palette-white: #f7f9fc;
 
-$brand: $palette-orange;
-$brand-hover: color.mix($palette-white, $palette-orange, 16%);
-$brand-strong: $palette-orange;
-$brand-soft: color.mix($palette-orange, $palette-blue, 14%);
+$brand: var(--accent-colour);
+$brand-hover: var(--accent-hover);
+$brand-strong: var(--accent-colour);
+$brand-soft: var(--accent-soft);
 
 $shell: $palette-black;
 $canvas: color.mix($palette-blue, $palette-black, 38%);
@@ -19,18 +19,18 @@ $surface-muted: color.mix($palette-white, $palette-blue, 7%);
 $ink: $palette-white;
 $ink-soft: color.mix($palette-white, $palette-blue, 78%);
 $text-muted: color.mix($palette-white, $palette-blue, 58%);
-$on-brand: $palette-black;
+$on-brand: var(--accent-contrast);
 
 $main-bg-colour: $canvas;
 $main-font-colour: $ink;
 $secondary-bg-colour: $brand;
 $light-orange: $brand;
 $burnt-orange: $brand-strong;
-$danger: color.mix($palette-black, $palette-orange, 18%);
+$danger: var(--accent-deep);
 $link-colour: $brand-hover;
 $success: $palette-white;
-$warning: $palette-orange;
-$rating-colour: $palette-orange;
+$warning: var(--accent-colour);
+$rating-colour: var(--accent-colour);
 $info: color.mix($palette-white, $palette-blue, 70%);
 
 $border-colour: color.mix($palette-white, $palette-blue, 22%);

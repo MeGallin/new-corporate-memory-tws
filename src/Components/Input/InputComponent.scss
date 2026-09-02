@@ -31,7 +31,7 @@
 
     &:focus {
       border-color: $brand;
-      box-shadow: 0 0 0 3px rgba($brand, 0.14);
+      box-shadow: 0 0 0 3px color-mix(in srgb, $brand 14%, transparent);
     }
 
     &:-webkit-autofill,

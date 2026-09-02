@@ -1,10 +1,16 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useLayoutEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.scss';
 
 import HeaderComponent from './Components/Header/HeaderComponent';
 import FooterComponent from './Components/Footer/FooterComponent';
 import SpinnerComponent from './Components/Spinner/SpinnerComponent';
+import {
+  applyAccent,
+  getLastStoredAccent,
+  getStoredAccent,
+} from './Utils/accentTheme';
 
 const HomeView = lazy(() => import('./Views/Home/HomeView'));
 const MemoriesView = lazy(() => import('./Views/Memories/MemoriesView'));
@@ -18,6 +24,21 @@ const PasswordResetLinkView = lazy(() =>
 const UserAdminView = lazy(() => import('./Views/UserAdmin/UserAdminView'));
 
 function App() {
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const { userInfo: googleUserInfo } = useSelector(
+    (state) => state.googleUserLogin,
+  );
+  const { userDetails } = useSelector((state) => state.userInfoDetails);
+  const authInfo = userInfo || googleUserInfo;
+
+  useLayoutEffect(() => {
+    applyAccent(
+      authInfo
+        ? getStoredAccent(authInfo, userDetails)
+        : getLastStoredAccent(),
+    );
+  }, [authInfo, userDetails]);
+
   return (
     <Router>
       <div className="container--fluid">

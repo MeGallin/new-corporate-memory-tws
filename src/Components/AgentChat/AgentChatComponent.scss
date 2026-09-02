@@ -31,7 +31,7 @@
 
   &:focus {
     border-color: $brand;
-    box-shadow: 0 0 0 3px rgba($brand, 0.14);
+    box-shadow: 0 0 0 3px color-mix(in srgb, $brand 14%, transparent);
   }
 }
 
@@ -132,7 +132,7 @@
 .agent-chat__label {
   display: inline-block;
   padding: 0.22rem 0.45rem;
-  border: 1px solid rgba($brand-strong, 0.32);
+  border: 1px solid color-mix(in srgb, $brand-strong 32%, transparent);
   border-radius: 4px;
   background: $brand-soft;
   color: $brand-strong;
@@ -201,13 +201,13 @@
 }
 
 .agent-chat__meta-value.is-overdue {
-  border-color: rgba($danger, 0.3);
+  border-color: color-mix(in srgb, $danger 30%, transparent);
   background: $brand-soft;
   color: $danger;
 }
 
 .agent-chat__meta-value.is-upcoming {
-  border-color: rgba($warning, 0.3);
+  border-color: color-mix(in srgb, $warning 30%, transparent);
   background: $brand-soft;
   color: $warning;
 }

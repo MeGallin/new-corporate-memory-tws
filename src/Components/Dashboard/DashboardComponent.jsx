@@ -16,6 +16,7 @@ import CardComponent from '../Card/CardComponent';
 import EditDetailsComponent from './EditDetails/EditDetailsComponent';
 import AdminComponent from '../Admin/AdminComponent';
 import UserProfileImageComponent from '../UserProfileImages/UserProfileImageComponent';
+import ThemeAccentSelectorComponent from '../ThemeAccentSelector/ThemeAccentSelectorComponent';
 
 const DashboardComponent = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const DashboardComponent = () => {
   const { loading, success, error } = useSelector((state) => state.userEditDetails);
   const { memories } = useSelector((state) => state.memoriesGet);
   const isAuthenticated = Boolean(userInfo || googleUserInfo);
+  const authInfo = userInfo || googleUserInfo;
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -90,7 +92,15 @@ const DashboardComponent = () => {
                 <span>Account and memory administration</span>
                 <h1 id="dashboard-title">Dashboard workspace</h1>
               </div>
-              {userDetails && <strong>{userDetails.name}</strong>}
+              {userDetails && (
+                <div className="dashboard-workbench__actions">
+                  <strong>{userDetails.name}</strong>
+                  <ThemeAccentSelectorComponent
+                    authInfo={authInfo}
+                    userDetails={userDetails}
+                  />
+                </div>
+              )}
             </header>
 
             {userDetails?.isAdmin && (

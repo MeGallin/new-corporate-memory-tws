@@ -68,6 +68,21 @@
   }
 }
 
+.dashboard-workbench__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+
+  > strong {
+    color: $ink;
+    font-family: $font-label;
+    font-size: 0.64rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+}
+
 .dashboard-admin-panel,
 .dashboard-profile-panel,
 .dashboard-memory-status,
@@ -283,6 +298,11 @@
     align-items: flex-start;
     flex-direction: column;
     gap: 0.35rem;
+  }
+
+  .dashboard-workbench__actions {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .dashboard-metrics,

@@ -4,7 +4,7 @@
   display: block;
   width: 100%;
   padding: 0.8rem 1rem;
-  border: 1px solid rgba($danger, 0.35);
+  border: 1px solid color-mix(in srgb, $danger 35%, transparent);
   border-left: 4px solid $danger;
   border-radius: $radius-control;
   background: $brand-soft;

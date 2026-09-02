@@ -51,14 +51,14 @@ header {
 
     a:hover,
     .logout-button:hover {
-      border-bottom-color: rgba($brand, 0.55);
+      border-bottom-color: color-mix(in srgb, $brand 55%, transparent);
       background: $surface-muted;
       color: $ink;
     }
 
     a.active {
       border-bottom-color: $brand;
-      background: rgba($brand, 0.12);
+      background: color-mix(in srgb, $brand 12%, transparent);
       color: $brand-hover;
     }
   }

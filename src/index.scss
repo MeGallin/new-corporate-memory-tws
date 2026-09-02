@@ -2,6 +2,27 @@
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
+:root,
+:root[data-accent='orange'] {
+  --accent-colour: #ff6200;
+  --accent-contrast: #080b10;
+  --accent-hover: color-mix(in srgb, #f7f9fc 16%, var(--accent-colour));
+  --accent-soft: color-mix(in srgb, var(--accent-colour) 14%, #101d2f);
+  --accent-deep: color-mix(in srgb, #080b10 18%, var(--accent-colour));
+}
+
+:root[data-accent='yellow'] {
+  --accent-colour: #f4c542;
+}
+
+:root[data-accent='green'] {
+  --accent-colour: #35b779;
+}
+
+:root[data-accent='indian-red'] {
+  --accent-colour: #cd5c5c;
+}
+
 *,
 *::before,
 *::after {
@@ -18,7 +39,11 @@ body {
   min-height: 100%;
   margin: 0;
   background:
-    radial-gradient(circle at 96% 2%, rgba($brand, 0.09), transparent 28rem),
+    radial-gradient(
+      circle at 96% 2%,
+      color-mix(in srgb, $brand 9%, transparent),
+      transparent 28rem
+    ),
     $canvas;
   color: $ink;
   font-family: $font-body;
@@ -110,7 +135,7 @@ ul + p {
 }
 
 :focus-visible {
-  outline: 3px solid rgba($brand, 0.48);
+  outline: 3px solid color-mix(in srgb, $brand 48%, transparent);
   outline-offset: 3px;
 }
 

@@ -41,7 +41,7 @@ input:checked + .slider {
 }
 
 input:focus-visible + .slider {
-  outline: 3px solid rgba($brand, 0.4);
+  outline: 3px solid color-mix(in srgb, $brand 40%, transparent);
   outline-offset: 2px;
 }
 

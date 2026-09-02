@@ -98,18 +98,22 @@ const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
         className="user-profile-image"
       />
       <div className="image-icon-wrapper">
-        <FaTrash
+        <button
+          type="button"
           onClick={handleImageDelete}
-          className="trash-icon"
-          size={22}
           title="Delete this Image"
-        />
-        <FaPencilAlt
+          aria-label="Delete profile image"
+        >
+          <FaTrash className="trash-icon" size={16} aria-hidden="true" />
+        </button>
+        <button
+          type="button"
           onClick={() => setShowUploadInput(!showUploadInput)}
-          className="pencil-icon"
-          size={22}
           title="EDIT this Image"
-        />
+          aria-label="Change profile image"
+        >
+          <FaPencilAlt className="pencil-icon" size={16} aria-hidden="true" />
+        </button>
       </div>
     </div>
   );
@@ -123,12 +127,15 @@ const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
         alt="Default Profile"
         className="user-profile-image"
       />
-      <FaUpload
+      <button
+        type="button"
         onClick={() => setShowUploadInput((prev) => !prev)}
-        size={22}
         title="Upload an Image"
         className="upload-icon"
-      />
+        aria-label="Upload profile image"
+      >
+        <FaUpload size={16} aria-hidden="true" />
+      </button>
     </div>
   );
 

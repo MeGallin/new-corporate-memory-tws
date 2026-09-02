@@ -2,68 +2,296 @@
 
 .dashboard-wrapper {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
+}
 
-  > .fieldSet {
-    width: 100%;
-    max-width: none;
+.dashboard-workbench,
+.dashboard-account,
+.dashboard-completed {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid $border-colour-light;
+  border-radius: $radius-control;
+  background: $shell;
+  box-shadow: 0 10px 28px rgba($shell, 0.28);
+}
+
+.dashboard-workbench__header,
+.dashboard-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.15rem 0.85rem;
+  border-bottom: 1px solid $border-colour-light;
+
+  h1,
+  h2,
+  span,
+  strong {
+    margin: 0;
   }
 
-  .dashboard-profile-img {
-    width: 100px;
-    height: 100px;
-    border-radius: $radius-card;
-    background: $shell;
-    object-fit: cover;
+  h1 {
+    color: $ink;
+    font-size: clamp(1.25rem, 2.2vw, 1.7rem);
+    letter-spacing: -0.035em;
   }
 
-  .details-label {
+  h2 {
+    color: $ink;
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    letter-spacing: -0.025em;
+  }
+
+  span,
+  strong {
     color: $text-muted;
     font-family: $font-label;
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-size: 0.64rem;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-  }
-
-  .flex-wrapper,
-  .flex-wrapper-dates {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.8rem;
-    margin-top: 0.8rem;
-    padding: 1rem;
-    border: 1px solid $border-colour-light;
-    border-radius: $radius-control;
-    background: $surface-muted;
-    overflow-wrap: anywhere;
-  }
-
-  .flex-wrapper {
-    background: $shell;
-    color: $ink;
-
-    .details-label {
-      color: $text-muted;
-    }
   }
 }
 
-.dashboard-completed-component-wrapper {
+.dashboard-workbench__header {
+  align-items: flex-end;
+  margin-bottom: 1rem;
+
+  > div {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  > strong {
+    color: $ink;
+  }
+}
+
+.dashboard-admin-panel,
+.dashboard-profile-panel,
+.dashboard-memory-status,
+.dashboard-account-details,
+.dashboard-account-status {
+  box-shadow: none;
+}
+
+.dashboard-section-header {
+  min-height: 48px;
+  margin-bottom: 1rem;
+}
+
+.dashboard-account-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  align-items: start;
   gap: 1rem;
+}
+
+.dashboard-profile-panel {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+}
+
+.dashboard-account-content {
+  display: grid;
+  min-width: 0;
+  gap: 0.8rem;
+
+  > .fieldSet {
+    margin: 0;
+    padding: 0.7rem 0.85rem 0.85rem;
+    border-radius: $radius-control;
+    box-shadow: none;
+  }
+
+  > .fieldSet > legend {
+    color: $ink;
+    font-size: 0.62rem;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+}
+
+.dashboard-information-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
+  gap: 0.8rem;
+}
+
+.dashboard-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+
+  > div {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.55rem;
+    border-radius: $radius-control;
+    background: $shell;
+  }
+
+  strong {
+    color: $ink;
+    font-size: 1.35rem;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  span {
+    color: $text-muted;
+    font-family: $font-label;
+    font-size: 0.6rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+}
+
+.dashboard-account-details dl {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+
+  > div {
+    display: grid;
+    grid-template-columns: minmax(110px, 0.45fr) minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.25rem 0;
+  }
+
+  dt,
+  dd {
+    margin: 0;
+  }
+
+  dt {
+    color: $text-muted;
+    font-family: $font-label;
+    font-size: 0.62rem;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    overflow-wrap: anywhere;
+    color: $ink-soft;
+    font-size: 0.82rem;
+  }
+}
+
+.dashboard-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.dashboard-status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: $radius-control;
+  background: $shell;
+
+  > span:last-child {
+    display: grid;
+    gap: 0.05rem;
+  }
+
+  strong {
+    color: $ink;
+    font-size: 0.78rem;
+  }
+}
+
+.dashboard-status-icon {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  place-items: center;
+  border-radius: $radius-control;
+  background: $brand-soft;
+  color: $brand;
+}
+
+.dashboard-wrapper .details-label {
+  color: $text-muted;
+  font-family: $font-label;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.dashboard-audit-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.15rem;
+  color: $text-muted;
+  font-family: $font-label;
+  font-size: 0.62rem;
+}
+
+.dashboard-completed-component-wrapper {
+  column-count: 2;
+  column-gap: 1rem;
+
+  > div {
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 1rem;
+    break-inside: avoid;
+    vertical-align: top;
+  }
 
   .dashboard-completed {
     display: none;
   }
 }
 
-@media (max-width: 800px) {
-  .dashboard-wrapper .flex-wrapper,
-  .dashboard-wrapper .flex-wrapper-dates,
-  .dashboard-completed-component-wrapper {
+@media (max-width: 900px) {
+  .dashboard-account-grid,
+  .dashboard-information-grid {
     grid-template-columns: 1fr;
+  }
+
+  .dashboard-profile-panel {
+    place-items: start;
+  }
+}
+
+@media (max-width: 760px) {
+  .dashboard-workbench,
+  .dashboard-account,
+  .dashboard-completed {
+    padding: 0.75rem;
+  }
+
+  .dashboard-completed-component-wrapper {
+    column-count: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .dashboard-workbench__header,
+  .dashboard-section-header,
+  .dashboard-audit-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .dashboard-metrics,
+  .dashboard-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-account-details dl > div {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
   }
 }

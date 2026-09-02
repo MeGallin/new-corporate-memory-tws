@@ -61,6 +61,17 @@ const AdminComponent = () => {
     ? memories?.filter((obj) => obj?.user === selectedUser._id)
     : [];
 
+  const renderStatus = (isEnabled) => (
+    <span className="admin-status-value">
+      {isEnabled ? (
+        <FaRegThumbsUp className="reg-thumbs-up-icon" aria-hidden="true" />
+      ) : (
+        <FaRegThumbsDown className="reg-thumbs-down-icon" aria-hidden="true" />
+      )}
+      <span>{isEnabled ? 'Yes' : 'No'}</span>
+    </span>
+  );
+
   return (
     <>
       {error && <ErrorComponent error={error} />}
@@ -69,10 +80,10 @@ const AdminComponent = () => {
       ) : (
         <>
           <div className="admin-user-selector">
-            <label htmlFor="user-select">Select a User:</label>
+            <label htmlFor="user-select">Choose an account</label>
             <select id="user-select" onChange={handleUserSelect} defaultValue="">
               <option value="" disabled>
-                --Please choose a user--
+                Select a user
               </option>
               {users?.map((user) => (
                 <option key={user._id} value={user._id}>
@@ -84,66 +95,58 @@ const AdminComponent = () => {
 
           {selectedUser && (
             <>
-              <fieldset className="fieldSet">
-                <legend>{selectedUser.name} Details</legend>
+              <fieldset className="query-fieldset admin-selected-user">
+                <legend>{selectedUser.name} account</legend>
                 <div className="edit-details-wrapper">
-                  <div>
-                    <div>
-                      <span className="details-label">name: </span>
-                      <span>{selectedUser.name}</span>
-                    </div>
-                    <div>
-                      <span className="details-label">email: </span>
-                      <span>{selectedUser.email}</span>
-                    </div>
-                    <div>
-                      <span className="details-label">is Confirmed: </span>
-                      <span>
-                        {selectedUser.isConfirmed ? (
-                          <FaRegThumbsUp
-                            className="reg-thumbs-up-icon"
-                            size={22}
-                          />
-                        ) : (
-                          <FaRegThumbsDown
-                            className="reg-thumbs-down-icon"
-                            size={22}
-                          />
-                        )}
-                      </span>
-                    </div>
-                  </div>
+                  <section className="admin-detail-card" aria-labelledby="identity-title">
+                    <h3 id="identity-title">Identity</h3>
+                    <dl className="admin-detail-list">
+                      <div>
+                        <dt>Name</dt>
+                        <dd>{selectedUser.name}</dd>
+                      </div>
+                      <div>
+                        <dt>Email</dt>
+                        <dd>{selectedUser.email}</dd>
+                      </div>
+                      <div>
+                        <dt>Confirmed</dt>
+                        <dd>{renderStatus(selectedUser.isConfirmed)}</dd>
+                      </div>
+                    </dl>
+                  </section>
 
-                  <div className="is-admin-is-suspended-wrapper">
-                    <div>
+                  <section
+                    className="admin-detail-card is-admin-is-suspended-wrapper"
+                    aria-labelledby="access-title"
+                  >
+                    <h3 id="access-title">Access controls</h3>
+                    <div className="admin-access-grid">
+                      <div className="admin-access-control">
+                        <div>
+                          <span className="details-label">Administrator</span>
+                          {renderStatus(selectedUser.isAdmin)}
+                        </div>
                       <ToggleSwitchComponent
                         id="isAdmin"
                         name="isAdmin"
+                        ariaLabel={`Change administrator access for ${selectedUser.name}`}
                         checked={selectedUser.isAdmin}
                         disabled={selectedUser._id === userDetails?._id}
                         onChange={() =>
                           handleIsAdmin(selectedUser._id, selectedUser.isAdmin)
                         }
                       />
-                      <span className="details-label">is admin: </span>
-                      <span>
-                        {selectedUser.isAdmin ? (
-                          <FaRegThumbsUp
-                            className="reg-thumbs-up-icon"
-                            size={22}
-                          />
-                        ) : (
-                          <FaRegThumbsDown
-                            className="reg-thumbs-down-icon"
-                            size={22}
-                          />
-                        )}
-                      </span>
-                    </div>
-                    <div>
+                      </div>
+                      <div className="admin-access-control">
+                        <div>
+                          <span className="details-label">Suspended</span>
+                          {renderStatus(selectedUser.isSuspended)}
+                        </div>
                       <ToggleSwitchComponent
                         id="isSuspended"
                         name="isSuspended"
+                        ariaLabel={`Change suspension status for ${selectedUser.name}`}
                         checked={selectedUser.isSuspended}
                         disabled={selectedUser._id === userDetails?._id}
                         onChange={() =>
@@ -153,54 +156,38 @@ const AdminComponent = () => {
                           )
                         }
                       />
-                      <span className="details-label">is Suspended: </span>
-                      <span>
-                        {selectedUser.isSuspended ? (
-                          <FaRegThumbsUp
-                            className="reg-thumbs-up-icon"
-                            size={22}
-                          />
-                        ) : (
-                          <FaRegThumbsDown
-                            className="reg-thumbs-down-icon"
-                            size={22}
-                          />
-                        )}
-                      </span>
+                      </div>
                     </div>
-                  </div>
+                  </section>
 
-                  <div>
-                    <div>
-                      <span className="details-label">login Counter: </span>
-                      <span>{selectedUser.loginCounter}</span>
-                    </div>
-                    <div>
-                      <span className="details-label">ip: </span>
-                      <span>
-                        {selectedUser.ipAddress === '::1' ? (
-                          <span>LOCALHOST</span>
-                        ) : (
-                          selectedUser.ipAddress
-                        )}
-                      </span>
-                    </div>
-                  </div>
+                  <section className="admin-detail-card" aria-labelledby="activity-title">
+                    <h3 id="activity-title">Activity</h3>
+                    <dl className="admin-detail-list">
+                      <div>
+                        <dt>Login count</dt>
+                        <dd>{selectedUser.loginCounter}</dd>
+                      </div>
+                      <div>
+                        <dt>IP address</dt>
+                        <dd>
+                          {selectedUser.ipAddress === '::1'
+                            ? 'LOCALHOST'
+                            : selectedUser.ipAddress}
+                        </dd>
+                      </div>
+                    </dl>
+                  </section>
                 </div>
 
                 <div className="user-details-dates-wrapper">
                   <div>
-                    <span className="details-label">created: </span>
+                    <span className="details-label">Member since: </span>
                     <span className="small-text">
-                      {moment(selectedUser.updatedAt).diff(
-                        moment(selectedUser.createdAt),
-                        'days',
-                      )}{' '}
-                      days ago.
+                      {moment(selectedUser.createdAt).format('Do MMM YYYY')}
                     </span>
                   </div>
                   <div>
-                    <span className="details-label">updated: </span>
+                    <span className="details-label">Updated: </span>
                     <span className="small-text">
                       {moment(selectedUser.updatedAt).fromNow()}
                     </span>
@@ -214,9 +201,12 @@ const AdminComponent = () => {
                 )}
               </fieldset>
 
-              <fieldset className="fieldSet">
-                <legend> {selectedUser.name}</legend>
-                {selectedUser.name} has {userMemories?.length} Memories.
+              <fieldset className="query-fieldset admin-selected-summary">
+                <legend>Memory summary</legend>
+                <div className="admin-memory-summary">
+                  <strong>{userMemories?.length || 0}</strong>
+                  <span>Memories owned by {selectedUser.name}</span>
+                </div>
               </fieldset>
             </>
           )}

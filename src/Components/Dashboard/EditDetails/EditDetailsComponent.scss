@@ -1,15 +1,20 @@
 @use '../../../Css/tokens' as *;
 
-.edit-details-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.8rem;
-  border: 1px solid $border-colour-light;
+.account-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+  padding: 0;
   border-radius: $radius-control;
-  background: $surface-muted;
+
+  .edit-detail-item {
+    display: grid;
+    min-width: 0;
+    gap: 0.2rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: $radius-control;
+    background: $shell;
+  }
 
   .edit-title {
     color: $ink-soft;
@@ -20,12 +25,56 @@
   }
 
   .edit-input {
+    display: block;
+    width: 100%;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    overflow: hidden;
     color: $brand-strong;
     cursor: pointer;
+    font-family: $font-body;
+    font-size: 0.86rem;
     font-weight: 600;
+    letter-spacing: 0;
+    text-align: left;
+    text-overflow: ellipsis;
+    text-transform: none;
 
     &:hover {
+      border: 0;
+      background: transparent;
       color: $brand-hover;
     }
+
+    &:focus-visible {
+      outline: 2px solid $brand;
+      outline-offset: 3px;
+    }
+  }
+}
+
+.edit-details-form {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: end;
+  gap: 0.5rem;
+
+  .input-field-wrapper {
+    margin: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .account-edit-grid,
+  .edit-details-form {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-details-form button {
+    width: 100%;
   }
 }

@@ -1,12 +1,20 @@
 import './ToggleSwitchComponent.scss';
 import PropTypes from 'prop-types';
 
-const ToggleSwitchComponent = ({ id, name, checked, disabled, onChange }) => {
+const ToggleSwitchComponent = ({
+  id,
+  name,
+  ariaLabel,
+  checked,
+  disabled,
+  onChange,
+}) => {
   return (
     <label className="switch">
       <input
         id={id}
         name={name}
+        aria-label={ariaLabel}
         checked={checked}
         onChange={onChange}
         disabled={disabled}
@@ -20,6 +28,7 @@ const ToggleSwitchComponent = ({ id, name, checked, disabled, onChange }) => {
 ToggleSwitchComponent.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  ariaLabel: PropTypes.string.isRequired,
   checked: PropTypes.bool.isRequired,
   disabled: PropTypes.bool,
   onChange: PropTypes.func.isRequired,

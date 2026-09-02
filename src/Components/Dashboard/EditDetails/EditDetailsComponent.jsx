@@ -41,15 +41,17 @@ const EditDetailsComponent = () => {
   };
 
   const renderDisplayField = (field, title, value) => (
-    <div>
-      <span className="edit-title">{title}:</span>
-      <span
+    <div className="edit-detail-item">
+      <span className="edit-title">{title}</span>
+      <button
+        type="button"
         onClick={() => setEditingField(field)}
         className="edit-input"
         title={`Edit your ${field}`}
+        aria-label={`Edit your ${field}`}
       >
         {value}
-      </span>
+      </button>
     </div>
   );
 
@@ -60,7 +62,7 @@ const EditDetailsComponent = () => {
     }
 
     return (
-      <form onSubmit={handleSubmit}>
+      <form className="edit-details-form" onSubmit={handleSubmit}>
         <InputComponent
           label={`EDIT ${field}`}
           value={formData[field]}
@@ -73,7 +75,7 @@ const EditDetailsComponent = () => {
         />
         <ButtonComponent
           type="submit"
-          text={!currentValidation ? 'Disabled' : 'UPDATE'}
+          text={!currentValidation ? 'Disabled' : 'Update'}
           variant="dark"
           disabled={!currentValidation}
         />
@@ -91,7 +93,7 @@ const EditDetailsComponent = () => {
   return (
     <fieldset className="fieldSet">
       <legend>Edit Details</legend>
-      <div className="edit-details-wrapper">
+      <div className="account-edit-grid">
         {editingField === 'name'
           ? renderEditField('name', nameRegEx)
           : renderDisplayField('name', 'Name', userDetails?.name)}

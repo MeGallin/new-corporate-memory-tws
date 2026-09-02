@@ -5,25 +5,44 @@
 }
 
 .delete-memory-confirmation {
-  display: flex;
-  min-height: 220px;
-  flex-direction: column;
-  justify-content: center;
-  padding: clamp(0.5rem, 2vw, 1rem);
+  display: grid;
+  gap: 0.8rem;
 
-  h2 {
-    margin-bottom: 0.8rem;
+  > .delete-memory-header {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0 3.25rem 0.8rem 0.15rem;
+    border-bottom: 1px solid $border-colour-light;
   }
 
-  p {
-    max-width: 50ch;
-    margin-bottom: 1.2rem;
+  > .delete-memory-header p,
+  .delete-memory-warning p {
+    margin: 0;
     color: $text-muted;
   }
+}
+
+.delete-memory-warning {
+  background: $surface;
+  box-shadow: none;
 }
 
 .delete-memory-confirmation-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 0.75rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid $border-colour-light;
+}
+
+@media (max-width: 420px) {
+  .delete-memory-confirmation-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    button {
+      width: 100%;
+    }
+  }
 }

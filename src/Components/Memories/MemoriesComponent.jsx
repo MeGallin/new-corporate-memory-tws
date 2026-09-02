@@ -120,7 +120,8 @@ const Memories = () => {
       <ModalComponent
         isOpen={isCreateModalOpen}
         onClose={() => setCreateModalOpen(false)}
-        closeButtonTitle="X"
+        ariaLabel="Create memory"
+        closeButtonTitle="Close create memory dialog"
       >
         <CreateMemoryComponent onCloseModal={() => setCreateModalOpen(false)} />
       </ModalComponent>

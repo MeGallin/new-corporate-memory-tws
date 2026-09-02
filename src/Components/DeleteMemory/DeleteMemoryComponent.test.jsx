@@ -35,12 +35,12 @@ describe('DeleteMemoryComponent', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
 
-    expect(screen.getByText('Delete this memory?')).toBeInTheDocument();
+    expect(screen.getByText('Delete memory?')).toBeInTheDocument();
     expect(dispatch).not.toHaveBeenCalled();
 
     fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
-    expect(screen.queryByText('Delete this memory?')).not.toBeInTheDocument();
+    expect(screen.queryByText('Delete memory?')).not.toBeInTheDocument();
     expect(dispatch).not.toHaveBeenCalled();
 
     fireEvent.click(screen.getByRole('button', { name: 'Delete' }));

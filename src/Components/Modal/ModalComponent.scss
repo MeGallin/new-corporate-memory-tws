@@ -4,8 +4,8 @@
   position: fixed;
   inset: 0;
   z-index: 1500;
-  background: rgba($shell, 0.76);
-  backdrop-filter: blur(5px);
+  background: rgba($shell, 0.84);
+  backdrop-filter: blur(6px);
   cursor: pointer;
 }
 
@@ -14,42 +14,301 @@
   top: 50%;
   left: 50%;
   z-index: 1600;
-  width: min(calc(100% - 1rem), 680px);
-  max-height: min(88dvh, 820px);
-  min-height: 220px;
-  padding: clamp(0.85rem, 2vw, 1.25rem);
+  width: min(calc(100% - 1.5rem), 720px);
+  max-height: min(90dvh, 860px);
   overflow-y: auto;
   transform: translate(-50%, -50%);
-  border: 1px solid $border-colour-light;
-  border-top: 4px solid $brand;
-  border-radius: $radius-card;
-  background: $canvas;
+  border: 1px solid $border-colour;
+  border-radius: $radius-control;
+  outline: 0;
+  background: $shell;
   box-shadow: $shadow-float;
   color: $ink;
-  animation: modal-enter 180ms ease-out;
+  animation: modal-enter 160ms ease-out;
 
-  button.modal-close-button {
-    min-width: 40px;
-    margin: 0 0 0.75rem auto;
-    border-color: $border-colour;
-    background: $surface;
-    color: $ink;
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: $brand;
+    content: '';
   }
+}
+
+.modal-wrapper--compact {
+  width: min(calc(100% - 1.5rem), 500px);
+}
+
+.modal-wrapper--media {
+  width: min(calc(100% - 1.5rem), 960px);
+}
+
+.modal-content {
+  padding: clamp(1rem, 2.4vw, 1.4rem);
+}
+
+button.modal-close-button {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  display: grid;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  min-height: 40px;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+  border-color: $border-colour;
+  background: $surface;
+  color: $ink;
+
+  &:hover {
+    border-color: $brand;
+    background: $brand-soft;
+  }
+}
+
+.memory-form-dialog {
+  display: grid;
+  gap: 0.8rem;
+
+  > .memory-form-header {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0 3.25rem 0.8rem 0.15rem;
+    border-bottom: 1px solid $border-colour-light;
+
+    h2 {
+      color: $ink;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      letter-spacing: -0.03em;
+    }
+
+    p {
+      max-width: 58ch;
+      color: $text-muted;
+      font-size: 0.86rem;
+    }
+  }
+
+  form {
+    display: grid;
+    gap: 0.8rem;
+  }
+}
+
+.memory-form-section {
+  box-shadow: none;
+
+  .input-field-wrapper input {
+    background: $shell;
+  }
+
+  .input-field-wrapper:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.memory-note-field {
+  display: grid;
+  gap: 0.38rem;
+  margin-bottom: 0.85rem;
+
+  > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  label,
+  span {
+    font-family: $font-label;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  label {
+    color: $ink-soft;
+  }
+
+  span {
+    color: $text-muted;
+  }
+
+  textarea {
+    min-height: 170px;
+    background: $shell;
+  }
+}
+
+.memory-form-grid {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.35fr) minmax(0, 1fr);
+  gap: 0.75rem;
+
+  .input-field-wrapper {
+    margin: 0;
+  }
+}
+
+.memory-form-reminder {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.8fr);
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: none;
+
+  > label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $ink-soft;
+    font-family: $font-label;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  > label:only-child {
+    grid-column: 1 / -1;
+  }
+
+  input[type='checkbox'] {
+    accent-color: $brand;
+  }
+
+  .react-datepicker-wrapper,
+  .react-datepicker__input-container,
+  .react-datepicker__input-container input {
+    width: 100%;
+  }
+
+  .react-datepicker__input-container input {
+    min-height: 42px;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid $border-colour;
+    border-radius: $radius-control;
+    outline: 0;
+    background: $shell;
+    color: $ink;
+
+    &:focus {
+      border-color: $brand;
+      box-shadow: 0 0 0 3px rgba($brand, 0.14);
+    }
+  }
+}
+
+.memory-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid $border-colour-light;
+}
+
+.modal-wrapper .react-datepicker {
+  border-color: $border-colour;
+  background: $surface;
+  color: $ink;
+  font-family: $font-body;
+}
+
+.modal-wrapper .react-datepicker__header,
+.modal-wrapper .react-datepicker__time-container,
+.modal-wrapper .react-datepicker__time-box,
+.modal-wrapper .react-datepicker__time-list {
+  border-color: $border-colour-light;
+  background: $shell;
+}
+
+.modal-wrapper .react-datepicker__current-month,
+.modal-wrapper .react-datepicker-time__header,
+.modal-wrapper .react-datepicker__day-name,
+.modal-wrapper .react-datepicker__day,
+.modal-wrapper .react-datepicker__time-name,
+.modal-wrapper .react-datepicker__time-list-item {
+  color: $ink;
+}
+
+.modal-wrapper .react-datepicker__day:hover,
+.modal-wrapper .react-datepicker__time-list-item:hover {
+  background: $brand-soft;
+}
+
+.modal-wrapper .react-datepicker__day--selected,
+.modal-wrapper .react-datepicker__day--keyboard-selected,
+.modal-wrapper .react-datepicker__time-list-item--selected {
+  background: $brand;
+  color: $on-brand;
+}
+
+.modal-wrapper .react-datepicker-time__input {
+  min-height: 30px;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid $border-colour;
+  border-radius: $radius-control;
+  outline: 0;
+  background: $surface;
+  color: $ink;
+}
+
+.modal-wrapper .react-datepicker__triangle {
+  color: $surface;
+  stroke: $border-colour;
+}
+
+.modal-image-large {
+  max-height: calc(90dvh - 5rem);
 }
 
 @keyframes modal-enter {
   from {
     opacity: 0;
-    transform: translate(-50%, calc(-50% + 10px));
+    transform: translate(-50%, calc(-50% + 8px));
   }
+
   to {
     opacity: 1;
     transform: translate(-50%, -50%);
   }
 }
 
-.modal-btn {
-  display: inline-flex;
-  align-items: center;
-  margin: 0.6rem 0;
+@media (max-width: 560px) {
+  .modal-wrapper {
+    width: min(calc(100% - 0.75rem), 720px);
+    max-height: 94dvh;
+  }
+
+  .modal-content {
+    padding: 0.85rem;
+  }
+
+  .memory-form-grid,
+  .memory-form-reminder {
+    grid-template-columns: 1fr;
+  }
+
+  .memory-form-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-wrapper {
+    animation: none;
+  }
 }

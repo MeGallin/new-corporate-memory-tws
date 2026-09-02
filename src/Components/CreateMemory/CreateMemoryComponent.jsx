@@ -78,100 +78,117 @@ const CreateMemoryComponent = ({ onCloseModal }) => {
     setFormData((prev) => ({ ...prev, dueDate: date }));
   };
 
-  const isFormInvalid = !title || !memory || memory.length < 3;
+  const isFormInvalid = !title || !memory || memory.length < 5;
 
   return (
     <div className="create-memory-wrapper">
       {loading ? (
         <SpinnerComponent />
       ) : (
-        <fieldset className="fieldSet">
-          <legend>Create a new memory</legend>
+        <div className="memory-form-dialog">
+          <div className="memory-form-header">
+            <h2>Create memory</h2>
+            <p>Capture the note first, then add any useful organisation or reminder details.</p>
+          </div>
 
-          <div>
-            <form onSubmit={handleCreateMemory}>
+          <form onSubmit={handleCreateMemory}>
+            <fieldset className="query-fieldset memory-form-section">
+              <legend>Memory details</legend>
               <InputComponent
+                id="create-memory-title"
                 label="Title"
                 value={title}
                 type="text"
                 name="title"
-                onChange={handleOnchange}
-              />
-              <p className="small-text">
-                Memory needs to have at least 5 characters [{memory.length}]
-              </p>
-              <textarea
-                id="memory"
-                name="memory"
-                value={memory}
-                placeholder="memory"
+                placeholder="Give this memory a clear title"
+                required
                 onChange={handleOnchange}
               />
 
-              <div className="create-input-wrapper">
+              <div className="memory-note-field">
                 <div>
-                  <label>
-                    Priority
-                    <input
-                      type="number"
-                      id="priority"
-                      name="priority"
-                      value={priority}
-                      min="1"
-                      max="5"
-                      onChange={handleOnchange}
-                    />
-                  </label>
+                  <label htmlFor="create-memory-note">Memory note</label>
+                  <span id="create-memory-note-help">
+                    {memory.length} characters, 5 minimum
+                  </span>
                 </div>
-
-                <InputComponent
-                  label="Tag"
-                  value={tag}
-                  type="text"
-                  name="tag"
+                <textarea
+                  id="create-memory-note"
+                  name="memory"
+                  value={memory}
+                  placeholder="Write the information you want to remember"
+                  aria-describedby="create-memory-note-help"
+                  required
                   onChange={handleOnchange}
                 />
               </div>
 
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={addDueDate}
-                    onChange={handleToggleDueDate}
-                  />
-                  Add Due Date
-                </label>
-                {addDueDate && (
-                  <DatePicker
-                    selected={dueDate}
-                    onChange={handleOnChangeDate}
-                    minDate={new Date()}
-                    showTimeInput
-                  />
-                )}
-              </div>
+              <div className="memory-form-grid">
+                <InputComponent
+                  id="create-memory-priority"
+                  label="Priority"
+                  type="number"
+                  name="priority"
+                  value={priority}
+                  min="1"
+                  max="5"
+                  onChange={handleOnchange}
+                />
 
-              <div className="update-memory-button-wrapper">
+                <InputComponent
+                  id="create-memory-tag"
+                  label="Tag"
+                  value={tag}
+                  type="text"
+                  name="tag"
+                  placeholder="Optional category"
+                  onChange={handleOnchange}
+                />
+              </div>
+            </fieldset>
+
+            <fieldset className="query-fieldset memory-form-reminder">
+              <legend>Reminder</legend>
+              <label htmlFor="create-memory-reminder">
+                <input
+                  id="create-memory-reminder"
+                  type="checkbox"
+                  checked={addDueDate}
+                  onChange={handleToggleDueDate}
+                />
+                Add a due date
+              </label>
+              {addDueDate && (
+                <DatePicker
+                  id="create-memory-due-date"
+                  selected={dueDate}
+                  onChange={handleOnChangeDate}
+                  minDate={new Date()}
+                  placeholderText="Choose a due date"
+                  showTimeInput
+                />
+              )}
+            </fieldset>
+
+            <div className="memory-form-actions">
+              <ButtonComponent
+                type="submit"
+                text="Create memory"
+                variant="success"
+                disabled={isFormInvalid}
+                onClick={handleCreateAndClose}
+              />
+              {!isFormInvalid && (
                 <ButtonComponent
                   type="submit"
-                  text={isFormInvalid ? 'Disabled' : 'Create & Close'}
-                  variant="dark"
-                  disabled={isFormInvalid}
-                  onClick={handleCreateAndClose}
+                  text="Create and add another"
+                  variant="secondary"
+                  onClick={handleCreateAndAddAnother}
                 />
-                {!isFormInvalid && (
-                  <ButtonComponent
-                    type="submit"
-                    text={'Create & Add Another'}
-                    variant="info"
-                    onClick={handleCreateAndAddAnother}
-                  />
-                )}
-              </div>
-            </form>
-          </div>
-        </fieldset>
+              )}
+            </div>
+          </form>
+        </div>
       )}
     </div>
   );
@@ -182,4 +199,3 @@ CreateMemoryComponent.propTypes = {
 };
 
 export default CreateMemoryComponent;
-

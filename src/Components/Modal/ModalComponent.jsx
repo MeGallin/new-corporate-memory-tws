@@ -1,22 +1,41 @@
-import React, { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import { FaTimes } from 'react-icons/fa';
 import './ModalComponent.scss';
 
-const ModalComponent = ({ isOpen, onClose, closeButtonTitle, children }) => {
+const ModalComponent = ({
+  isOpen,
+  onClose,
+  ariaLabel = 'Dialog',
+  closeButtonTitle = 'Close dialog',
+  size = 'standard',
+  children,
+}) => {
+  const dialogRef = useRef(null);
+
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
+    if (!isOpen) {
+      return undefined;
+    }
+
+    const previouslyFocusedElement = document.activeElement;
+    const previousBodyOverflow = document.body.style.overflow;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
         onClose();
       }
     };
 
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-    }
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', handleKeyDown);
+    dialogRef.current?.focus();
 
     return () => {
+      document.body.style.overflow = previousBodyOverflow;
       document.removeEventListener('keydown', handleKeyDown);
+      previouslyFocusedElement?.focus?.();
     };
   }, [isOpen, onClose]);
 
@@ -26,25 +45,44 @@ const ModalComponent = ({ isOpen, onClose, closeButtonTitle, children }) => {
 
   const modalContent = (
     <>
-      <div className="modal-overlay" onClick={onClose}></div>
-      <div className="modal-wrapper" onClick={(e) => e.stopPropagation()}>
-        {closeButtonTitle && (
-          <button onClick={onClose} className="modal-close-button">
-            {closeButtonTitle}
-          </button>
-        )}
-        {typeof children === 'function' ? children(onClose) : children}
+      <div className="modal-overlay" onClick={onClose} aria-hidden="true" />
+      <div
+        ref={dialogRef}
+        className={`modal-wrapper modal-wrapper--${size}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={ariaLabel}
+        tabIndex="-1"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="modal-close-button"
+          aria-label={closeButtonTitle}
+          title={closeButtonTitle}
+        >
+          <FaTimes aria-hidden="true" />
+        </button>
+        <div className="modal-content">
+          {typeof children === 'function' ? children(onClose) : children}
+        </div>
       </div>
     </>
   );
 
-  return ReactDOM.createPortal(modalContent, document.getElementById('modal-root'));
+  return ReactDOM.createPortal(
+    modalContent,
+    document.getElementById('modal-root'),
+  );
 };
 
 ModalComponent.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  ariaLabel: PropTypes.string,
   closeButtonTitle: PropTypes.string,
+  size: PropTypes.oneOf(['compact', 'standard', 'media']),
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
 };
 

@@ -13,6 +13,7 @@ const InputComponent = ({
   error = null,
   className = '',
   onChange,
+  ...inputProps
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -45,6 +46,7 @@ const InputComponent = ({
         placeholder={placeholder}
         className={className}
         onChange={onChange}
+        {...inputProps}
       />
 
       {error && <p className="validation-error">{error}</p>}
@@ -62,6 +64,10 @@ InputComponent.propTypes = {
   error: PropTypes.string,
   className: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  required: PropTypes.bool,
+  min: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  max: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  'aria-describedby': PropTypes.string,
 };
 
 export default InputComponent;

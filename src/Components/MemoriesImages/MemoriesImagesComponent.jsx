@@ -34,6 +34,9 @@ export const MemoryImageDisplayComponent = ({ imgSrc, altText }) => {
       <ModalComponent
         isOpen={isImageModalOpen}
         onClose={() => setImageModalOpen(false)}
+        ariaLabel={`Image preview: ${altText}`}
+        closeButtonTitle="Close image preview"
+        size="media"
       >
         <img src={imgSrc} alt={altText} className="modal-image-large" />
       </ModalComponent>

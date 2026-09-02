@@ -83,31 +83,47 @@ const EditMemoryComponent = ({ updateMemory }) => {
       {loading ? (
         <SpinnerComponent />
       ) : (
-        <fieldset className="fieldSet">
-          <legend>Update memory</legend>
+        <div className="memory-form-dialog">
+          <div className="memory-form-header">
+            <h2>Edit memory</h2>
+            <p>Update the note, organisation, or reminder details for this memory.</p>
+          </div>
 
-          <div>
-            <form onSubmit={handleEditMemory}>
+          <form onSubmit={handleEditMemory}>
+            <fieldset className="query-fieldset memory-form-section">
+              <legend>Memory details</legend>
               <InputComponent
+                id="edit-memory-title"
                 label="Title"
                 value={title}
                 type="text"
                 name="title"
-                onChange={handleOnchange}
-              />
-              <p className="small-text">
-                Memory needs to have at least 5 characters [{memory.length}]
-              </p>
-              <textarea
-                id="memory"
-                name="memory"
-                value={memory}
-                placeholder="memory"
+                placeholder="Give this memory a clear title"
+                required
                 onChange={handleOnchange}
               />
 
-              <div className="update-input-wrapper">
+              <div className="memory-note-field">
+                <div>
+                  <label htmlFor="edit-memory-note">Memory note</label>
+                  <span id="edit-memory-note-help">
+                    {memory.length} characters, 5 minimum
+                  </span>
+                </div>
+                <textarea
+                  id="edit-memory-note"
+                  name="memory"
+                  value={memory}
+                  placeholder="Write the information you want to remember"
+                  aria-describedby="edit-memory-note-help"
+                  required
+                  onChange={handleOnchange}
+                />
+              </div>
+
+              <div className="memory-form-grid">
                 <InputComponent
+                  id="edit-memory-priority"
                   label="Priority"
                   type="number"
                   name="priority"
@@ -118,44 +134,50 @@ const EditMemoryComponent = ({ updateMemory }) => {
                 />
 
                 <InputComponent
+                  id="edit-memory-tag"
                   label="Tag"
                   value={tag}
                   type="text"
                   name="tag"
+                  placeholder="Optional category"
                   onChange={handleOnchange}
                 />
               </div>
+            </fieldset>
 
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={addDueDate}
-                    onChange={handleToggleDueDate}
-                  />
-                  Set Reminder
-                </label>
-                {addDueDate && (
-                  <DatePicker
-                    selected={dueDate}
-                    onChange={handleOnChangeDate}
-                    minDate={new Date()}
-                    showTimeInput
-                  />
-                )}
-              </div>
-
-              <div className="update-memory-button-wrapper">
-                <ButtonComponent
-                  type="submit"
-                  text={isFormInvalid ? 'Disabled' : 'UPDATE'}
-                  variant="dark"
-                  disabled={isFormInvalid}
+            <fieldset className="query-fieldset memory-form-reminder">
+              <legend>Reminder</legend>
+              <label htmlFor="edit-memory-reminder">
+                <input
+                  id="edit-memory-reminder"
+                  type="checkbox"
+                  checked={addDueDate}
+                  onChange={handleToggleDueDate}
                 />
-              </div>
-            </form>
-          </div>
-        </fieldset>
+                Set a reminder
+              </label>
+              {addDueDate && (
+                <DatePicker
+                  id="edit-memory-due-date"
+                  selected={dueDate}
+                  onChange={handleOnChangeDate}
+                  minDate={new Date()}
+                  placeholderText="Choose a due date"
+                  showTimeInput
+                />
+              )}
+            </fieldset>
+
+            <div className="memory-form-actions">
+              <ButtonComponent
+                type="submit"
+                text="Save changes"
+                variant="success"
+                disabled={isFormInvalid}
+              />
+            </div>
+          </form>
+        </div>
       )}
     </div>
   );

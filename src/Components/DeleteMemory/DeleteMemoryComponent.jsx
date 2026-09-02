@@ -35,11 +35,19 @@ const DeleteMemoryComponent = ({ id }) => {
       <ModalComponent
         isOpen={isConfirmOpen}
         onClose={() => setConfirmOpen(false)}
-        closeButtonTitle="X"
+        ariaLabel="Delete memory confirmation"
+        closeButtonTitle="Close delete memory confirmation"
+        size="compact"
       >
         <div className="delete-memory-confirmation">
-          <h2>Delete this memory?</h2>
-          <p>This action cannot be undone.</p>
+          <div className="delete-memory-header">
+            <h2>Delete memory?</h2>
+            <p>Review this permanent action before continuing.</p>
+          </div>
+          <fieldset className="query-fieldset delete-memory-warning">
+            <legend>Permanent action</legend>
+            <p>This memory cannot be recovered after it is deleted.</p>
+          </fieldset>
           <div className="delete-memory-confirmation-actions">
             <ButtonComponent
               type="button"

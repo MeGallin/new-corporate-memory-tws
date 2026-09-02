@@ -119,7 +119,8 @@ const CardComponent = ({ memory }) => {
               <ModalComponent
                 isOpen={isEditModalOpen}
                 onClose={() => setEditModalOpen(false)}
-                closeButtonTitle="X"
+                ariaLabel={`Edit memory: ${title}`}
+                closeButtonTitle="Close edit memory dialog"
               >
                 <EditMemoryComponent updateMemory={memory} />
               </ModalComponent>

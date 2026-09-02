@@ -14,7 +14,39 @@ import ButtonComponent from '../Button/ButtonComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import ModalComponent from '../Modal/ModalComponent';
 
-const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
+export const MemoryImageDisplayComponent = ({ imgSrc, altText }) => {
+  const [isImageModalOpen, setImageModalOpen] = useState(false);
+
+  if (!imgSrc) {
+    return null;
+  }
+
+  return (
+    <div className="memory-image-display">
+      <button
+        type="button"
+        onClick={() => setImageModalOpen(true)}
+        className="clickable-image"
+        aria-label={`View ${altText}`}
+      >
+        <img src={imgSrc} alt={altText} className="memories-image" />
+      </button>
+      <ModalComponent
+        isOpen={isImageModalOpen}
+        onClose={() => setImageModalOpen(false)}
+      >
+        <img src={imgSrc} alt={altText} className="modal-image-large" />
+      </ModalComponent>
+    </div>
+  );
+};
+
+MemoryImageDisplayComponent.propTypes = {
+  imgSrc: PropTypes.string,
+  altText: PropTypes.string.isRequired,
+};
+
+const MemoriesImagesComponent = ({ id, imgSrc }) => {
   const dispatch = useDispatch();
   const { loading: memoryImageUploadLoading } = useSelector(
     (state) => state.memoryImageUpload,
@@ -28,7 +60,6 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
   const [showUploadInput, setShowUploadInput] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewImageFile, setPreviewImageFile] = useState('');
-  const [isImageModalOpen, setImageModalOpen] = useState(false);
 
   const previewFile = (file) => {
     const reader = new FileReader();
@@ -91,36 +122,40 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
 
   const renderExistingImage = () => (
     <div className="image-wrapper">
-      <div onClick={() => setImageModalOpen(true)} className="clickable-image">
-        <img src={imgSrc} alt={altText} className="memories-image" />
-      </div>
       <div className="image-icon-wrapper">
-        <FaTrash
-          onClick={handleImageDelete}
-          className="trash-icon"
-          size={22}
-          color="red"
-          title="Delete this Image"
-        />
-        <FaPencilAlt
+        <button
+          type="button"
+          className="memory-image-action"
           onClick={() => setShowUploadInput(!showUploadInput)}
-          className="pencil-icon"
-          size={22}
-          color="green"
-          title="EDIT this Image"
-        />
+          aria-label="Change memory image"
+          title="Change memory image"
+        >
+          <FaPencilAlt className="pencil-icon" size={15} />
+        </button>
+        <button
+          type="button"
+          className="memory-image-action"
+          onClick={handleImageDelete}
+          aria-label="Delete memory image"
+          title="Delete memory image"
+        >
+          <FaTrash className="trash-icon" size={15} />
+        </button>
       </div>
     </div>
   );
 
   const renderUploadState = () => (
     <div className="image-wrapper">
-      <FaUpload
+      <button
+        type="button"
+        className="memory-image-action"
         onClick={() => setShowUploadInput((prev) => !prev)}
-        size={22}
-        title="Upload an Image"
-        className="upload-icon"
-      />
+        aria-label="Upload a memory image"
+        title="Upload a memory image"
+      >
+        <FaUpload size={15} className="upload-icon" />
+      </button>
     </div>
   );
 
@@ -147,12 +182,6 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
           />
         </div>
       )}
-      <ModalComponent
-        isOpen={isImageModalOpen}
-        onClose={() => setImageModalOpen(false)}
-      >
-        <img src={imgSrc} alt={altText} className="modal-image-large" />
-      </ModalComponent>
     </div>
   );
 };
@@ -160,7 +189,6 @@ const MemoriesImagesComponent = ({ id, imgSrc, altText }) => {
 MemoriesImagesComponent.propTypes = {
   id: PropTypes.string.isRequired,
   imgSrc: PropTypes.string,
-  altText: PropTypes.string.isRequired,
 };
 
 export default MemoriesImagesComponent;

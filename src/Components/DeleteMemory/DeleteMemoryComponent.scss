@@ -1,21 +1,24 @@
+@use '../../Css/tokens' as *;
 
 .delete-memory-btn {
-  opacity: 0.6;
-  &:hover {
-    opacity: 1;
-  }
+  opacity: 1;
 }
 
 .delete-memory-confirmation {
   display: flex;
+  min-height: 220px;
   flex-direction: column;
   justify-content: center;
-  min-height: 240px;
-  padding: 1rem;
+  padding: clamp(0.5rem, 2vw, 1rem);
 
-  h2,
+  h2 {
+    margin-bottom: 0.8rem;
+  }
+
   p {
-    margin-bottom: 1rem;
+    max-width: 50ch;
+    margin-bottom: 1.2rem;
+    color: $text-muted;
   }
 }
 

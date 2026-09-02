@@ -12,7 +12,9 @@ import {
 
 import StarsComponent from '../Stars/StarsComponent';
 import { TagsComponent } from '../Tags/TagsComponent';
-import MemoriesImagesComponent from '../MemoriesImages/MemoriesImagesComponent';
+import MemoriesImagesComponent, {
+  MemoryImageDisplayComponent,
+} from '../MemoriesImages/MemoriesImagesComponent';
 
 import ModalComponent from '../Modal/ModalComponent';
 import EditMemoryComponent from '../EditMemory/EditMemoryComponent';
@@ -50,11 +52,13 @@ const CardComponent = ({ memory }) => {
   };
 
   const isOverdue = moment(dueDate).isBefore(moment());
+  const titleId = `memory-title-${_id}`;
 
   return (
-    <div className="card-wrapper">
-      <div className="fieldSet">
-        <h2 className="card-title">{title}</h2>
+    <article className="card-wrapper" aria-labelledby={titleId}>
+      <fieldset className="fieldSet" aria-labelledby={titleId}>
+        <legend className="card-title" aria-hidden="true">{title}</legend>
+        <h3 id={titleId} className="card-title-heading">{title}</h3>
         <div className="card-header">
           {setDueDate ? (
             <div className={isOverdue ? 'late' : 'early'}>
@@ -66,36 +70,31 @@ const CardComponent = ({ memory }) => {
           <TagsComponent memoryId={_id} tag={tag} variant="warning" />
         </div>
         <div className="card-body">
-          <p>{memoryText}</p>
-          <div className="icon-wrapper">
-            <div onClick={() => activateVoice(memoryText)}>
-              <FaBullhorn
-                size={22}
-                title="Activate voice text"
-                className="bullhorn-icon"
-              />
-            </div>
-            <div>
-              <MemoriesImagesComponent
-                id={_id}
-                imgSrc={memoryImage}
-                altText={`Image for ${title}`}
-              />
-            </div>
+          <p className="card-copy">{memoryText}</p>
+          <MemoryImageDisplayComponent
+            imgSrc={memoryImage}
+            altText={`Image for ${title}`}
+          />
+          <div className="card-footer">
+            <div>Created: {moment(createdAt).format('Do MMM YYYY')}</div>
+            <div>Updated: {moment(updatedAt).format('Do MMM YYYY')}</div>
+          </div>
+          <div className="card-priority" aria-label="Memory priority">
+            <span>Priority</span>
+            <StarsComponent priority={priority} />
           </div>
 
-          <StarsComponent priority={priority} />
-
-          <div className="memories-priority-wrapper small-text">
+          <fieldset className="memories-priority-wrapper compact-fieldset small-text">
+            <legend>Memory controls</legend>
             {setDueDate ? (
               <label>
-                Set Due Date:
                 <input
                   type="checkbox"
                   name="setDueDate"
                   checked={setDueDate}
                   onChange={handleSetDueDate}
                 />
+                Due date enabled
               </label>
             ) : (
               <p className="small-text">Edit memory to set a due date.</p>
@@ -108,35 +107,41 @@ const CardComponent = ({ memory }) => {
                 checked={isComplete}
                 onChange={handleIsComplete}
               />
-              Mark as Complete.
+              {isComplete ? 'Unmark as complete' : 'Mark as complete'}
             </label>
-          </div>
+            <div className="card-buttons">
+              <ButtonComponent
+                onClick={() => setEditModalOpen(true)}
+                type="button"
+                text="Edit"
+                variant="warning"
+              />
+              <ModalComponent
+                isOpen={isEditModalOpen}
+                onClose={() => setEditModalOpen(false)}
+                closeButtonTitle="X"
+              >
+                <EditMemoryComponent updateMemory={memory} />
+              </ModalComponent>
+              <MemoriesImagesComponent
+                id={_id}
+                imgSrc={memoryImage}
+              />
+              <button
+                type="button"
+                className="card-icon-button"
+                onClick={() => activateVoice(memoryText)}
+                aria-label="Read memory aloud"
+                title="Read memory aloud"
+              >
+                <FaBullhorn size={16} className="bullhorn-icon" />
+              </button>
+              <DeleteMemoryComponent id={memory._id} />
+            </div>
+          </fieldset>
         </div>
-        <div className="card-footer">
-          <div>Created: {moment(createdAt).format('Do MMM YYYY')}</div>
-          <div>Updated: {moment(updatedAt).format('Do MMM YYYY')}</div>
-        </div>
-
-        <div className="card-buttons">
-          <>
-            <ButtonComponent
-              onClick={() => setEditModalOpen(true)}
-              type="button"
-              text="EDIT"
-              variant="warning"
-            />
-            <ModalComponent
-              isOpen={isEditModalOpen}
-              onClose={() => setEditModalOpen(false)}
-              closeButtonTitle="X"
-            >
-              <EditMemoryComponent updateMemory={memory} />
-            </ModalComponent>
-          </>
-          <DeleteMemoryComponent id={memory._id} />
-        </div>
-      </div>
-    </div>
+      </fieldset>
+    </article>
   );
 };
 

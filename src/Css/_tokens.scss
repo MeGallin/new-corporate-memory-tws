@@ -1,19 +1,52 @@
-$main-bg-colour: rgba(245, 245, 245, 1);
-$main-font-colour: rgba(12, 12, 12, 1);
-$secondary-bg-colour: hsl(23, 100%, 50%);
-$light-orange: rgba(236, 127, 55, 1);
-$burnt-orange: rgba(190, 79, 12, 1);
-$danger: crimson;
-$link-colour: lightblue;
-$success: rgba(92, 184, 92, 1);
-$warning: rgba(240, 173, 78, 1);
-$rating-colour: orange;
-$border-colour: rgba(200, 200, 200, 0.5);
-$border-colour-dark: hsla(0, 1%, 33%, 0.2);
-$border-colour-light: hsla(0, 0%, 78%, 0.2);
-$fieldSet-bg-colour: hsla(0, 0%, 45%, 0.1);
-$header-height: 28px;
-$footer-height: 82px;
-$image-shadow-colour: rgba(12, 12, 12, 0.4);
-$notice-message-size: 1.2em;
-$info: #54b4d3;
+@use 'sass:color';
+
+// Corporate Memory four-colour system. Every interface colour is one of these
+// four anchors or a calculated shade between them.
+$palette-black: #080b10;
+$palette-blue: #101d2f;
+$palette-orange: #ff6200;
+$palette-white: #f7f9fc;
+
+$brand: $palette-orange;
+$brand-hover: color.mix($palette-white, $palette-orange, 16%);
+$brand-strong: $palette-orange;
+$brand-soft: color.mix($palette-orange, $palette-blue, 14%);
+
+$shell: $palette-black;
+$canvas: color.mix($palette-blue, $palette-black, 38%);
+$surface: $palette-blue;
+$surface-muted: color.mix($palette-white, $palette-blue, 7%);
+$ink: $palette-white;
+$ink-soft: color.mix($palette-white, $palette-blue, 78%);
+$text-muted: color.mix($palette-white, $palette-blue, 58%);
+$on-brand: $palette-black;
+
+$main-bg-colour: $canvas;
+$main-font-colour: $ink;
+$secondary-bg-colour: $brand;
+$light-orange: $brand;
+$burnt-orange: $brand-strong;
+$danger: color.mix($palette-black, $palette-orange, 18%);
+$link-colour: $brand-hover;
+$success: $palette-white;
+$warning: $palette-orange;
+$rating-colour: $palette-orange;
+$info: color.mix($palette-white, $palette-blue, 70%);
+
+$border-colour: color.mix($palette-white, $palette-blue, 22%);
+$border-colour-dark: color.mix($palette-white, $palette-blue, 34%);
+$border-colour-light: color.mix($palette-white, $palette-blue, 12%);
+$fieldSet-bg-colour: $surface;
+$image-shadow-colour: rgba($palette-black, 0.38);
+
+$font-body: 'Space Grotesk', 'Segoe UI', sans-serif;
+$font-label: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+
+$radius-card: 12px;
+$radius-control: 8px;
+$shadow-card: 0 14px 34px rgba($palette-black, 0.34);
+$shadow-float: 0 22px 60px rgba($palette-black, 0.68);
+
+$header-height: 64px;
+$footer-height: auto;
+$notice-message-size: 1rem;

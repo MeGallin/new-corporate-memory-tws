@@ -1,11 +1,48 @@
+@use '../../Css/tokens' as *;
+
 .update-memory-wrapper {
-  .update-input-wrapper {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+  label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: $ink-soft;
+    font-family: $font-label;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
   }
+
+  input[type='number'],
+  .react-datepicker-wrapper input {
+    min-height: 40px;
+    padding: 0.55rem 0.6rem;
+    border: 1px solid $border-colour;
+    border-radius: $radius-control;
+    background: $surface;
+    color: $ink;
+  }
+
+  input[type='checkbox'] {
+    accent-color: $brand-strong;
+  }
+
+  .update-input-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
   .update-memory-button-wrapper {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.65rem;
+    margin-top: 0.8rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .update-memory-wrapper .update-input-wrapper {
+    grid-template-columns: 1fr;
   }
 }

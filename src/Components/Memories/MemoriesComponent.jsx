@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './MemoriesComponent.scss';
 
 import { memoriesGetAction } from '../../Store/actions/memoriesActions';
@@ -65,43 +65,66 @@ const Memories = () => {
     return memories?.filter((memory) => memory.isComplete).length || 0;
   }, [memories]);
 
+  const totalMemoriesCount = memories?.length || 0;
+
   const handleSearch = (e) => {
     setKeyword(e.target.value);
   };
 
   const renderHeader = () => (
-    <div className="memories-search-wrapper">
-      <div>
-        <div className="search-sort-wrapper">
-          <SearchComponent
-            placeholder="search"
-            value={keyword}
-            onChange={handleSearch}
-          />
-          <SortComponent memories={memories || []} />
-        </div>
-        <p>
-          [{searchedMemories.length}]{' '}
-          {searchedMemories.length === 1 ? 'memory found' : 'memories'} and [
-          {completedMemoriesCount}] marked as complete.
-        </p>
-      </div>
-      <div>
-        <ButtonComponent
-          onClick={() => setCreateModalOpen(true)}
-          type="button"
-          text="Create"
-          variant="success"
-        />
-        <ModalComponent
-          isOpen={isCreateModalOpen}
-          onClose={() => setCreateModalOpen(false)}
-          closeButtonTitle="X"
+    <fieldset className="memories-search-wrapper query-fieldset">
+      <legend>Find a memory</legend>
+      <SearchComponent
+        id="memory-search"
+        ariaLabel="Search memory titles and notes"
+        placeholder="Search titles and notes"
+        value={keyword}
+        onChange={handleSearch}
+      />
+      <div className="memories-status-wrapper">
+        <fieldset
+          className="memories-results compact-fieldset"
+          aria-live="polite"
         >
-          <CreateMemoryComponent onCloseModal={() => setCreateModalOpen(false)} />
-        </ModalComponent>
+          <legend>Memory status</legend>
+          <span>
+            <strong>{visibleSearchedMemories.length}</strong>{' '}
+            {visibleSearchedMemories.length === 1
+              ? 'active memory'
+              : 'active memories'}
+          </span>
+          <Link
+            to="/user-admin"
+            className="memories-completed-link"
+            aria-label={`${completedMemoriesCount} completed ${
+              completedMemoriesCount === 1 ? 'memory' : 'memories'
+            }. View completed memories.`}
+          >
+            <strong>{completedMemoriesCount}</strong> completed
+          </Link>
+        </fieldset>
       </div>
-    </div>
+    </fieldset>
+  );
+
+  const renderMemoryActions = () => (
+    <section className="memories-actions-wrapper" aria-label="Memory actions">
+      <SortComponent memories={memories || []} />
+      <ButtonComponent
+        onClick={() => setCreateModalOpen(true)}
+        type="button"
+        text="Create memory"
+        variant="success"
+        className="create-memory-button"
+      />
+      <ModalComponent
+        isOpen={isCreateModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+        closeButtonTitle="X"
+      >
+        <CreateMemoryComponent onCloseModal={() => setCreateModalOpen(false)} />
+      </ModalComponent>
+    </section>
   );
 
   const renderContent = () => {
@@ -121,8 +144,8 @@ const Memories = () => {
         <div className="empty-state-message">
           <h3>No memories yet!</h3>
           <p>
-            Start creating your first memory by clicking the "Create" button
-            above.
+            Start creating your first memory by clicking the "Create memory"
+            button above.
           </p>
         </div>
       );
@@ -154,9 +177,31 @@ const Memories = () => {
 
   return (
     <>
-      {renderHeader()}
-      <AgentChatComponent />
-      {renderContent()}
+      <section className="memories-workbench" aria-labelledby="memory-workspace-title">
+        <header className="memories-workbench__header">
+          <h1 id="memory-workspace-title">Memory workspace</h1>
+          <span>
+            {totalMemoriesCount} {totalMemoriesCount === 1 ? 'memory' : 'memories'}
+          </span>
+        </header>
+        <div className="memories-query-grid">
+          {renderHeader()}
+          <AgentChatComponent actions={renderMemoryActions()} />
+        </div>
+      </section>
+      <section className="memories-library" aria-labelledby="active-memories-title">
+        <header className="memories-library__header">
+          <h2 id="active-memories-title">Active memories</h2>
+          <span>
+            {loading
+              ? 'Loading memories'
+              : error
+                ? 'Memories unavailable'
+                : `Showing ${visibleSearchedMemories.length}`}
+          </span>
+        </header>
+        {renderContent()}
+      </section>
     </>
   );
 };

@@ -1,25 +1,32 @@
 @use '../../Css/tokens' as *;
 
-.admin-component-select-name-dropdown {
-  color: $warning;
-  margin-left: 1em;
-  &:hover {
-    font-weight: bold;
-    color: $info;
-    cursor: pointer;
-    transition: all 0.8s;
+.admin-user-selector {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+
+  select {
+    min-height: 42px;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid $border-colour;
+    border-radius: $radius-control;
+    background: $surface;
+    color: $ink;
   }
 }
+
+.admin-component-select-name-dropdown,
 .admin-component-select-name {
-  color: $info;
-  &:hover {
-    background-color: $main-font-colour;
-    cursor: pointer;
-    transition: all 0.8s;
-  }
+  color: $brand-strong;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .user-details-dates-wrapper {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
+  gap: 0.75rem;
 }

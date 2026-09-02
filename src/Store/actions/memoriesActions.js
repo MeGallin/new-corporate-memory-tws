@@ -565,7 +565,13 @@ export const memoryIsCompleteAction =
         config,
       );
 
-      dispatch({ type: MEMORIES_IS_COMPETE_SUCCESS, payload: data });
+      dispatch({
+        type: MEMORIES_IS_COMPETE_SUCCESS,
+        payload: {
+          ...data,
+          isComplete: memoryData.isComplete,
+        },
+      });
       dispatch(memoriesGetAction());
     } catch (error) {
       // Handle authentication/authorization errors

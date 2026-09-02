@@ -1,15 +1,17 @@
-// New styles for the container
 @use '../../Css/tokens' as *;
+
 .success-message-container {
   position: fixed;
-  top: 120px;
-  z-index: 1000;
-  background-color: $success;
-  color: $main-bg-colour;
-  max-width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 0.2em;
-  border: none;
-  border-radius: 2px;
-  overflow: hidden;
+  top: 88px;
+  left: 1rem;
+  z-index: 1400;
+  max-width: min(360px, calc(100% - 2rem));
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba($success, 0.35);
+  border-left: 4px solid $success;
+  border-radius: $radius-control;
+  background: $surface-muted;
+  box-shadow: $shadow-card;
+  color: $ink;
+  font-weight: 600;
 }

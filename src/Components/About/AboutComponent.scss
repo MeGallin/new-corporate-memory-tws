@@ -1,13 +1,26 @@
 @use '../../Css/tokens' as *;
 
-.highlight-box {
-  background-color: #f0f8ff; // A light aliceblue color
-  border-left: 4px solid $info;
-  padding: 1em;
-  margin: 1em 0;
+.fieldSet ul:not([class]) {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0;
+  padding-left: 1.2rem;
 }
 
-/* Ensure comfortable spacing before section headings */
-.fieldSet h2 {
-  margin-top: 16px;
+.fieldSet code {
+  padding: 0.12rem 0.3rem;
+  border-radius: 4px;
+  background: $surface-muted;
+  color: $brand-strong;
+  font-family: $font-label;
+  font-size: 0.85em;
+}
+
+.highlight-box {
+  margin: 1.25rem 0;
+  padding: 1rem;
+  border: 1px solid rgba($brand, 0.28);
+  border-left: 4px solid $brand;
+  border-radius: $radius-control;
+  background: $brand-soft;
 }

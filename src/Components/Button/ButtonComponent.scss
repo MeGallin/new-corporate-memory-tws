@@ -1,75 +1,101 @@
-/* Button style */
 @use '../../Css/tokens' as *;
 
-$btn-primary: #3b71ca;
-$btn-secondary: #9fa6b2;
-$btn-success: #14a44d;
-$btn-danger: crimson;
-$btn-warning: #e4a11b;
-$btn-info: #54b4d3;
-$btn-light: #fbfbfb;
-$btn-dark: #332d2d;
-
 button {
-  padding: 6px 9px;
-  font-size: 16px;
-  text-transform: uppercase;
-  cursor: pointer;
-  color: $main-font-colour;
-  box-shadow: 0 0 4px #999;
-  margin-top: 0.2em;
-  margin-bottom: 0.2em;
-  text-align: center;
+  display: inline-flex;
   width: max-content;
-  color: white;
-  border: none;
-  outline: 0.1rem solid white;
-  outline-offset: -0.3rem;
-  opacity: 0.8;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0.62rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: $radius-control;
+  outline: 0;
+  background: $surface-muted;
+  box-shadow: none;
+  color: $ink;
+  font-family: $font-label;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.035em;
+  line-height: 1;
+  opacity: 1;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 100ms ease;
+
   &:hover {
-    opacity: 1;
-    transition: opacity 0.8s;
+    border-color: $border-colour-dark;
+    background: $surface;
+  }
+
+  &:active {
+    transform: translateY(1px);
   }
 }
 
-button.primary {
-  background: $btn-primary;
-}
-button.secondary {
-  background: $btn-secondary;
-}
+button.primary,
 button.success {
-  background: $btn-success;
-}
-button.danger {
-  background: $btn-danger;
-}
-button.warning {
-  background: $btn-warning;
-}
-button.info {
-  background: $btn-info;
-}
-button.light {
-  background: #ffffff; /* higher contrast on light surfaces */
-  color: #111827;
-  border: 1px solid #d1d5db; /* slightly darker border for clarity */
-  box-shadow: none; /* remove global shadow to avoid haze */
-  outline: none; /* remove white outline which looks odd on light */
-  opacity: 1; /* keep full opacity for readability */
+  border-color: $brand-strong;
+  background: $brand-strong;
+  color: $on-brand;
+
   &:hover {
-    background: #f3f4f6;
-    border-color: #9ca3af; /* a bit stronger on hover */
-    transition: background 0.2s ease, border-color 0.2s ease;
+    border-color: $brand-hover;
+    background: $brand-hover;
   }
 }
-button.dark {
-  background: $btn-dark;
+
+button.secondary,
+button.light {
+  border-color: $border-colour;
+  background: $surface;
+  color: $ink;
+
+  &:hover {
+    border-color: $brand;
+    background: $brand-soft;
+  }
 }
 
+button.warning {
+  border-color: $border-colour-dark;
+  background: $surface-muted;
+  color: $ink;
 
+  &:hover {
+    border-color: $brand;
+    background: $brand-soft;
+  }
+}
+
+button.danger {
+  border-color: $danger;
+  background: $danger;
+  color: $on-brand;
+
+  &:hover {
+    border-color: $brand-hover;
+    background: $brand-hover;
+  }
+}
+
+button.info {
+  border-color: $info;
+  background: $info;
+  color: $on-brand;
+}
+
+button.dark {
+  border-color: $border-colour-dark;
+  background: $shell;
+  color: $ink;
+}
 
 button:disabled,
 button[disabled] {
-  opacity: 0.5;
+  cursor: not-allowed;
+  opacity: 0.48;
+  transform: none;
 }

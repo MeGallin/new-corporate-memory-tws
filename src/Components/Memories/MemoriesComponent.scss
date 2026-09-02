@@ -1,69 +1,187 @@
 @use 'sass:color';
 @use '../../Css/tokens' as *;
-.memories-search-wrapper {
-  display: flex;
-  justify-content: space-between;
-  background-color: $fieldSet-bg-colour;
+
+.memories-workbench {
+  margin-bottom: 1rem;
+  padding: 1rem;
   border: 1px solid $border-colour-light;
-  margin-bottom: 0.3em;
-  padding: 0.1em 0;
-  .search-sort-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 0.5em;
+  border-radius: $radius-control;
+  background: $shell;
+  box-shadow: 0 10px 28px rgba($shell, 0.28);
+}
+
+.memories-workbench__header,
+.memories-library__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.memories-workbench__header {
+  margin-bottom: 1rem;
+  padding: 0 0.15rem 0.85rem;
+  border-bottom: 1px solid $border-colour-light;
+
+  h1 {
+    margin: 0;
+    color: $ink;
+    font-size: clamp(1.25rem, 2.2vw, 1.7rem);
+    letter-spacing: -0.035em;
+  }
+
+  span {
+    color: $text-muted;
+    font-family: $font-label;
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 }
-.memories-search-wrapper p {
-  font-size: 0.8rem;
+
+.memories-query-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1rem;
+  margin: 0;
+
+  > .query-fieldset {
+    min-height: 175px;
+    border-radius: $radius-control;
+    background: $surface;
+    box-shadow: none;
+  }
+}
+
+.memories-library {
+  min-width: 0;
+}
+
+.memories-library__header {
+  min-height: 48px;
+  margin-bottom: 1rem;
+  padding: 0 0.25rem 0.65rem;
+  border-bottom: 1px solid $border-colour-light;
+
+  h2 {
+    margin: 0;
+    color: $ink;
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    letter-spacing: -0.025em;
+  }
+
+  span {
+    color: $text-muted;
+    font-family: $font-label;
+    font-size: 0.64rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+}
+
+.memories-search-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.memories-status-wrapper {
+  margin: 0.7rem 0 0;
+  padding: 0.7rem 0 0;
+  border-top: 1px solid $border-colour-light;
+}
+
+.memories-results {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 0.3rem;
+  color: $text-muted;
+  font-family: $font-label;
+  font-size: 0.62rem;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+
+  > span,
+  > .memories-completed-link {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.35rem 0.55rem;
+    border: 0;
+    border-radius: $radius-control;
+    background: $shell;
+  }
+
+  > .memories-completed-link {
+    color: inherit;
+    text-decoration: none;
+    transition:
+      background-color 160ms ease,
+      color 160ms ease;
+
+    &:hover {
+      background: $brand-soft;
+      color: $ink;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $brand;
+      outline-offset: 2px;
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  strong {
+    color: $ink;
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+}
+
+.memories-actions-wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 0.65rem;
+  margin: 0.7rem 0 0;
+  padding: 0.7rem 0 0;
+  border-top: 1px solid $border-colour-light;
+
+  .sort-component-wrapper {
+    width: 100%;
+  }
+
+  > button {
+    height: 54px;
+    min-width: 96px;
+    min-height: 54px;
+    align-self: end;
+  }
+
+  > .create-memory-button {
+    min-width: 116px;
+  }
 }
 
 .memories-component-wrapper {
-  padding-bottom: 0.3em;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-  align-content: center;
-  gap: 0.4em;
+  column-count: 3;
+  column-gap: 1rem;
+  padding-bottom: 1rem;
 
-  // Styles for each item in the list (the div wrapper)
   > div {
-    border: 1px solid $border-colour-light;
-    padding: 0.2em;
-    margin-bottom: 0.4em;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
-      rgba(0, 0, 0, 0.05) 0px 5px 10px;
-  }
-
-  // Alternating styles for even items
-  > div:nth-child(even) {
-    background-color: $main-font-colour;
-    color: $main-bg-colour;
-
-    // Override the CardComponent's default styles
-    .card-wrapper {
-      background-color: $main-font-colour;
-      color: $main-bg-colour;
-    }
-
-    // Override icon colors
-    .bullhorn-icon,
-    .upload-icon,
-    .pencil-icon,
-    .trash-icon {
-      color: $main-bg-colour;
-    }
-
-    .bullhorn-icon:hover, .upload-icon:hover {
-        color: $info;
-    }
-    .pencil-icon:hover {
-        color: $warning;
-    }
-    .trash-icon:hover {
-        color: $danger;
-    }
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 1rem;
+    break-inside: avoid;
+    vertical-align: top;
   }
 
   .memories-completed {
@@ -71,76 +189,92 @@
   }
 }
 
-.error-message {
+@media (min-width: 1100px) {
+  .memories-query-grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+}
+
+.error-message,
+.empty-state-message {
+  max-width: 720px;
+  margin: 1rem auto;
+  padding: 2rem;
+  border: 1px solid $border-colour-light;
+  border-radius: $radius-card;
+  background: $surface;
+  box-shadow: $shadow-card;
   text-align: center;
-  padding: 2em;
-  background-color: color.adjust($danger, $lightness: 45%);
-  border: 1px solid $danger;
-  border-radius: 4px;
-  margin: 1em 0;
+
+  h3,
+  p {
+    margin-bottom: 0.75rem;
+  }
+}
+
+.error-message {
+  border-color: rgba($danger, 0.5);
+  background: color.mix($surface, $danger, 92%);
 
   p {
     color: $danger;
-    margin-bottom: 1em;
-    font-weight: bold;
-  }
-
-  button {
-    background-color: $danger;
-    color: white;
-    border: none;
-    padding: 0.5em 1em;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: color.adjust($danger, $lightness: -10%);
-    }
+    font-weight: 600;
   }
 }
 
-.empty-memories-state {
-  .empty-state-message {
-    text-align: center;
-    padding: 3em 2em;
-    background-color: $fieldSet-bg-colour;
-    border: 1px solid $border-colour-light;
-    border-radius: 4px;
-    margin-top: 1em;
+.no-search-results .empty-state-message {
+  border-color: rgba($warning, 0.45);
+  background: color.mix($surface, $brand, 92%);
+}
 
-    h3 {
-      color: $main-font-colour;
-      margin-bottom: 0.5em;
-      font-size: 1.5rem;
-    }
-
-    p {
-      color: color.adjust($main-font-colour, $lightness: 20%);
-      font-size: 1rem;
-      margin: 0;
-    }
+@media (max-width: 1100px) {
+  .memories-component-wrapper {
+    column-count: 2;
   }
 }
 
-.no-search-results {
-  .empty-state-message {
-    text-align: center;
-    padding: 2em;
-    background-color: color.adjust($warning, $lightness: 45%);
-    border: 1px solid $warning;
-    border-radius: 4px;
-    margin-top: 1em;
+@media (max-width: 760px) {
+  .memories-workbench {
+    padding: 0.75rem;
+  }
 
-    h3 {
-      color: color.adjust($warning, $lightness: -20%);
-      margin-bottom: 0.5em;
-      font-size: 1.2rem;
+  .memories-workbench__header,
+  .memories-library__header {
+    align-items: baseline;
+  }
+
+  .memories-query-grid {
+    grid-template-columns: 1fr;
+
+    > .query-fieldset {
+      min-height: 0;
+    }
+  }
+
+  .memories-component-wrapper {
+    column-count: 1;
+  }
+}
+
+@media (max-width: 359px) {
+  .memories-results {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .memories-actions-wrapper {
+    gap: 0.55rem;
+
+    > button {
+      min-width: 88px;
     }
 
-    p {
-      color: color.adjust($warning, $lightness: -10%);
-      font-size: 0.9rem;
-      margin: 0;
+    > .create-memory-button {
+      min-width: 104px;
+      padding-right: 0.55rem;
+      padding-left: 0.55rem;
+      font-size: 0.66rem;
     }
   }
 }

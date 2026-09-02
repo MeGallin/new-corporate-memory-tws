@@ -1,10 +1,14 @@
 @use '../../Css/tokens' as *;
+
 .error-component {
+  display: block;
   width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba($danger, 0.35);
+  border-left: 4px solid $danger;
+  border-radius: $radius-control;
+  background: $brand-soft;
+  color: $danger;
   font-size: $notice-message-size;
-  background-color: $danger;
-  color: $main-bg-colour;
-  padding: 0.2em;
-  border: none;
-  border-radius: 2px;
+  font-weight: 600;
 }

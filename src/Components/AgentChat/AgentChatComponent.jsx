@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { agentChatAction } from '../../Store/actions/agentActions';
 import ButtonComponent from '../Button/ButtonComponent';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import './AgentChatComponent.scss';
 
-const AgentChatComponent = () => {
+const AgentChatComponent = ({ actions = null }) => {
   const dispatch = useDispatch();
   const [question, setQuestion] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -91,13 +92,14 @@ const AgentChatComponent = () => {
   }, [isAuthenticated]);
 
   return (
-    <div className="agent-chat">
+    <fieldset className="agent-chat query-fieldset">
+      <legend>Ask AI</legend>
       <form onSubmit={onSubmit} className="agent-chat__form">
         <input
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder="Ask your memories (e.g., high-priority due this week)"
+          placeholder="Ask AI about your memories"
           className="agent-chat__input"
         />
         {question.trim() && (
@@ -126,6 +128,8 @@ const AgentChatComponent = () => {
           </div>
         )}
       </form>
+
+      {actions}
 
       {showAdvanced && (
         <div id="agent-chat-filters" className="agent-chat__filters">
@@ -287,9 +291,12 @@ const AgentChatComponent = () => {
           </div>
         </div>
       )}
-    </div>
+    </fieldset>
   );
 };
 
-export default AgentChatComponent;
+AgentChatComponent.propTypes = {
+  actions: PropTypes.node,
+};
 
+export default AgentChatComponent;

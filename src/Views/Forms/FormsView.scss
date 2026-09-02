@@ -1,27 +1,49 @@
 @use '../../Css/tokens' as *;
+
 .forms-text-wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  gap: 0.75rem;
+  max-width: 680px;
+  margin: 0 auto;
 }
+
 .forms-register {
+  color: $brand-strong;
+  font-family: $font-label;
+  font-size: 0.76rem;
+  font-weight: 600;
   cursor: pointer;
+
   &:hover {
-    font-weight: bold;
-    transition: font-weight 0.8s;
+    color: $brand-hover;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 }
+
 .forms-email-confirmation-wrapper {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid $border-colour-light;
+  border-top: 4px solid $brand;
+  border-radius: $radius-card;
+  background: $surface;
+  box-shadow: $shadow-card;
   text-align: center;
+
+  h1 {
+    margin-bottom: 1rem;
+  }
+
   .warning {
     color: $danger;
   }
-  span {
-    text-decoration: underline;
-    font-weight: bold;
-  }
 
   .logged-in {
-    color: $success;
+    color: $brand-strong;
+    font-weight: 700;
   }
 }

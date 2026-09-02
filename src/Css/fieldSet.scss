@@ -1,15 +1,79 @@
 @use './tokens' as *;
 
+.fieldSet,
 fieldset.fieldSet {
+  min-width: 0;
+  margin: 0 0 1rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
   border: 1px solid $border-colour-light;
-  background-color: $fieldSet-bg-colour;
-  flex-grow: 1;
-
-  // width: MIN(100%, 600px);
+  border-radius: $radius-card;
+  background: $surface;
+  box-shadow: $shadow-card;
 }
-fieldset legend {
+
+section.fieldSet,
+div.fieldSet {
+  max-width: 80ch;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.fieldSet > h1:first-child {
+  margin-bottom: 1.25rem;
+}
+
+.fieldSet h2 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+fieldset.fieldSet > legend {
+  max-width: calc(100% - 1rem);
+  padding: 0 0.55rem;
+  color: $brand-strong;
+  font-family: $font-label;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+fieldset.query-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0.7rem 0.85rem 0.85rem;
+  border: 1px solid $border-colour-light;
+  border-radius: $radius-card;
+  background: $surface;
+  box-shadow: $shadow-card;
+}
+
+fieldset.query-fieldset > legend {
+  max-width: calc(100% - 1rem);
+  padding: 0 0.35rem;
+  color: $ink;
+  font-family: $font-label;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
   text-transform: uppercase;
-  font-size: 1.6em;
-  font-family: 'Bebas Neue', cursive;
-  letter-spacing: 0.3em;
+}
+
+fieldset.compact-fieldset {
+  min-width: 0;
+  min-height: 61px;
+  margin: 0;
+  padding: 0.28rem;
+  border: 1px solid $border-colour;
+  border-radius: $radius-control;
+  background: $surface;
+}
+
+fieldset.compact-fieldset > legend {
+  padding: 0 0.35rem;
+  color: $ink;
+  font-family: $font-label;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
 }

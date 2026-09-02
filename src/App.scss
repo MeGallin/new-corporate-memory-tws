@@ -5,19 +5,23 @@
 @use './Css/scrollBar';
 @use './Css/textArea';
 
-$grid__bp-md: 1280;
-
-.container {
-  max-width: $grid__bp-md * 1px;
-  margin: 0 auto;
-  &--fluid {
-    margin: 0;
-    max-width: 100%;
-  }
+.container--fluid {
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
 }
+
 .content-wrapper {
-  min-height: calc(100vh - #{$header-height});
-  max-width: $grid__bp-md * 1px;
+  width: min(100% - 2rem, 1240px);
+  min-height: calc(100dvh - #{$header-height});
   margin: 0 auto;
-  padding: 0 1em;
+  padding: clamp(1.25rem, 3vw, 2.5rem) 0 3rem;
+  flex: 1;
+}
+
+@media (max-width: 640px) {
+  .content-wrapper {
+    width: min(100% - 1rem, 1240px);
+    padding-top: 1rem;
+  }
 }

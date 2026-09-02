@@ -60,25 +60,25 @@ const AboutComponent = () => {
       </p>
       <ul>
         <li>
-          <strong>MongoDB</strong> – a flexible NoSQL database for storing and
+          <strong>MongoDB</strong>: a flexible NoSQL database for storing and
           managing data.
         </li>
         <li>
-          <strong>Express.js</strong> – a lightweight Node.js framework for
+          <strong>Express.js</strong>: a lightweight Node.js framework for
           building efficient APIs and server logic.
         </li>
         <li>
-          <strong>React</strong> – a dynamic JavaScript library for creating
+          <strong>React</strong>: a dynamic JavaScript library for creating
           interactive, responsive user interfaces.
         </li>
         <li>
-          <strong>Node.js</strong> – a fast and scalable JavaScript runtime for
+          <strong>Node.js</strong>: a fast and scalable JavaScript runtime for
           executing server-side code.
         </li>
       </ul>
       <p>
         By combining these technologies, we deliver a seamless experience with a
-        robust, scalable back end and a flexible, intuitive front end — all
+        robust, scalable back end and a flexible, intuitive front end. It is all
         powered by a single language across the stack.
       </p>
       <div className="highlight-box">

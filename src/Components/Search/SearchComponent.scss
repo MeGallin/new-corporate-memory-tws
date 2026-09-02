@@ -1,5 +1,33 @@
+@use '../../Css/tokens' as *;
 
 .search-input-wrapper {
+  min-width: 0;
+
+  label {
+    display: block;
+    margin: 0 0 0.32rem 0.15rem;
+    color: $text-muted;
+    font-family: $font-label;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
   input {
+    width: 100%;
+    height: 46px;
+    min-height: 46px;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid $border-colour;
+    border-radius: $radius-control;
+    outline: 0;
+    background: $surface;
+    color: $ink;
+
+    &:focus {
+      border-color: $brand;
+      box-shadow: 0 0 0 3px rgba($brand, 0.14);
+    }
   }
 }

@@ -4,79 +4,107 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  a {
-    color: $main-bg-colour;
+  min-height: $header-height;
+  border-bottom: 1px solid $border-colour-light;
+  background: rgba($shell, 0.97);
+  box-shadow: $shadow-card;
+  color: $ink;
+
+  nav {
+    width: min(100% - 2rem, 1240px);
+    margin: 0 auto;
   }
 
   ul.nav-wrapper {
-    height: clamp(1rem, $header-height, $header-height);
-    background-color: $main-font-colour;
-    color: $main-bg-colour;
-    list-style-type: none;
+    display: grid;
+    min-height: $header-height;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: stretch;
     margin: 0;
-    padding: 0;
+    padding: 0 0 0 4.5rem;
+    list-style: none;
 
     li {
-      width: 100%;
-      text-align: center;
-    }
-
-    .login-wrapper {
       display: flex;
+      min-width: 0;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    a,
+    .logout-button {
+      display: flex;
+      width: 100%;
+      min-height: $header-height;
       align-items: center;
+      justify-content: center;
+      padding: 0.75rem 0.5rem;
+      border-bottom: 3px solid transparent;
+      color: $ink;
+      font-family: $font-label;
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+    }
+
+    a:hover,
+    .logout-button:hover {
+      border-bottom-color: rgba($brand, 0.55);
+      background: $surface-muted;
+      color: $ink;
+    }
+
+    a.active {
+      border-bottom-color: $brand;
+      background: rgba($brand, 0.12);
+      color: $brand-hover;
     }
   }
-  .nav-wrapper {
-    border-right: 3px solid $main-font-colour;
-    border-left: 3px solid $main-font-colour;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    li {
-      a.active {
-        color: $main-font-colour;
-        background-color: $main-bg-colour;
-        display: flex;
-        justify-content: center;
-      }
-      &:hover {
-        background: $border-colour-light;
-      }
-    }
-  }
+
   .header-user {
+    border-top: 1px solid $border-colour-light;
+    background: $surface-muted;
     text-align: center;
-    color: $warning;
-    font-size: 0.8rem;
-    font-weight: bold;
-    margin: 0.2em 0 0.2em 0;
 
     .user-info-nav-link {
-      border: 1px solid $border-colour-light;
-      background-color: $main-font-colour;
-      font-size: 0.8em;
-      padding: 0.2em;
-      color: $warning;
-      .header-user-name {
-        color: $link-colour;
-        letter-spacing: 0.5rem;
-      }
-      &:hover {
-        background-color: $main-bg-colour;
-        border: 1px solid $border-colour-dark;
-        color: $link-colour;
-        transition: all 0.8s;
-      }
+      width: min(100% - 2rem, 1240px);
+      margin: 0 auto;
+      padding: 0.35rem 0;
+    }
+
+    .header-user-name {
+      color: $ink;
+      font-family: $font-label;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
   }
 }
-/* Responsive layout */
-@media (max-width: 812px) {
-  header nav {
-    font-size: 0.9em;
-    padding: 0;
+
+@media (max-width: 640px) {
+  header {
+    nav {
+      width: 100%;
+    }
+
+    ul.nav-wrapper {
+      padding-left: 0;
+
+      a,
+      .logout-button {
+        padding-right: 0.2rem;
+        padding-left: 0.2rem;
+        font-size: 0.6rem;
+        letter-spacing: 0.03em;
+      }
+    }
+
+    .header-user .user-info-nav-link {
+      width: min(100% - 1rem, 1240px);
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import ErrorComponent from '../../Components/Error/ErrorComponent';
 import MemoriesComponent from '../../Components/Memories/MemoriesComponent';
+import MemoryCompletionFeedbackComponent from '../../Components/MemoryCompletionFeedback/MemoryCompletionFeedbackComponent';
 import SuccessComponent from '../../Components/Success/SuccessComponent';
 
 import {
@@ -9,7 +10,6 @@ import {
   MEMORIES_DELETE_RESET,
   MEMORIES_DELETE_TAG_RESET,
   MEMORIES_SET_DUE_DATE_RESET,
-  MEMORIES_IS_COMPETE_RESET,
 } from '../../Store/constants/memoriesConstants';
 
 import {
@@ -31,9 +31,6 @@ const MemoriesView = () => {
   const memoryDeleteImage = useSelector((state) => state.memoryDeleteImage);
   const { success: memoryDeleteImageSuccess, error: memoryDeleteImageError } =
     memoryDeleteImage;
-  const memoryIsComplete = useSelector((state) => state.memoryIsComplete);
-  const { success: isCompleteSuccess, error: isCompleteError } =
-    memoryIsComplete;
   const memoryDeleteTag = useSelector((state) => state.memoryDeleteTag);
   const { success: deleteTagSuccess, error: deleteTagError } = memoryDeleteTag;
   const memorySetDueDate = useSelector((state) => state.memorySetDueDate);
@@ -58,13 +55,7 @@ const MemoriesView = () => {
         />
       ) : null}
 
-      {isCompleteError ? <ErrorComponent error={isCompleteError} /> : null}
-      {isCompleteSuccess ? (
-        <SuccessComponent
-          message={'Memory has been MARKED as Complete.'}
-          onClose={() => dispatch({ type: MEMORIES_IS_COMPETE_RESET })}
-        />
-      ) : null}
+      <MemoryCompletionFeedbackComponent />
 
       {CreateError ? <ErrorComponent error={CreateError} /> : null}
       {CreateSuccess ? (

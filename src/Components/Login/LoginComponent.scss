@@ -1,11 +1,16 @@
+@use '../../Css/tokens' as *;
 
 .login-actions-wrapper {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 
 .google-login-container {
-  padding: 2px 2px 4px 2px;
-  background-color: hsla(0deg, 0%, 45%, 0.1);
+  padding: 0.35rem;
+  border: 1px solid $border-colour-light;
+  border-radius: $radius-control;
+  background: $surface-muted;
 }

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import DashboardComponent from '../../Components/Dashboard/DashboardComponent';
 import ErrorComponent from '../../Components/Error/ErrorComponent';
+import MemoryCompletionFeedbackComponent from '../../Components/MemoryCompletionFeedback/MemoryCompletionFeedbackComponent';
 import SuccessComponent from '../../Components/Success/SuccessComponent';
 
 import {
@@ -21,6 +22,7 @@ const UserAdminView = () => {
     adminDeleteAllUser;
   return (
     <>
+      <MemoryCompletionFeedbackComponent />
       {isAdminError ? <ErrorComponent error={isAdminError} /> : null}
       {isAdminSuccess ? (
         <SuccessComponent

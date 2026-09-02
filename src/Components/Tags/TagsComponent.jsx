@@ -12,18 +12,20 @@ export const TagsComponent = ({ memoryId, tag, variant }) => {
   return tag ? (
     <div className={`tags-wrapper ${variant}`}>
       {tag}
-      <span
+      <button
+        type="button"
         className="tag-x"
-        onClick={() => handleDeleteTag()}
-        title="Delete Tag"
+        onClick={handleDeleteTag}
+        title="Delete tag"
+        aria-label={`Delete ${tag} tag`}
       >
         X
-      </span>
+      </button>
     </div>
   ) : null;
 };
 TagsComponent.propTypes = {
-  id: PropTypes.string,
+  memoryId: PropTypes.string.isRequired,
   tag: PropTypes.string,
   variant: PropTypes.string,
 };

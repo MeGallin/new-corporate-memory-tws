@@ -1,16 +1,19 @@
 @use '../../Css/tokens' as *;
 
 footer {
-  height: $footer-height;
-  font-size: 0.7em;
-  border: 1px solid $border-colour;
-  background-color: $main-font-colour;
-  color: $main-bg-colour;
-  padding: 4px 0;
+  padding: 1.25rem max(1rem, calc((100% - 1240px) / 2));
+  border-top: 1px solid $border-colour-light;
+  background: $shell;
+  color: $ink-soft;
+  font-family: $font-label;
+  font-size: 0.68rem;
+  line-height: 1.8;
   text-align: center;
+
   .footer-content-wrapper {
     display: flex;
-    gap: 2rem;
-    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    justify-content: center;
   }
 }

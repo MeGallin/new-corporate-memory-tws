@@ -1,6 +1,15 @@
 @use '../../Css/tokens' as *;
 
+.stars-component {
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  gap: 0.18rem;
+  line-height: 1;
+}
+
 .start-component-wrapper {
+  display: inline-flex;
   color: $rating-colour;
-  font-size: 0.75em;
+  font-size: 0.7rem;
 }

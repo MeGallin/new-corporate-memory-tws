@@ -1,15 +1,19 @@
 @use './tokens' as *;
 
 ::-webkit-scrollbar {
-  width: 0.5em;
+  width: 0.7rem;
 }
+
 ::-webkit-scrollbar-track {
-  background: $main-bg-colour;
-  border-radius: 100vw;
-  margin-block: 0.2em;
+  background: $canvas;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: $main-font-colour;
-  border: 0.25em solid $main-font-colour;
-  border-radius: 100vw;
+  border: 3px solid $canvas;
+  border-radius: 999px;
+  background: $border-colour-dark;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $brand-hover;
 }

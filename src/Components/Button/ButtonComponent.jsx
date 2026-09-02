@@ -10,6 +10,7 @@ const ButtonComponent = ({
   variant = 'primary',
   disabled = false,
   className = '',
+  ...buttonProps
 }) => {
   const buttonClasses = [variant, className].filter(Boolean).join(' ');
 
@@ -20,6 +21,7 @@ const ButtonComponent = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
+      {...buttonProps}
     >
       {text}
     </button>
@@ -34,6 +36,8 @@ ButtonComponent.propTypes = {
   variant: PropTypes.string,
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
+  'aria-expanded': PropTypes.bool,
+  'aria-controls': PropTypes.string,
 };
 
 export default ButtonComponent;

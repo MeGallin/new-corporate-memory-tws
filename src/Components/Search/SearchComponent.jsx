@@ -9,6 +9,7 @@ const SearchComponent = ({
   className = '',
   value,
   label = '',
+  ariaLabel = '',
 }) => {
   return (
     <div className="search-input-wrapper">
@@ -20,6 +21,7 @@ const SearchComponent = ({
         placeholder={placeholder}
         onChange={onChange}
         value={value}
+        aria-label={ariaLabel || undefined}
       />
     </div>
   );
@@ -33,6 +35,7 @@ SearchComponent.propTypes = {
   onChange: PropTypes.func.isRequired,
   className: PropTypes.string,
   label: PropTypes.string,
+  ariaLabel: PropTypes.string,
 };
 
 export default SearchComponent;

@@ -1,30 +1,32 @@
 @use '../../Css/tokens' as *;
 
 .user-profile-image-wrapper {
-  width: 100%;
+  width: min(100%, 220px);
+
   .user-profile-image {
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
-      rgba(0, 0, 0, 0.05) 0px 5px 10px;
-    margin: 0 auto;
     width: 100%;
-  }
-  .user-profile-image-selector {
-    border: 1px solid $main-font-colour;
-    background-color: $main-bg-colour;
-    padding: 0.2em;
+    aspect-ratio: 1;
+    border: 1px solid $border-colour-light;
+    border-radius: $radius-card $radius-card 0 0;
+    box-shadow: $shadow-card;
+    object-fit: cover;
   }
 
-  .image-wrapper {
-    .image-icon-wrapper {
-      border: 1px solid $border-colour-light;
-      display: flex;
-      justify-content: space-between;
-      background-color: $main-bg-colour;
-      margin: 0 auto;
-      width: 100%;
-      position: relative;
-      top: 0;
-      padding: 0.2em;
-    }
+  .user-profile-image-selector {
+    padding: 0.6rem;
+    border: 1px solid $border-colour;
+    border-radius: $radius-control;
+    background: $surface;
+  }
+
+  .image-icon-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border: 1px solid $border-colour-light;
+    border-top: 0;
+    border-radius: 0 0 $radius-card $radius-card;
+    background: $surface-muted;
   }
 }

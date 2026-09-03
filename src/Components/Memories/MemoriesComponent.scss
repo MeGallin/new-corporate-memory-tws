@@ -189,6 +189,130 @@
   }
 }
 
+// Fallback while the browser measures masonry positions. Once the rendered
+// order is known, the data-card-tone selector below owns the visual sequence.
+.memories-component-wrapper:not([data-card-order-ready='true'])
+  > div:nth-child(even)
+  .card-wrapper
+  > .fieldSet,
+.memories-component-wrapper[data-card-order-ready='true']
+  > div[data-card-tone='light']
+  .card-wrapper
+  > .fieldSet {
+  background: $surface-inverted;
+  border-color: $border-colour-dark;
+  box-shadow: 0 10px 28px rgba($shell, 0.18);
+  color: $surface;
+
+  .card-title {
+    color: $brand-strong;
+
+    .card-title-plate {
+      background: $surface-inverted;
+      color: $brand-strong;
+      border-radius: 4px 4px 0 0;
+
+      &::before {
+        border-color: $border-colour-dark;
+      }
+    }
+  }
+
+  .card-header {
+    border-bottom-color: $border-colour-dark;
+    color: $surface;
+
+    .early {
+      color: $surface;
+    }
+  }
+
+  .card-body {
+    > .card-copy {
+      color: $surface;
+    }
+
+    .card-footer {
+      border-top-color: $border-colour-dark;
+      color: $surface;
+    }
+
+    .card-priority > span {
+      color: $surface;
+    }
+
+    .memories-priority-wrapper {
+      border-color: $border-colour-dark;
+      background: $surface-inverted;
+
+      > legend {
+        color: $brand-strong;
+      }
+
+      label,
+      > p {
+        background: color-mix(in srgb, $surface-inverted 86%, $surface);
+        color: $surface;
+      }
+    }
+  }
+
+  .card-buttons {
+    border-top-color: $border-colour-dark;
+  }
+
+  .card-icon-button,
+  .memories-image-wrapper .memory-image-action {
+    border-color: $border-colour-dark;
+    background: $surface-inverted;
+    color: $surface;
+
+    &:hover {
+      border-color: $brand;
+      background: color-mix(in srgb, $surface-inverted 84%, $brand);
+      color: $surface;
+    }
+  }
+
+  .tags-wrapper {
+    border-color: color-mix(in srgb, $danger 45%, transparent);
+    color: $danger;
+  }
+}
+
+// Keep the native legend transparent and put the visible title edge on a
+// contained child. This prevents browser-specific legend borders from
+// extending down into the fieldset.
+.memories-component-wrapper > div .card-wrapper > .fieldSet > .card-title {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+
+  > .card-title-plate {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    padding: 0 0.55rem;
+    overflow-wrap: anywhere;
+    background: $surface;
+    border-radius: 4px 4px 0 0;
+    color: $ink;
+
+    &::before {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 50%;
+      border: 1px solid $border-colour;
+      border-bottom: 0;
+      border-radius: 4px 4px 0 0;
+      content: '';
+      pointer-events: none;
+    }
+  }
+}
+
 @media (min-width: 1100px) {
   .memories-query-grid {
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
@@ -311,6 +435,20 @@
 
   .memories-component-wrapper {
     column-count: 1;
+  }
+
+  .memories-component-wrapper[data-card-order-ready='true']
+    > div[data-card-tone='light']
+    .card-wrapper
+    > .fieldSet {
+    .card-body > .card-copy {
+      background: color-mix(in srgb, $surface-inverted 86%, $surface);
+      color: $surface;
+    }
+
+    .card-body .card-footer {
+      border-top-color: $border-colour-dark;
+    }
   }
 }
 

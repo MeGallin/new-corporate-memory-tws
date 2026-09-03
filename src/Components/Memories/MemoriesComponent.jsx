@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import './MemoriesComponent.scss';
@@ -20,6 +20,7 @@ const Memories = () => {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState('');
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+  const memoriesCollectionRef = useRef(null);
 
   const { userInfo } = useSelector((state) => state.userLogin);
   const { userInfo: googleUserInfo } = useSelector(
@@ -82,6 +83,49 @@ const Memories = () => {
   const visibleSearchedMemories = useMemo(() => {
     return searchedMemories.filter((memory) => !memory.isComplete);
   }, [searchedMemories]);
+
+  useEffect(() => {
+    const collection = memoriesCollectionRef.current;
+    if (!collection) return undefined;
+
+    const applyVisualCardTones = () => {
+      const cards = [...collection.children]
+        .map((wrapper, sourceIndex) => ({
+          wrapper,
+          sourceIndex,
+          rect: wrapper.getBoundingClientRect(),
+        }))
+        .filter(({ wrapper }) => wrapper.querySelector('.card-wrapper'))
+        .sort((left, right) => {
+          const topDelta = left.rect.top - right.rect.top;
+          if (Math.abs(topDelta) > 1) return topDelta;
+
+          const leftDelta = left.rect.left - right.rect.left;
+          if (Math.abs(leftDelta) > 1) return leftDelta;
+
+          return left.sourceIndex - right.sourceIndex;
+        });
+
+      cards.forEach(({ wrapper }, visualIndex) => {
+        wrapper.dataset.cardTone = visualIndex % 2 === 1 ? 'light' : 'dark';
+      });
+      collection.dataset.cardOrderReady = 'true';
+    };
+
+    applyVisualCardTones();
+
+    const resizeObserver =
+      typeof ResizeObserver !== 'undefined'
+        ? new ResizeObserver(applyVisualCardTones)
+        : null;
+    resizeObserver?.observe(collection);
+    window.addEventListener('resize', applyVisualCardTones);
+
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', applyVisualCardTones);
+    };
+  }, [visibleSearchedMemories]);
 
   const completedMemoriesCount = useMemo(() => {
     return memories?.filter((memory) => memory.isComplete).length || 0;
@@ -201,7 +245,10 @@ const Memories = () => {
     }
 
     return (
-      <div className="memories-component-wrapper">
+      <div
+        ref={memoriesCollectionRef}
+        className="memories-component-wrapper"
+      >
         {visibleSearchedMemories.map((memory) => (
           <div key={memory._id}>
             <CardComponent memory={memory} />

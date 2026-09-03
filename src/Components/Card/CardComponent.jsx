@@ -57,7 +57,9 @@ const CardComponent = ({ memory }) => {
   return (
     <article className="card-wrapper" aria-labelledby={titleId}>
       <fieldset className="fieldSet" aria-labelledby={titleId}>
-        <legend className="card-title" aria-hidden="true">{title}</legend>
+        <legend className="card-title" aria-hidden="true">
+          <span className="card-title-plate">{title}</span>
+        </legend>
         <h3 id={titleId} className="card-title-heading">{title}</h3>
         <div className="card-header">
           {setDueDate ? (

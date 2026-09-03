@@ -3,7 +3,7 @@
 .beta-release-badge {
   position: fixed;
   top: 13px;
-  left: -25px;
+  right: -25px;
   z-index: 2001;
   width: 94px;
   padding: 0.3rem 0;
@@ -20,14 +20,14 @@
   line-height: 1;
   text-align: center;
   text-transform: uppercase;
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
   transform-origin: center;
 }
 
 @media (max-width: 640px) {
   .beta-release-badge {
     top: 9px;
-    left: -21px;
+    right: -21px;
     width: 76px;
     padding: 0.24rem 0;
     font-size: 0.56rem;

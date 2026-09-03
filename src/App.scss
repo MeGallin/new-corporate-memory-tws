@@ -15,13 +15,13 @@
   width: calc(100% - 2rem);
   min-height: calc(100dvh - #{$header-height});
   margin: 0 auto;
-  padding: clamp(1.25rem, 3vw, 2.5rem) 0 3rem;
+  padding: clamp(0.75rem, 1.5vw, 1.25rem) 0 3rem;
   flex: 1;
 }
 
 @media (max-width: 640px) {
   .content-wrapper {
     width: calc(100% - 1rem);
-    padding-top: 1rem;
+    padding-top: 0.75rem;
   }
 }

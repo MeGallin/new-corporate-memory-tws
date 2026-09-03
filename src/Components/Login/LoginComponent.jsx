@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GoogleLogin } from '@react-oauth/google';
 
@@ -34,11 +34,31 @@ const LoginComponent = () => {
     email: '',
     password: '',
   });
+  const googleLoginContainerRef = useRef(null);
+  const [googleButtonWidth, setGoogleButtonWidth] = useState(320);
   const { email, password } = formData;
   const isEmailInvalid = email.length > 0 && !isValidEmail(email);
   const isPasswordInvalid =
     password.length > 0 && !isValidLoginPassword(password);
   const isFormInvalid = !isValidEmail(email) || !isValidLoginPassword(password);
+
+  useEffect(() => {
+    const container = googleLoginContainerRef.current;
+    if (!container) return undefined;
+
+    const updateGoogleButtonWidth = () => {
+      const measuredWidth = Math.floor(container.getBoundingClientRect().width);
+      setGoogleButtonWidth(Math.max(200, Math.min(400, measuredWidth)));
+    };
+
+    updateGoogleButtonWidth();
+
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const resizeObserver = new ResizeObserver(updateGoogleButtonWidth);
+    resizeObserver.observe(container);
+
+    return () => resizeObserver.disconnect();
+  }, [googleLoading]);
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
@@ -123,27 +143,40 @@ const LoginComponent = () => {
               onChange={handleOnchange}
             />
 
-            <div className="auth-form-actions">
-              <ButtonComponent
-                type="submit"
-                text="Sign in"
-                variant="success"
-                disabled={isFormInvalid}
-              />
-            </div>
-
-            <div className="auth-provider-divider">Or</div>
-
-            {googleLoading ? (
-              <SpinnerComponent />
-            ) : (
-              <div className="google-login-container">
-                <GoogleLogin
-                  onSuccess={googleSuccess}
-                  onError={googleFailure}
+            <div className="auth-login-actions">
+              <div className="auth-form-actions auth-form-actions--login">
+                <ButtonComponent
+                  type="submit"
+                  text="Sign in"
+                  variant="success"
+                  disabled={isFormInvalid}
                 />
               </div>
-            )}
+
+              <span className="auth-provider-divider" aria-hidden="true">
+                Or
+              </span>
+
+              {googleLoading ? (
+                <div
+                  className="google-login-container"
+                  ref={googleLoginContainerRef}
+                >
+                  <SpinnerComponent />
+                </div>
+              ) : (
+                <div
+                  className="google-login-container"
+                  ref={googleLoginContainerRef}
+                >
+                  <GoogleLogin
+                    onSuccess={googleSuccess}
+                    onError={googleFailure}
+                    width={String(googleButtonWidth)}
+                  />
+                </div>
+              )}
+            </div>
           </form>
         </fieldset>
       )}

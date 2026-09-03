@@ -5,23 +5,135 @@ header {
   top: 0;
   z-index: 1000;
   min-height: $header-height;
-  border-bottom: 1px solid $border-colour-light;
+  border-bottom: 0;
   background: rgba($shell, 0.97);
   box-shadow: $shadow-card;
   color: $ink;
 
   nav {
+    display: grid;
     width: calc(100% - 2rem);
+    min-height: 76px;
+    grid-template-columns: max-content minmax(0, 1fr);
+    column-gap: clamp(3rem, 6vw, 8rem);
+    align-items: stretch;
     margin: 0 auto;
+  }
+
+  .header-identity {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    padding: 0.25rem 0;
+    color: $ink;
+    text-decoration: none;
+
+    &:focus-visible {
+      outline: 2px solid $brand;
+      outline-offset: -3px;
+    }
+  }
+
+  .header-identity__copy {
+    position: relative;
+    display: grid;
+    width: fit-content;
+    min-width: 0;
+    min-height: 68px;
+    align-content: center;
+    gap: 0.16rem;
+    padding: 0.48rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: $radius-control;
+    background: transparent;
+
+    &::before,
+    &::after {
+      position: absolute;
+      width: 2rem;
+      height: 1.25rem;
+      pointer-events: none;
+      content: '';
+    }
+
+    &::before {
+      top: -1px;
+      left: -1px;
+      border-top: 3px solid $brand;
+      border-left: 3px solid $brand;
+      border-radius: $radius-control 0 0;
+    }
+
+    &::after {
+      right: -1px;
+      bottom: -1px;
+      border-right: 3px solid $brand;
+      border-bottom: 3px solid $brand;
+      border-radius: 0 0 $radius-control;
+    }
+
+    strong {
+      display: flex;
+      min-width: 0;
+      align-items: baseline;
+      gap: 0.4rem;
+      color: $ink;
+      font-family: $font-body;
+      line-height: 1.1;
+      white-space: nowrap;
+
+      b {
+        position: relative;
+        padding-bottom: 0.18rem;
+        color: $brand-hover;
+        font-size: 1.48rem;
+        font-weight: 700;
+        letter-spacing: -0.045em;
+
+        &::after {
+          position: absolute;
+          right: 0.08em;
+          bottom: 0;
+          left: 0;
+          height: 2px;
+          background: $ink;
+          content: '';
+        }
+      }
+    }
+
+    .header-wordmark__your {
+      color: $text-muted;
+      font-family: $font-label;
+      font-size: 0.64rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .header-wordmark__corporate {
+      font-size: 1.18rem;
+      font-weight: 600;
+      letter-spacing: 0.035em;
+      text-transform: uppercase;
+    }
+
+    small {
+      color: $text-muted;
+      font-family: $font-label;
+      font-size: 0.62rem;
+      letter-spacing: 0.075em;
+      text-transform: uppercase;
+    }
   }
 
   ul.nav-wrapper {
     display: grid;
-    min-height: $header-height;
+    min-height: 76px;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     align-items: stretch;
     margin: 0;
-    padding: 0 0 0 4.5rem;
+    padding: 0;
     list-style: none;
 
     li {
@@ -35,18 +147,28 @@ header {
     .logout-button {
       display: flex;
       width: 100%;
-      min-height: $header-height;
+      min-height: 76px;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 0.75rem 0.5rem;
+      gap: 0.16rem;
+      padding: 0.65rem 0.5rem;
       border-bottom: 3px solid transparent;
       color: $ink;
       font-family: $font-label;
-      font-size: 0.74rem;
+      font-size: 0.95rem;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.055em;
       text-transform: uppercase;
       transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+
+      small {
+        color: $text-muted;
+        font-size: 0.55rem;
+        font-weight: 500;
+        letter-spacing: 0.035em;
+        transition: color 160ms ease;
+      }
     }
 
     a:hover,
@@ -58,8 +180,13 @@ header {
 
     a.active {
       border-bottom-color: $brand;
+      border-radius: 0 0 $radius-control $radius-control;
       background: color-mix(in srgb, $brand 12%, transparent);
       color: $brand-hover;
+
+      small {
+        color: $ink-soft;
+      }
     }
   }
 
@@ -71,16 +198,83 @@ header {
     .user-info-nav-link {
       width: calc(100% - 2rem);
       margin: 0 auto;
-      padding: 0.35rem 0;
+      padding: 0.38rem 0;
     }
 
     .header-user-name {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 0.75rem;
       color: $ink;
       font-family: $font-label;
-      font-size: 0.68rem;
+      font-size: 0.64rem;
       font-weight: 500;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
+      text-decoration: none;
       text-transform: uppercase;
+
+      > span {
+        color: $brand-hover;
+        text-align: left;
+      }
+
+      strong {
+        color: $ink;
+        font-size: 0.72rem;
+        font-weight: 600;
+      }
+
+      small {
+        color: $text-muted;
+        font-size: 0.57rem;
+        text-align: right;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $brand;
+        outline-offset: 3px;
+      }
+    }
+  }
+}
+
+@media (max-width: 920px) {
+  header {
+    nav {
+      column-gap: clamp(2rem, 4vw, 3rem);
+    }
+
+    .header-identity__copy strong {
+      gap: 0.32rem;
+    }
+
+    .header-identity__copy strong b {
+      font-size: 1.15rem;
+    }
+
+    .header-identity__copy .header-wordmark__your {
+      font-size: 0.52rem;
+    }
+
+    .header-identity__copy .header-wordmark__corporate {
+      font-size: 0.95rem;
+    }
+
+    .header-identity__copy small {
+      font-size: 0.56rem;
+    }
+  }
+}
+
+@media (max-width: 760px) {
+  header {
+    nav {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .header-identity {
+      display: none;
     }
   }
 }
@@ -89,22 +283,45 @@ header {
   header {
     nav {
       width: 100%;
+      min-height: 62px;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .header-identity {
+      display: none;
     }
 
     ul.nav-wrapper {
-      padding-left: 0;
+      min-height: 62px;
 
       a,
       .logout-button {
+        min-height: 62px;
         padding-right: 0.2rem;
         padding-left: 0.2rem;
-        font-size: 0.6rem;
+        font-size: 0.8rem;
         letter-spacing: 0.03em;
+
+        small {
+          display: none;
+        }
       }
     }
 
     .header-user .user-info-nav-link {
       width: calc(100% - 1rem);
+    }
+
+    .header-user .header-user-name {
+      grid-template-columns: auto 1fr;
+
+      strong {
+        text-align: right;
+      }
+
+      small {
+        display: none;
+      }
     }
   }
 }

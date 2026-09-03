@@ -235,7 +235,7 @@
 
 @media (max-width: 760px) {
   .memories-workbench {
-    padding: 0.75rem;
+    padding: 0.85rem;
   }
 
   .memories-workbench__header,
@@ -243,11 +243,69 @@
     align-items: baseline;
   }
 
+  .memories-workbench__header {
+    margin-bottom: 1.1rem;
+
+    h1 {
+      font-size: 1.4rem;
+    }
+
+    span {
+      font-size: 0.7rem;
+    }
+  }
+
+  .memories-library__header {
+    min-height: 52px;
+    margin-bottom: 1.1rem;
+
+    h2 {
+      font-size: 1.2rem;
+    }
+
+    span {
+      font-size: 0.7rem;
+    }
+  }
+
   .memories-query-grid {
     grid-template-columns: 1fr;
 
     > .query-fieldset {
       min-height: 0;
+
+      > legend {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  .memories-results {
+    font-size: 0.7rem;
+
+    > span,
+    > .memories-completed-link {
+      gap: 0.45rem;
+      padding: 0.45rem;
+      white-space: nowrap;
+    }
+
+    strong {
+      font-size: 1.5rem;
+    }
+  }
+
+  .memories-actions-wrapper {
+    gap: 0.65rem;
+
+    .sort-button {
+      min-height: 46px;
+      font-size: 0.7rem;
+    }
+
+    > button {
+      min-height: 54px;
+      font-size: 0.7rem;
     }
   }
 
@@ -256,7 +314,7 @@
   }
 }
 
-@media (max-width: 359px) {
+@media (max-width: 380px) {
   .memories-results {
     grid-template-columns: 1fr;
   }

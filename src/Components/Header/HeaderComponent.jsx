@@ -16,14 +16,31 @@ const HeaderComponent = () => {
     <>
       <BetaReleaseComponent />
       <header>
-        <nav>
+        <nav aria-label="Primary navigation">
+          <NavLink
+            className="header-identity"
+            to={isAuthenticated ? '/memories' : '/'}
+            aria-label="Your Corporate Memory home"
+          >
+            <span className="header-identity__copy" aria-hidden="true">
+              <strong>
+                <span className="header-wordmark__your">Your</span>
+                <span className="header-wordmark__corporate">Corporate</span>
+                <b>Memory</b>
+              </strong>
+              <small>Keep knowledge in reach</small>
+            </span>
+          </NavLink>
           <ul className="nav-wrapper">
             <li>
               <NavLink
                 className={(navData) => (navData.isActive ? 'active' : '')}
                 to={isAuthenticated ? '/memories' : '/'}
               >
-                {isAuthenticated ? 'Memories' : 'Home'}
+                <span>{isAuthenticated ? 'Memories' : 'Home'}</span>
+                <small aria-hidden="true">
+                  {isAuthenticated ? 'Workspace' : 'Overview'}
+                </small>
               </NavLink>
             </li>
             <li>
@@ -31,7 +48,8 @@ const HeaderComponent = () => {
                 className={(navData) => (navData.isActive ? 'active' : '')}
                 to="/about"
               >
-                About
+                <span>About</span>
+                <small aria-hidden="true">The platform</small>
               </NavLink>
             </li>
             <li>
@@ -39,7 +57,8 @@ const HeaderComponent = () => {
                 className={(navData) => (navData.isActive ? 'active' : '')}
                 to="/contact"
               >
-                Contact
+                <span>Contact</span>
+                <small aria-hidden="true">Get support</small>
               </NavLink>
             </li>
             <li>
@@ -50,7 +69,8 @@ const HeaderComponent = () => {
                   className={(navData) => (navData.isActive ? 'active' : '')}
                   to="/forms"
                 >
-                  Login
+                  <span>Login</span>
+                  <small aria-hidden="true">Account access</small>
                 </NavLink>
               )}
             </li>
@@ -60,7 +80,9 @@ const HeaderComponent = () => {
           <div className="header-user">
             <div className="user-info-nav-link">
               <NavLink to="/user-admin" className="header-user-name">
-                DASHBOARD: {userDetails?.name}
+                <span>Dashboard</span>
+                <strong>{userDetails?.name || 'Account'}</strong>
+                <small>Manage account</small>
               </NavLink>
             </div>
           </div>

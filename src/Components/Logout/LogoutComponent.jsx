@@ -12,7 +12,8 @@ const LogoutComponent = () => {
   };
   return (
     <button type="button" className="logout-button" onClick={handleLogout}>
-      LOGOUT
+      <span>Logout</span>
+      <small aria-hidden="true">End session</small>
     </button>
   );
 };

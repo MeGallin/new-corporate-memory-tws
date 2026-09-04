@@ -69,7 +69,7 @@ const HeaderComponent = () => {
                   className={(navData) => (navData.isActive ? 'active' : '')}
                   to="/forms"
                 >
-                  <span>Login</span>
+                  <span>Sign in</span>
                   <small aria-hidden="true">Account access</small>
                 </NavLink>
               )}

@@ -105,7 +105,6 @@ const LoginComponent = () => {
         <fieldset className="query-fieldset auth-form-section">
           <legend>Sign in</legend>
           <div className="auth-form-header">
-            <h2>Welcome back</h2>
             <p>Use your account details or continue with Google.</p>
           </div>
 
@@ -144,17 +143,16 @@ const LoginComponent = () => {
             />
 
             <div className="auth-login-actions">
-              <div className="auth-form-actions auth-form-actions--login">
-                <ButtonComponent
-                  type="submit"
-                  text="Sign in"
-                  variant="success"
-                  disabled={isFormInvalid}
-                />
-              </div>
+              <ButtonComponent
+                type="submit"
+                text="Sign in"
+                variant="success"
+                className="auth-login-submit"
+                disabled={isFormInvalid}
+              />
 
-              <span className="auth-provider-divider" aria-hidden="true">
-                Or
+              <span className="auth-provider-divider">
+                Or continue with
               </span>
 
               {googleLoading ? (

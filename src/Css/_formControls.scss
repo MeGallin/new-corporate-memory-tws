@@ -1,0 +1,36 @@
+@use './tokens' as *;
+
+@mixin interactive-field($background: $shell) {
+  border: 2px solid $border-colour-dark;
+  border-radius: $radius-control;
+  outline: 0;
+  background: $background;
+  box-shadow: inset 0 -3px 0 color-mix(in srgb, $brand 32%, transparent);
+  color: $ink;
+  transition: border-color 150ms ease, box-shadow 150ms ease,
+    background-color 150ms ease;
+
+  &::placeholder {
+    color: $ink-soft;
+    opacity: 0.25;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: color-mix(in srgb, $brand 58%, $border-colour-dark);
+  }
+
+  &:focus,
+  &:focus-visible {
+    border-color: $brand;
+    outline: 0;
+    background: color-mix(in srgb, $background 94%, $palette-white);
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, $brand 18%, transparent),
+      inset 0 -3px 0 $brand;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.62;
+  }
+}

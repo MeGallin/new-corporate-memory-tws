@@ -1,4 +1,5 @@
 @use '../../Css/tokens' as *;
+@use '../../Css/formControls' as form;
 
 .modal-overlay {
   position: fixed;
@@ -210,16 +211,8 @@ button.modal-close-button {
   .react-datepicker__input-container input {
     min-height: 42px;
     padding: 0.6rem 0.7rem;
-    border: 1px solid $border-colour;
-    border-radius: $radius-control;
-    outline: 0;
-    background: $shell;
-    color: $ink;
 
-    &:focus {
-      border-color: $brand;
-      box-shadow: 0 0 0 3px color-mix(in srgb, $brand 14%, transparent);
-    }
+    @include form.interactive-field;
   }
 }
 
@@ -271,11 +264,8 @@ button.modal-close-button {
 .modal-wrapper .react-datepicker-time__input {
   min-height: 30px;
   padding: 0.25rem 0.4rem;
-  border: 1px solid $border-colour;
-  border-radius: $radius-control;
-  outline: 0;
-  background: $surface;
-  color: $ink;
+
+  @include form.interactive-field($surface);
 }
 
 .modal-wrapper .react-datepicker__triangle {

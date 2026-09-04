@@ -1,4 +1,5 @@
 @use '../../Css/tokens' as *;
+@use '../../Css/formControls' as form;
 
 .agent-chat {
   display: flex;
@@ -23,16 +24,8 @@
 .agent-chat__field input[type='text'] {
   min-height: 44px;
   padding: 0.7rem 0.78rem;
-  border: 1px solid $border-colour;
-  border-radius: $radius-control;
-  outline: 0;
-  background: $surface;
-  color: $ink;
 
-  &:focus {
-    border-color: $brand;
-    box-shadow: 0 0 0 3px color-mix(in srgb, $brand 14%, transparent);
-  }
+  @include form.interactive-field;
 }
 
 .agent-chat__input {

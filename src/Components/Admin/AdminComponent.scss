@@ -1,4 +1,5 @@
 @use '../../Css/tokens' as *;
+@use '../../Css/formControls' as form;
 
 .admin-user-selector {
   display: grid;
@@ -19,10 +20,8 @@
   select {
     min-height: 42px;
     padding: 0.55rem 0.65rem;
-    border: 1px solid $border-colour;
-    border-radius: $radius-control;
-    background: $surface;
-    color: $ink;
+
+    @include form.interactive-field;
   }
 }
 

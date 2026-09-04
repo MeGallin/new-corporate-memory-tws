@@ -43,18 +43,22 @@
 
 .auth-workbench__grid {
   display: grid;
-  grid-template-columns: minmax(260px, 4fr) minmax(0, 7fr);
-  align-items: stretch;
+  grid-template-columns: minmax(0, 7fr) minmax(260px, 4fr);
+  align-items: start;
   gap: 1rem;
 }
 
 .auth-guidance > .query-fieldset,
 .auth-form-section,
 .auth-account-status {
-  height: 100%;
   border-radius: $radius-control;
   background: $surface;
   box-shadow: none;
+}
+
+.auth-form-section,
+.auth-account-status {
+  height: 100%;
 }
 
 .auth-guidance__intro,
@@ -76,7 +80,7 @@
   }
 
   p {
-    color: $text-muted;
+    color: $ink-soft;
     font-size: 0.86rem;
   }
 }
@@ -106,7 +110,7 @@
 
   dd {
     margin: 0;
-    color: $text-muted;
+    color: $ink-soft;
     font-size: 0.86rem;
   }
 }
@@ -120,29 +124,45 @@
 
 .auth-mode-switcher {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.4rem;
-  padding: 0.4rem;
-  border: 1px solid $border-colour-light;
-  border-radius: $radius-control;
-  background: $surface;
+  gap: 0.55rem;
+  background: $shell;
+
+  > p {
+    margin: 0;
+    color: $text-muted;
+    font-size: 0.8rem;
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
 
   button {
     width: 100%;
-    border-color: $border-colour;
-    background: $shell;
-  }
-
-  button.is-active {
+    min-height: 48px;
     border-color: $brand-strong;
-    background: $brand-soft;
-    color: $brand-strong;
+    background: $surface-muted;
+    box-shadow: inset 0 -3px 0 $danger;
+
+    &:hover {
+      border-color: $brand-hover;
+      background: $brand-soft;
+      box-shadow: inset 0 -3px 0 $brand-hover;
+    }
+
+    &:active {
+      box-shadow: inset 0 -1px 0 $brand-hover;
+    }
   }
 }
 
 .auth-form-section {
   display: grid;
   gap: 0.85rem;
+  border-color: $brand-strong;
+  box-shadow: inset 0 3px 0 $brand-strong;
 }
 
 .auth-form-section form {
@@ -178,54 +198,45 @@
 }
 
 .auth-login-actions {
-  position: relative;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
   gap: 0.75rem;
   padding-top: 0.8rem;
   border-top: 1px solid $border-colour-light;
 }
 
-.auth-form-actions--login {
-  display: grid;
-  padding: 0;
-  border: 0;
-
-  > button {
-    width: 100%;
-    min-width: 0;
-    min-height: 46px;
-  }
+.auth-login-actions > .auth-login-submit {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
 }
 
 .auth-provider-divider {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 1;
-  display: grid;
-  width: 26px;
-  height: 26px;
-  place-items: center;
-  border: 1px solid $border-colour-light;
-  border-radius: 50%;
-  background: $surface;
   color: $text-muted;
   font-family: $font-label;
-  font-size: 0.56rem;
+  font-size: 0.62rem;
   text-transform: uppercase;
-  transform: translate(-50%, -38%);
+  white-space: nowrap;
+
+  &::before,
+  &::after {
+    display: none;
+  }
 }
 
 .google-login-container {
   display: grid;
+  width: 100%;
+  max-width: 400px;
   min-width: 0;
   min-height: 46px;
+  justify-self: center;
   place-items: center;
   padding: 0;
   border: 1px solid $border-colour-light;
   border-radius: $radius-control;
-  background: $shell;
+  background: $ink;
 
   > div,
   iframe {
@@ -311,8 +322,32 @@
     grid-template-columns: 1fr;
   }
 
-  .auth-entry-panel {
-    grid-row: 1;
+  .auth-login-actions {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .auth-provider-divider {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 0.65rem;
+
+    &::before,
+    &::after {
+      display: block;
+      height: 1px;
+      background: $border-colour-light;
+      content: '';
+    }
+  }
+
+  .auth-guidance__intro {
+    padding-bottom: 0.55rem;
+  }
+
+  .auth-guidance__list > div {
+    padding: 0.55rem 0.15rem;
   }
 }
 
@@ -323,8 +358,11 @@
     gap: 0.4rem;
   }
 
-  .auth-mode-switcher,
   .auth-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-mode-switcher__actions {
     grid-template-columns: 1fr;
   }
 
@@ -346,12 +384,4 @@
     justify-content: center;
   }
 
-  .auth-login-actions {
-    grid-template-columns: 1fr;
-  }
-
-  .auth-provider-divider {
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
 }

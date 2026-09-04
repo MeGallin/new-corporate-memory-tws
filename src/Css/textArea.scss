@@ -1,21 +1,13 @@
 @use './tokens' as *;
+@use './formControls' as form;
 
 textarea {
   width: 100%;
   min-height: 150px;
   padding: 0.75rem;
-  border: 1px solid $border-colour;
-  border-radius: $radius-control;
-  outline: 0;
-  background: $surface;
-  color: $ink;
   resize: vertical;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
-}
 
-textarea:focus {
-  border-color: $brand;
-  box-shadow: 0 0 0 3px color-mix(in srgb, $brand 14%, transparent);
+  @include form.interactive-field;
 }
 
 textarea.invalid {

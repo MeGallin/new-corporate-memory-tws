@@ -1,14 +1,5 @@
 @use '../../Css/tokens' as *;
 
-.contact-workbench {
-  margin-bottom: 1rem;
-  padding: 1rem;
-  border: 1px solid $border-colour-light;
-  border-radius: $radius-control;
-  background: $shell;
-  box-shadow: 0 10px 28px rgba($shell, 0.28);
-}
-
 .contact-workbench__header {
   display: flex;
   align-items: flex-end;
@@ -181,10 +172,6 @@
 }
 
 @media (max-width: 760px) {
-  .contact-workbench {
-    padding: 0.75rem;
-  }
-
   .contact-workbench__grid {
     grid-template-columns: 1fr;
   }

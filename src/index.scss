@@ -63,13 +63,7 @@ html {
 body {
   min-height: 100%;
   margin: 0;
-  background:
-    radial-gradient(
-      circle at 96% 2%,
-      color-mix(in srgb, $brand 9%, transparent),
-      transparent 28rem
-    ),
-    $canvas;
+  background: $canvas;
   color: $ink;
   font-family: $font-body;
   font-size: 16px;

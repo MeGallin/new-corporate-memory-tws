@@ -1,15 +1,5 @@
 @use './tokens' as *;
 
-.auth-workbench,
-.auth-reset-workbench {
-  margin-bottom: 1rem;
-  padding: 1rem;
-  border: 1px solid $border-colour-light;
-  border-radius: $radius-control;
-  background: $shell;
-  box-shadow: 0 10px 28px rgba($shell, 0.28);
-}
-
 .auth-workbench__header {
   display: flex;
   align-items: flex-end;
@@ -313,11 +303,6 @@
 }
 
 @media (max-width: 760px) {
-  .auth-workbench,
-  .auth-reset-workbench {
-    padding: 0.75rem;
-  }
-
   .auth-workbench__grid {
     grid-template-columns: 1fr;
   }

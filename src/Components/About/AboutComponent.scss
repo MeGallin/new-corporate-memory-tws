@@ -3,12 +3,6 @@
 .about-workbench {
   display: grid;
   gap: 1rem;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  border: 1px solid $border-colour-light;
-  border-radius: $radius-control;
-  background: $shell;
-  box-shadow: 0 10px 28px rgba($shell, 0.28);
 
   > .query-fieldset,
   fieldset.query-fieldset {
@@ -238,10 +232,6 @@
 }
 
 @media (max-width: 760px) {
-  .about-workbench {
-    padding: 0.75rem;
-  }
-
   .about-overview-grid,
   .about-platform-grid,
   .about-feature-grid {

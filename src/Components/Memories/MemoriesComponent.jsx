@@ -75,18 +75,20 @@ const Memories = () => {
     const lowercasedKeyword = keyword.toLowerCase();
     return memories.filter(
       (memory) =>
-        memory.title?.toLowerCase().includes(lowercasedKeyword) ||
-        memory.memory?.toLowerCase().includes(lowercasedKeyword),
+        memory?.title?.toLowerCase().includes(lowercasedKeyword) ||
+        memory?.memory?.toLowerCase().includes(lowercasedKeyword),
     );
   }, [memories, keyword]);
 
   const visibleSearchedMemories = useMemo(() => {
-    return searchedMemories.filter((memory) => !memory.isComplete);
+    return searchedMemories.filter((memory) => !memory?.isComplete);
   }, [searchedMemories]);
 
   useEffect(() => {
     const collection = memoriesCollectionRef.current;
     if (!collection) return undefined;
+
+    let animationFrameId = null;
 
     const applyVisualCardTones = () => {
       const cards = [...collection.children]
@@ -112,32 +114,58 @@ const Memories = () => {
       collection.dataset.cardOrderReady = 'true';
     };
 
+    const scheduleVisualCardTones = () => {
+      if (animationFrameId !== null) return;
+
+      if (typeof window.requestAnimationFrame !== 'function') {
+        applyVisualCardTones();
+        return;
+      }
+
+      animationFrameId = window.requestAnimationFrame(() => {
+        animationFrameId = null;
+        applyVisualCardTones();
+      });
+    };
+
     applyVisualCardTones();
 
     const resizeObserver =
       typeof ResizeObserver !== 'undefined'
-        ? new ResizeObserver(applyVisualCardTones)
+        ? new ResizeObserver(scheduleVisualCardTones)
         : null;
     resizeObserver?.observe(collection);
-    window.addEventListener('resize', applyVisualCardTones);
+    window.addEventListener('resize', scheduleVisualCardTones);
 
     return () => {
       resizeObserver?.disconnect();
-      window.removeEventListener('resize', applyVisualCardTones);
+      window.removeEventListener('resize', scheduleVisualCardTones);
+      if (
+        animationFrameId !== null &&
+        typeof window.cancelAnimationFrame === 'function'
+      ) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
     };
   }, [visibleSearchedMemories]);
 
-  const completedMemoriesCount = useMemo(() => {
-    return memories?.filter((memory) => memory.isComplete).length || 0;
+  const { activeMemoriesCount, completedMemoriesCount } = useMemo(() => {
+    return (memories || []).reduce(
+      (counts, memory) => {
+        if (!memory) return counts;
+        if (memory.isComplete) counts.completedMemoriesCount += 1;
+        else counts.activeMemoriesCount += 1;
+        return counts;
+      },
+      { activeMemoriesCount: 0, completedMemoriesCount: 0 },
+    );
   }, [memories]);
-
-  const totalMemoriesCount = memories?.length || 0;
 
   const handleSearch = (e) => {
     setKeyword(e.target.value);
   };
 
-  const renderHeader = () => (
+  const renderSearch = () => (
     <fieldset className="memories-search-wrapper query-fieldset">
       <legend>Find a memory</legend>
       <SearchComponent
@@ -147,35 +175,38 @@ const Memories = () => {
         value={keyword}
         onChange={handleSearch}
       />
-      <div className="memories-status-wrapper">
-        <fieldset
-          className="memories-results compact-fieldset"
-          aria-live="polite"
-        >
-          <legend>Memory status</legend>
-          <span>
-            <strong>{visibleSearchedMemories.length}</strong>{' '}
-            {visibleSearchedMemories.length === 1
-              ? 'active memory'
-              : 'active memories'}
-          </span>
-          <Link
-            to="/user-admin"
-            className="memories-completed-link"
-            aria-label={`${completedMemoriesCount} completed ${
-              completedMemoriesCount === 1 ? 'memory' : 'memories'
-            }. View completed memories.`}
-          >
-            <strong>{completedMemoriesCount}</strong> completed
-          </Link>
-        </fieldset>
-      </div>
     </fieldset>
   );
 
-  const renderMemoryActions = () => (
-    <section className="memories-actions-wrapper" aria-label="Memory actions">
-      <SortComponent memories={memories || []} />
+  const renderStatus = () => (
+    <fieldset
+      className="memories-results compact-fieldset"
+      aria-live="polite"
+    >
+      <legend>Memory status</legend>
+      <span>
+        <strong>{activeMemoriesCount}</strong> active
+      </span>
+      {completedMemoriesCount > 0 ? (
+        <Link
+          to="/user-admin"
+          className="memories-completed-link"
+          aria-label={`${completedMemoriesCount} completed ${
+            completedMemoriesCount === 1 ? 'memory' : 'memories'
+          }. View completed memories.`}
+        >
+          <strong>{completedMemoriesCount}</strong> completed
+        </Link>
+      ) : (
+        <span className="memories-completed-status">
+          <strong>0</strong> completed
+        </span>
+      )}
+    </fieldset>
+  );
+
+  const renderCreateAction = () => (
+    <>
       <ButtonComponent
         onClick={() => setCreateModalOpen(true)}
         type="button"
@@ -191,7 +222,7 @@ const Memories = () => {
       >
         <CreateMemoryComponent onCloseModal={() => setCreateModalOpen(false)} />
       </ModalComponent>
-    </section>
+    </>
   );
 
   const renderContent = () => {
@@ -202,7 +233,10 @@ const Memories = () => {
       return (
         <div className="error-message">
           <p>Error loading your account: {userDetailsError}</p>
-          <button onClick={() => dispatch(userInfoDetailsAction())}>
+          <button
+            type="button"
+            onClick={() => dispatch(userInfoDetailsAction())}
+          >
             Try Again
           </button>
         </div>
@@ -213,7 +247,7 @@ const Memories = () => {
       return (
         <div className="error-message">
           <p>Error loading memories: {error}</p>
-          <button onClick={() => dispatch(memoriesGetAction())}>
+          <button type="button" onClick={() => dispatch(memoriesGetAction())}>
             Try Again
           </button>
         </div>
@@ -230,15 +264,43 @@ const Memories = () => {
         </div>
       );
     }
-    if (!searchedMemories.length && keyword) {
+    if (!activeMemoriesCount) {
+      return (
+        <div className="empty-state-message">
+          <h3>No active memories</h3>
+          <p>
+            All your memories are complete. You can review them from your
+            dashboard or create a new memory.
+          </p>
+          <Link to="/user-admin" className="empty-state-link">
+            View completed memories
+          </Link>
+        </div>
+      );
+    }
+    if (!visibleSearchedMemories.length && keyword) {
+      const completedMatches = searchedMemories.filter(
+        (memory) => memory?.isComplete,
+      ).length;
+
       return (
         <div className="no-search-results">
           <div className="empty-state-message">
-            <h3>No memories found</h3>
+            <h3>
+              {completedMatches
+                ? 'Matching memories are completed'
+                : 'No active memories found'}
+            </h3>
             <p>
-              No memories match your search "{keyword}". Try a different search
-              term.
+              {completedMatches
+                ? `Your search “${keyword}” matched completed memories. Review them from your dashboard or try another search.`
+                : `No active memories match “${keyword}”. Try another search.`}
             </p>
+            {completedMatches ? (
+              <Link to="/user-admin" className="empty-state-link">
+                View completed memories
+              </Link>
+            ) : null}
           </div>
         </div>
       );
@@ -260,28 +322,46 @@ const Memories = () => {
 
   return (
     <>
-      <section className="memories-workbench" aria-labelledby="memory-workspace-title">
+      <section
+        className="memories-workbench"
+        aria-labelledby="memory-workspace-title"
+      >
         <header className="memories-workbench__header">
-          <h1 id="memory-workspace-title">Memory workspace</h1>
-          <span>
-            {totalMemoriesCount} {totalMemoriesCount === 1 ? 'memory' : 'memories'}
-          </span>
+          <div>
+            <span>Personal knowledge</span>
+            <h1 id="memory-workspace-title">Memory workspace</h1>
+          </div>
+          {renderCreateAction()}
         </header>
         <div className="memories-query-grid">
-          {renderHeader()}
-          <AgentChatComponent actions={renderMemoryActions()} />
+          <div className="memories-primary-tools">
+            {renderSearch()}
+            {renderStatus()}
+          </div>
+          <fieldset className="memories-fine-tune-fieldset query-fieldset">
+            <legend>Fine-tune results</legend>
+            <details className="memories-fine-tune-disclosure">
+              <summary>
+                <span>Sort by due date or ask AI</span>
+                <small>Optional search tools</small>
+              </summary>
+              <div className="memories-fine-tune-content">
+                <SortComponent memories={memories || []} />
+                <AgentChatComponent />
+              </div>
+            </details>
+          </fieldset>
         </div>
       </section>
-      <section className="memories-library" aria-labelledby="active-memories-title">
+      <section
+        className="memories-library"
+        aria-labelledby="active-memories-title"
+      >
         <header className="memories-library__header">
           <h2 id="active-memories-title">Active memories</h2>
-          <span>
-            {loading
-              ? 'Loading memories'
-              : error
-                ? 'Memories unavailable'
-                : `Showing ${visibleSearchedMemories.length}`}
-          </span>
+          {loading || error ? (
+            <span>{loading ? 'Loading memories' : 'Memories unavailable'}</span>
+          ) : null}
         </header>
         {renderContent()}
       </section>

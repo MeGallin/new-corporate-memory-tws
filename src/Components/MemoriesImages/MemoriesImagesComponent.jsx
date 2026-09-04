@@ -111,6 +111,7 @@ const MemoriesImagesComponent = ({ id, imgSrc }) => {
   const handleImageDelete = () => {
     if (window.confirm(`Are you sure you want to delete this image?`)) {
       dispatch(deleteMemoryImageAction(id));
+      setShowUploadInput(false);
     }
   };
 
@@ -131,49 +132,27 @@ const MemoriesImagesComponent = ({ id, imgSrc }) => {
         onClick={handleCancelUpload}
         type="button"
         text="No, Don't like it!"
-        variant="danger"
+        variant="secondary"
         disabled={false}
       />
     </form>
   );
 
-  const renderExistingImage = () => (
-    <div className="image-wrapper">
-      <div className="image-icon-wrapper">
-        <button
-          type="button"
-          className="memory-image-action"
-          onClick={() => setShowUploadInput(!showUploadInput)}
-          aria-label="Change memory image"
-          title="Change memory image"
-        >
-          <FaPencilAlt className="pencil-icon" size={15} />
-        </button>
-        <button
-          type="button"
-          className="memory-image-action"
-          onClick={handleImageDelete}
-          aria-label="Delete memory image"
-          title="Delete memory image"
-        >
-          <FaTrash className="trash-icon" size={15} />
-        </button>
-      </div>
-    </div>
-  );
-
-  const renderUploadState = () => (
-    <div className="image-wrapper">
-      <button
-        type="button"
-        className="memory-image-action"
-        onClick={() => setShowUploadInput((prev) => !prev)}
-        aria-label="Upload a memory image"
-        title="Upload a memory image"
-      >
-        <FaUpload size={15} className="upload-icon" />
-      </button>
-    </div>
+  const renderImageAction = () => (
+    <button
+      type="button"
+      className="memory-image-action"
+      onClick={() => setShowUploadInput((prev) => !prev)}
+      aria-expanded={showUploadInput}
+      aria-controls={`memory-image-options-${id}`}
+    >
+      {imgSrc ? (
+        <FaPencilAlt className="pencil-icon" size={15} aria-hidden="true" />
+      ) : (
+        <FaUpload size={15} className="upload-icon" aria-hidden="true" />
+      )}
+      {imgSrc ? 'Change image' : 'Add image'}
+    </button>
   );
 
   if (isCurrentMemoryLoading) {
@@ -181,15 +160,16 @@ const MemoriesImagesComponent = ({ id, imgSrc }) => {
   }
 
   return (
-    <div className="memories-image-wrapper">
-      {previewImage
-        ? renderImagePreview()
-        : imgSrc
-        ? renderExistingImage()
-        : renderUploadState()}
+    <div
+      className={`memories-image-wrapper${showUploadInput || previewImage ? ' memories-image-wrapper--expanded' : ''}`}
+    >
+      {previewImage ? renderImagePreview() : renderImageAction()}
 
       {showUploadInput && !previewImage && (
-        <div className="memories-image-selector">
+        <div
+          className="memories-image-selector"
+          id={`memory-image-options-${id}`}
+        >
           <InputComponent
             id={`memoryImage-${id}`}
             label={imgSrc ? 'Change Image' : 'Add an Image'}
@@ -199,6 +179,16 @@ const MemoriesImagesComponent = ({ id, imgSrc }) => {
             error={fileError}
             onChange={uploadFileHandler}
           />
+          {imgSrc ? (
+            <button
+              type="button"
+              className="memory-image-delete-action"
+              onClick={handleImageDelete}
+            >
+              <FaTrash size={15} aria-hidden="true" />
+              Delete image
+            </button>
+          ) : null}
         </div>
       )}
     </div>

@@ -41,9 +41,18 @@ import { pageHitsReducer } from './reducers/pageHitCounterReducers';
 import { agentChatReducer } from './reducers/agentReducers';
 
 //Initialise state to hold user info if logged in.
-const userInfoFromStorage = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo'))
-  : null;
+const getStoredUserInfo = () => {
+  try {
+    const storedUserInfo = localStorage.getItem('userInfo');
+    return storedUserInfo ? JSON.parse(storedUserInfo) : null;
+  } catch {
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('tokenExpiration');
+    return null;
+  }
+};
+
+const userInfoFromStorage = getStoredUserInfo();
 
 const reducer = combineReducers({
   adminGetAllUserDetails: adminGetAllUserDetailsReducer,

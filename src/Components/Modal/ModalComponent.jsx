@@ -10,6 +10,7 @@ const ModalComponent = ({
   ariaLabel = 'Dialog',
   closeButtonTitle = 'Close dialog',
   size = 'standard',
+  tone = 'default',
   children,
 }) => {
   const dialogRef = useRef(null);
@@ -25,6 +26,28 @@ const ModalComponent = ({
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
         onClose();
+        return;
+      }
+
+      if (event.key === 'Tab') {
+        const focusableElements = dialogRef.current?.querySelectorAll(
+          'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+        );
+        if (!focusableElements?.length) {
+          event.preventDefault();
+          dialogRef.current?.focus();
+          return;
+        }
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
       }
     };
 
@@ -48,7 +71,9 @@ const ModalComponent = ({
       <div className="modal-overlay" onClick={onClose} aria-hidden="true" />
       <div
         ref={dialogRef}
-        className={`modal-wrapper modal-wrapper--${size}`}
+        className={`modal-wrapper modal-wrapper--${size}${
+          tone === 'danger' ? ' modal-wrapper--danger' : ''
+        }`}
         role="dialog"
         aria-modal="true"
         aria-label={ariaLabel}
@@ -83,6 +108,7 @@ ModalComponent.propTypes = {
   ariaLabel: PropTypes.string,
   closeButtonTitle: PropTypes.string,
   size: PropTypes.oneOf(['compact', 'standard', 'media']),
+  tone: PropTypes.oneOf(['default', 'danger']),
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
 };
 

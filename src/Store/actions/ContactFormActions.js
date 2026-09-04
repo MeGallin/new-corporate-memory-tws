@@ -6,6 +6,7 @@ import {
 import axios from 'axios';
 import { buildApiUrl } from '../utils/api';
 import { isValidEmail, isValidName } from '../../Utils/validation';
+import { getApiErrorMessage } from '../utils/errors';
 
 export const contactFormAction = (formData) => async (dispatch) => {
   try {
@@ -42,10 +43,7 @@ export const contactFormAction = (formData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CONTACT_FORM_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: getApiErrorMessage(error),
     });
   }
 };

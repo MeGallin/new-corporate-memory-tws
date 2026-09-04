@@ -46,6 +46,14 @@
   width: min(calc(100% - 1.5rem), 960px);
 }
 
+.modal-wrapper--danger {
+  border-color: $danger;
+
+  &::before {
+    background: $danger;
+  }
+}
+
 .modal-content {
   padding: clamp(1rem, 2.4vw, 1.4rem);
 }

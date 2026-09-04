@@ -38,9 +38,10 @@ const CardComponent = ({ memory }) => {
   } = memory;
 
   const dispatch = useDispatch();
+  const canReadAloud = typeof window.responsiveVoice?.speak === 'function';
 
   const activateVoice = (text) => {
-    window.responsiveVoice.speak(text);
+    if (canReadAloud) window.responsiveVoice.speak(text);
   };
 
   const handleSetDueDate = () => {
@@ -61,87 +62,119 @@ const CardComponent = ({ memory }) => {
           <span className="card-title-plate">{title}</span>
         </legend>
         <h3 id={titleId} className="card-title-heading">{title}</h3>
-        <div className="card-header">
-          {setDueDate ? (
-            <div className={isOverdue ? 'late' : 'early'}>
-              {isOverdue ? 'Overdue' : 'Due'} {moment(dueDate).fromNow()}
-            </div>
-          ) : (
-            <p>No date set.</p>
-          )}
-          <TagsComponent memoryId={_id} tag={tag} variant="warning" />
-        </div>
         <div className="card-body">
+          {tag ? (
+            <div className="card-tag-row">
+              <TagsComponent memoryId={_id} tag={tag} variant="warning" />
+            </div>
+          ) : null}
           <p className="card-copy">{memoryText}</p>
           <MemoryImageDisplayComponent
             imgSrc={memoryImage}
             altText={`Image for ${title}`}
           />
-          <div className="card-footer">
-            <div>Created: {moment(createdAt).format('Do MMM YYYY')}</div>
-            <div>Updated: {moment(updatedAt).format('Do MMM YYYY')}</div>
-          </div>
-          <div className="card-priority" aria-label="Memory priority">
-            <span>Priority</span>
-            <StarsComponent priority={priority} />
-          </div>
 
-          <fieldset className="memories-priority-wrapper compact-fieldset small-text">
-            <legend>Memory controls</legend>
-            {setDueDate ? (
-              <label>
-                <input
-                  type="checkbox"
-                  name="setDueDate"
-                  checked={setDueDate}
-                  onChange={handleSetDueDate}
-                />
-                Due date enabled
-              </label>
-            ) : (
-              <p className="small-text">Edit memory to set a due date.</p>
-            )}
-
-            <label>
-              <input
-                type="checkbox"
-                name="isComplete"
-                checked={isComplete}
-                onChange={handleIsComplete}
-              />
-              {isComplete ? 'Unmark as complete' : 'Mark as complete'}
-            </label>
-            <div className="card-buttons">
-              <ButtonComponent
-                onClick={() => setEditModalOpen(true)}
-                type="button"
-                text="Edit"
-                variant="warning"
-              />
-              <ModalComponent
-                isOpen={isEditModalOpen}
-                onClose={() => setEditModalOpen(false)}
-                ariaLabel={`Edit memory: ${title}`}
-                closeButtonTitle="Close edit memory dialog"
-              >
-                <EditMemoryComponent updateMemory={memory} />
-              </ModalComponent>
-              <MemoriesImagesComponent
-                id={_id}
-                imgSrc={memoryImage}
-              />
-              <button
-                type="button"
-                className="card-icon-button"
-                onClick={() => activateVoice(memoryText)}
-                aria-label="Read memory aloud"
-                title="Read memory aloud"
-              >
-                <FaBullhorn size={16} className="bullhorn-icon" />
-              </button>
-              <DeleteMemoryComponent id={memory._id} />
+          <div className="card-signal-row">
+            <div className="card-due-state">
+              {setDueDate ? (
+                <span className={isOverdue ? 'late' : 'early'}>
+                  {isOverdue ? 'Overdue' : 'Due'} {moment(dueDate).fromNow()}
+                </span>
+              ) : (
+                <span>No date set.</span>
+              )}
             </div>
-          </fieldset>
+            <div className="card-priority" aria-label="Memory priority">
+              <span>Priority</span>
+              <StarsComponent priority={priority} />
+            </div>
+          </div>
+
+          <div className="card-primary-actions">
+            <ButtonComponent
+              onClick={handleIsComplete}
+              type="button"
+              text={isComplete ? 'Unmark as complete' : 'Mark complete'}
+              variant="primary"
+              className="card-complete-action"
+              aria-pressed={isComplete}
+            />
+            <ButtonComponent
+              onClick={() => setEditModalOpen(true)}
+              type="button"
+              text="Edit"
+              variant="warning"
+              className="card-edit-action"
+            />
+          </div>
+          <ModalComponent
+            isOpen={isEditModalOpen}
+            onClose={() => setEditModalOpen(false)}
+            ariaLabel={`Edit memory: ${title}`}
+            closeButtonTitle="Close edit memory dialog"
+          >
+            <EditMemoryComponent updateMemory={memory} />
+          </ModalComponent>
+
+          <details className="card-more-actions">
+            <summary>Details and more actions</summary>
+            <div className="card-more-actions-content">
+              <div className="card-footer">
+                <div>
+                  <span>Created</span>
+                  {moment(createdAt).format('Do MMM YYYY')}
+                </div>
+                <div>
+                  <span>Updated</span>
+                  {moment(updatedAt).format('Do MMM YYYY')}
+                </div>
+              </div>
+
+              <div className="card-secondary-actions">
+                <MemoriesImagesComponent
+                  id={_id}
+                  imgSrc={memoryImage}
+                />
+                <button
+                  type="button"
+                  className="card-icon-button"
+                  onClick={() => activateVoice(memoryText)}
+                  disabled={!canReadAloud}
+                  title={
+                    canReadAloud
+                      ? 'Read this memory aloud'
+                      : 'Read aloud is unavailable'
+                  }
+                >
+                  <FaBullhorn size={15} className="bullhorn-icon" aria-hidden="true" />
+                  Read aloud
+                </button>
+
+                {setDueDate ? (
+                  <label className="card-reminder-control">
+                    <span>Reminder settings</span>
+                    <span className="card-reminder-state">
+                      <input
+                        type="checkbox"
+                        name="setDueDate"
+                        checked={setDueDate}
+                        onChange={handleSetDueDate}
+                        aria-label="Due date enabled"
+                      />
+                      Due date enabled
+                    </span>
+                  </label>
+                ) : (
+                  <div className="card-reminder-control">
+                    <span>Reminder settings</span>
+                    <span>Edit memory to set a due date.</span>
+                  </div>
+                )}
+
+                <DeleteMemoryComponent memory={memory} />
+              </div>
+            </div>
+          </details>
         </div>
       </fieldset>
     </article>

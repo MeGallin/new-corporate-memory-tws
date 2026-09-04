@@ -1,46 +1,27 @@
 @use '../../Css/tokens' as *;
 
 .memories-image-wrapper {
-  display: contents;
+  min-width: 0;
 
-  .image-wrapper {
-    display: contents;
+  &--expanded {
+    grid-column: 1 / -1;
   }
 
+  > form,
   .memories-image-selector {
-    grid-row: 3;
-    grid-column: 1 / -1;
-    padding: 0.6rem;
+    display: grid;
+    gap: 0.6rem;
+    padding: 0.65rem;
     border: 1px solid $border-colour;
     border-radius: $radius-control;
     background: $surface;
   }
 
-  .image-icon-wrapper {
-    display: flex;
-    grid-row: 2;
-    grid-column: 2;
-    align-items: center;
-    justify-content: center;
-    gap: 0.35rem;
+  .memory-image-action,
+  .memory-image-delete-action {
     width: 100%;
-    margin: 0;
-
-    .memory-image-action {
-      width: auto;
-      flex: 1;
-    }
-  }
-
-  > form {
-    grid-row: 1;
-    grid-column: 1 / -1;
-  }
-
-  .memory-image-action {
-    width: 100%;
-    min-height: 40px;
-    padding: 0;
+    min-height: 46px;
+    gap: 0.45rem;
     border-color: $border-colour;
     background: $shell;
     color: $ink-soft;
@@ -48,6 +29,18 @@
     &:hover {
       border-color: $brand;
       background: $brand-soft;
+      color: $ink;
+    }
+  }
+
+  .memory-image-delete-action {
+    border: 3px double $danger;
+    background: transparent;
+    color: $danger;
+
+    &:hover {
+      border-color: $danger-filled;
+      background: $danger-filled;
       color: $ink;
     }
   }
@@ -77,11 +70,6 @@
   border-radius: $radius-control;
   background: transparent;
   cursor: zoom-in;
-}
-
-.image-wrapper > .memory-image-action {
-  grid-row: 2;
-  grid-column: 2;
 }
 
 .modal-image-large {

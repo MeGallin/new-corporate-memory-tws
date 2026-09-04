@@ -5,6 +5,7 @@ import {
   PAGE_HITS_REQUEST,
   PAGE_HITS_SUCCESS,
 } from '../constants/pageHitCounterConstants';
+import { getApiErrorMessage } from '../utils/errors';
 
 //GET: User get ip and login hits of user
 export const pageHitsAction = () => async (dispatch) => {
@@ -20,10 +21,7 @@ export const pageHitsAction = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PAGE_HITS_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: getApiErrorMessage(error),
     });
   }
 };

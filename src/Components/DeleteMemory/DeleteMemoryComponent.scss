@@ -15,16 +15,90 @@
     border-bottom: 1px solid $border-colour-light;
   }
 
-  > .delete-memory-header p,
-  .delete-memory-warning p {
+  > .delete-memory-header p {
     margin: 0;
     color: $text-muted;
   }
 }
 
-.delete-memory-warning {
+.delete-memory-record,
+.delete-memory-dates {
   background: $surface;
   box-shadow: none;
+}
+
+.delete-memory-record {
+  display: grid;
+  gap: 0.7rem;
+
+  h3 {
+    overflow-wrap: anywhere;
+    color: $ink;
+    font-size: 1.1rem;
+  }
+}
+
+.delete-memory-note {
+  max-height: 11rem;
+  margin: 0;
+  padding: 0.75rem;
+  overflow-y: auto;
+  border: 1px solid $border-colour-light;
+  border-radius: $radius-control;
+  background: $shell;
+  color: $ink-soft;
+  font-size: 1rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.delete-memory-dates dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 0;
+
+  > div {
+    display: grid;
+    gap: 0.25rem;
+    min-width: 0;
+    padding: 0.65rem;
+    border: 1px solid $border-colour-light;
+    border-radius: $radius-control;
+    background: $shell;
+  }
+
+  dt {
+    color: $text-muted;
+    font-family: $font-label;
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    display: grid;
+    gap: 0.2rem;
+    margin: 0;
+    color: $ink;
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  small {
+    color: $danger;
+    font-family: $font-label;
+    font-size: 0.62rem;
+  }
+}
+
+.delete-memory-final-warning {
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  border-left: 3px solid $danger;
+  background: color-mix(in srgb, $surface 92%, $danger);
+  color: $ink-soft;
+  font-size: 0.82rem;
 }
 
 .delete-memory-confirmation-actions {
@@ -37,6 +111,10 @@
 }
 
 @media (max-width: 420px) {
+  .delete-memory-dates dl {
+    grid-template-columns: 1fr;
+  }
+
   .delete-memory-confirmation-actions {
     display: grid;
     grid-template-columns: 1fr;

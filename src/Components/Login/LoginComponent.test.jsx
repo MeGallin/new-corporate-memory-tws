@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { useDispatch, useSelector } from 'react-redux';
+import { GOOGLE_USER_LOGIN_FAILURE } from '../../Store/constants/userConstants';
 import LoginComponent from './LoginComponent';
 
 vi.mock('react-redux', () => ({
@@ -8,7 +9,9 @@ vi.mock('react-redux', () => ({
 }));
 
 vi.mock('@react-oauth/google', () => ({
-  GoogleLogin: () => <button type="button">Sign in with Google</button>,
+  GoogleLogin: ({ onError }) => (
+    <button type="button" onClick={onError}>Sign in with Google</button>
+  ),
 }));
 
 describe('LoginComponent', () => {
@@ -42,5 +45,18 @@ describe('LoginComponent', () => {
       primaryAction.compareDocumentPosition(googleAction) &
         Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
+  });
+
+  test('shows a useful error when Google sign-in cannot complete', () => {
+    const dispatch = vi.fn();
+    useDispatch.mockReturnValue(dispatch);
+    render(<LoginComponent />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Sign in with Google' }));
+
+    expect(dispatch).toHaveBeenCalledWith({
+      type: GOOGLE_USER_LOGIN_FAILURE,
+      payload: 'Google sign-in was cancelled or could not be completed.',
+    });
   });
 });

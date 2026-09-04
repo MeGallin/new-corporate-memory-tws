@@ -18,9 +18,10 @@ import {
 
 import { memoriesGetAction } from './memoriesActions';
 import { userInfoDetailsAction } from './userActions';
+import { getApiErrorMessage } from '../utils/errors';
 
 export const userProfileImageUploadAction =
-  (userId, formData) => async (dispatch, getState) => {
+  (formData) => async (dispatch, getState) => {
     try {
       dispatch({
         type: USER_PROFILE_IMAGE_UPLOAD_REQUEST,
@@ -39,7 +40,6 @@ export const userProfileImageUploadAction =
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${userInfo.token}`,
-          userId: userId,
         },
       };
 
@@ -53,17 +53,14 @@ export const userProfileImageUploadAction =
     } catch (error) {
       dispatch({
         type: USER_PROFILE_IMAGE_UPLOAD_FAILURE,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
+        payload: getApiErrorMessage(error),
       });
     }
   };
 
 //USER Delete profile image
 export const userProfileImageDeleteAction =
-  (id) => async (dispatch, getState) => {
+  () => async (dispatch, getState) => {
     try {
       dispatch({
         type: USER_PROFILE_IMAGE_DELETE_REQUEST,
@@ -80,19 +77,13 @@ export const userProfileImageDeleteAction =
 
       const config = createAuthConfig(userInfo);
 
-      await axios.delete(
-        buildApiUrl('userProfileDeleteImage', id),
-        config,
-      );
+      await axios.delete(buildApiUrl('userProfileDeleteImage'), config);
       dispatch({ type: USER_PROFILE_IMAGE_DELETE_SUCCESS });
       dispatch(userInfoDetailsAction());
     } catch (error) {
       dispatch({
         type: USER_PROFILE_IMAGE_DELETE_FAILURE,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
+        payload: getApiErrorMessage(error),
       });
     }
   };
@@ -137,10 +128,7 @@ export const memoryImageUploadAction =
     } catch (error) {
       dispatch({
         type: MEMORY_IMAGE_UPLOAD_FAILURE,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
+        payload: getApiErrorMessage(error),
       });
     }
   };
@@ -173,10 +161,7 @@ export const deleteMemoryImageAction = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: MEMORY_IMAGE_DELETE_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: getApiErrorMessage(error),
     });
   }
 };

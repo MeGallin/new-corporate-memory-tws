@@ -7,9 +7,7 @@ import SpinnerComponent from '../Spinner/SpinnerComponent';
 const PageHitCounterComponent = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    let ignore = false;
     dispatch(pageHitsAction());
-    if (!ignore) return () => (ignore = true);
   }, [dispatch]);
   const pageHits = useSelector((state) => state.pageHits);
   const { loading, error, count } = pageHits;

@@ -17,6 +17,7 @@ const ModalHarness = () => {
         closeButtonTitle="Close test dialog"
       >
         <p>Dialog content</p>
+        <button type="button">Last action</button>
       </ModalComponent>
     </>
   );
@@ -55,5 +56,22 @@ describe('ModalComponent', () => {
     fireEvent.keyDown(document, { key: 'Escape' });
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  test('keeps keyboard focus within the open dialog', () => {
+    render(<ModalHarness />);
+    fireEvent.click(screen.getByRole('button', { name: 'Open dialog' }));
+
+    const closeButton = screen.getByRole('button', {
+      name: 'Close test dialog',
+    });
+    const lastButton = screen.getByRole('button', { name: 'Last action' });
+
+    lastButton.focus();
+    fireEvent.keyDown(document, { key: 'Tab' });
+    expect(closeButton).toHaveFocus();
+
+    fireEvent.keyDown(document, { key: 'Tab', shiftKey: true });
+    expect(lastButton).toHaveFocus();
   });
 });

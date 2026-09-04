@@ -67,13 +67,13 @@ const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
     }
     const formImageData = new FormData();
     formImageData.append('userProfileImage', previewImageFile);
-    dispatch(userProfileImageUploadAction(id, formImageData));
+    dispatch(userProfileImageUploadAction(formImageData));
     handleCancelUpload(); // Reset state after upload
   };
 
   const handleImageDelete = () => {
     if (window.confirm(`Are you sure you want to delete this image?`)) {
-      dispatch(userProfileImageDeleteAction(id));
+      dispatch(userProfileImageDeleteAction());
     }
   };
 
@@ -96,7 +96,7 @@ const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
         onClick={handleCancelUpload}
         type="button"
         text="No, Don't like it!"
-        variant="danger"
+        variant="secondary"
         disabled={false}
       />
     </form>
@@ -114,6 +114,7 @@ const UserProfileImageComponent = ({ id, imgSrc, altText }) => {
       <div className="image-icon-wrapper">
         <button
           type="button"
+          className="user-profile-image-delete"
           onClick={handleImageDelete}
           title="Delete this Image"
           aria-label="Delete profile image"

@@ -5,6 +5,7 @@
 $palette-black: #080b10;
 $palette-blue: #101d2f;
 $palette-orange: #ff6200;
+$palette-red: #cd5c5c;
 $palette-white: #f7f9fc;
 
 $brand: var(--accent-colour);
@@ -29,7 +30,9 @@ $main-font-colour: $ink;
 $secondary-bg-colour: $brand;
 $light-orange: $brand;
 $burnt-orange: $brand-strong;
-$danger: var(--accent-deep);
+$danger: $palette-red;
+$danger-filled: color.mix($palette-black, $danger, 18%);
+$danger-hover: color.mix($palette-white, $danger, 12%);
 $link-colour: $brand-hover;
 $success: $palette-white;
 $warning: var(--accent-colour);

@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mobile-first memory card options</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --black: #080b10;
+        --blue: #101d2f;
+        --blue-deep: #0b1422;
+        --white: #f7f9fc;
+        --muted: #aab6c8;
+        --line: #334154;
+        --accent: #9bd65c;
+        --accent-ink: #17220d;
+        --danger: #d96d62;
+        --radius: 8px;
+        --font-display: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
+        --font-body: Arial, Helvetica, sans-serif;
+        --font-label: Consolas, "Courier New", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+        background: var(--black);
+        color: var(--white);
+        font-family: var(--font-body);
+      }
+
+      button,
+      summary {
+        font: inherit;
+      }
+
+      button {
+        min-height: 46px;
+        padding: 11px 14px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--blue-deep);
+        color: var(--white);
+        cursor: pointer;
+        font-family: var(--font-label);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        transition:
+          background-color 140ms ease,
+          border-color 140ms ease,
+          transform 100ms ease;
+      }
+
+      button:hover,
+      button:focus-visible,
+      summary:hover,
+      summary:focus-visible {
+        border-color: var(--accent);
+        outline: none;
+      }
+
+      button:active {
+        transform: translateY(1px);
+      }
+
+      .page-shell {
+        width: min(100% - 28px, 1040px);
+        margin-inline: auto;
+        padding: 38px 0 64px;
+      }
+
+      .page-heading {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 24px;
+        align-items: end;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .eyebrow,
+      .option-label,
+      .meta-label,
+      .details-label {
+        color: var(--muted);
+        font-family: var(--font-label);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 720px;
+        margin-bottom: 10px;
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 5vw, 3.45rem);
+        line-height: 1;
+      }
+
+      .page-heading p {
+        max-width: 650px;
+        margin-bottom: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .surface-toggle {
+        min-width: 160px;
+      }
+
+      .hierarchy {
+        margin: 24px 0 32px;
+        padding: 16px 18px;
+        border-left: 3px solid var(--accent);
+        background: var(--blue-deep);
+        color: var(--white);
+        line-height: 1.55;
+      }
+
+      .hierarchy strong {
+        color: var(--accent);
+      }
+
+      .options-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 34px;
+        align-items: start;
+      }
+
+      .option {
+        min-width: 0;
+      }
+
+      .option-heading {
+        min-height: 126px;
+        margin-bottom: 18px;
+      }
+
+      .option-heading h2 {
+        margin: 7px 0 8px;
+        font-family: var(--font-display);
+        font-size: clamp(1.55rem, 3vw, 2rem);
+        line-height: 1.05;
+      }
+
+      .option-heading p,
+      .choice-note {
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .option-heading p {
+        margin-bottom: 0;
+      }
+
+      .phone-stage {
+        width: min(100%, 390px);
+        margin-inline: auto;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--blue-deep);
+      }
+
+      fieldset {
+        min-width: 0;
+        margin: 0;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+      }
+
+      legend {
+        max-width: calc(100% - 24px);
+        padding: 4px 9px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 4px 4px 0 0;
+        background: var(--blue);
+        color: var(--white);
+        font-family: var(--font-display);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .memory-card {
+        padding: 16px;
+        background: var(--blue);
+      }
+
+      .memory-card > legend {
+        font-size: 1.3rem;
+        font-weight: 700;
+      }
+
+      .tag-row {
+        display: flex;
+        justify-content: flex-end;
+        min-height: 30px;
+      }
+
+      .tag {
+        padding: 6px 9px;
+        border: 1px solid var(--accent);
+        border-radius: 4px;
+        color: var(--accent);
+        font-family: var(--font-label);
+        font-size: 0.66rem;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .memory-copy {
+        margin: 12px 0 18px;
+        font-size: 1.18rem;
+        line-height: 1.52;
+      }
+
+      .signal-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 14px;
+        align-items: center;
+        margin-bottom: 16px;
+        padding: 11px 0;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .due-state {
+        color: var(--accent);
+        font-family: var(--font-label);
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .priority {
+        display: grid;
+        gap: 3px;
+        text-align: right;
+      }
+
+      .stars {
+        color: var(--accent);
+        font-size: 0.78rem;
+        letter-spacing: 0.09em;
+      }
+
+      .primary-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+        gap: 9px;
+      }
+
+      .complete-action {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: var(--accent-ink);
+      }
+
+      .complete-action:hover,
+      .complete-action:focus-visible {
+        background: color-mix(in srgb, var(--accent) 88%, var(--white));
+      }
+
+      details {
+        margin-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+
+      summary {
+        display: flex;
+        min-height: 48px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        color: var(--white);
+        cursor: pointer;
+        font-family: var(--font-label);
+        font-size: 0.75rem;
+        font-weight: 700;
+        list-style: none;
+        text-transform: uppercase;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      summary::after {
+        content: "+";
+        color: var(--accent);
+        font-size: 1.35rem;
+        line-height: 1;
+      }
+
+      details[open] summary::after {
+        content: "-";
+      }
+
+      .details-content {
+        padding: 2px 0 4px;
+      }
+
+      .history {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin: 0;
+        padding: 12px 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .history div {
+        min-width: 0;
+      }
+
+      .history dt,
+      .history dd {
+        margin: 0;
+      }
+
+      .history dd {
+        margin-top: 4px;
+        font-size: 0.79rem;
+      }
+
+      .secondary-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        padding-top: 12px;
+        border-top: 1px solid var(--line);
+      }
+
+      .full-row-action,
+      .danger-action {
+        grid-column: 1 / -1;
+      }
+
+      .danger-action {
+        border-color: var(--danger);
+        color: var(--danger);
+      }
+
+      .deadline-card .deadline-banner {
+        margin: 2px -16px 18px;
+        padding: 14px 16px;
+        border-top: 1px solid var(--accent);
+        border-bottom: 1px solid var(--accent);
+        background: var(--black);
+      }
+
+      .deadline-card .deadline-banner strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--accent);
+        font-family: var(--font-display);
+        font-size: 1.55rem;
+      }
+
+      .deadline-card .memory-copy {
+        margin-top: 16px;
+      }
+
+      .deadline-card .complete-action {
+        width: 100%;
+        margin-bottom: 9px;
+      }
+
+      .deadline-card .edit-action {
+        width: 100%;
+      }
+
+      .deadline-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+
+      .deadline-meta .priority {
+        text-align: left;
+      }
+
+      .choice-note {
+        width: min(100%, 390px);
+        margin: 14px auto 0;
+        font-size: 0.88rem;
+      }
+
+      .choice-note strong {
+        color: var(--white);
+      }
+
+      body.light-samples .phone-stage {
+        border-color: #aeb8c5;
+        background: #dfe5ec;
+      }
+
+      body.light-samples .memory-card {
+        border-color: #aeb8c5;
+        background: var(--white);
+        color: var(--blue-deep);
+      }
+
+      body.light-samples .memory-card > legend {
+        border-color: #aeb8c5;
+        background: var(--white);
+        color: #4e712d;
+      }
+
+      body.light-samples .memory-card .tag,
+      body.light-samples .memory-card .due-state,
+      body.light-samples .memory-card .stars {
+        color: #4e712d;
+      }
+
+      body.light-samples .memory-card .meta-label,
+      body.light-samples .memory-card .details-label {
+        color: #4b586b;
+      }
+
+      body.light-samples .memory-card .tag {
+        border-color: #4e712d;
+      }
+
+      body.light-samples .memory-card .signal-row,
+      body.light-samples .memory-card details,
+      body.light-samples .memory-card .history,
+      body.light-samples .memory-card .secondary-actions,
+      body.light-samples .memory-card .deadline-meta {
+        border-color: #aeb8c5;
+      }
+
+      body.light-samples .memory-card summary {
+        color: var(--blue-deep);
+      }
+
+      body.light-samples .memory-card button:not(.complete-action) {
+        border-color: #7f8c9c;
+        background: #e2e7ed;
+        color: var(--blue-deep);
+      }
+
+      body.light-samples .deadline-card .deadline-banner {
+        border-color: #4e712d;
+        background: #e2e7ed;
+      }
+
+      body.light-samples .deadline-card .deadline-banner strong {
+        color: #4e712d;
+      }
+
+      @media (max-width: 760px) {
+        .page-shell {
+          width: min(100% - 20px, 520px);
+          padding-top: 20px;
+        }
+
+        .page-heading,
+        .options-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .surface-toggle {
+          width: 100%;
+        }
+
+        .option-heading {
+          min-height: 0;
+        }
+
+        .phone-stage {
+          padding: 6px;
+        }
+
+        .memory-card {
+          padding: 14px;
+        }
+
+        .deadline-card .deadline-banner {
+          margin-inline: -14px;
+          padding-inline: 14px;
+        }
+      }
+
+      @media (max-width: 350px) {
+        .primary-actions,
+        .secondary-actions,
+        .history {
+          grid-template-columns: 1fr;
+        }
+
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        button {
+          transition: none;
+        }
+
+        button:active {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="page-heading">
+        <div>
+          <span class="eyebrow">Memory card study</span>
+          <h1>What should a memory show first?</h1>
+          <p>
+            Two mobile-first structures built around what a user is trying to
+            understand and do, not around the database fields available.
+          </p>
+        </div>
+        <button class="surface-toggle" type="button" id="surfaceToggle">
+          Show light cards
+        </button>
+      </header>
+
+      <p class="hierarchy">
+        <strong>Default reading order:</strong> recognise it, read it, judge
+        urgency, take action, then inspect supporting details.
+      </p>
+
+      <div class="options-grid">
+        <section class="option" aria-labelledby="option-one-title">
+          <div class="option-heading">
+            <span class="option-label">Recommended for mixed memories</span>
+            <h2 id="option-one-title">Recall, then act</h2>
+            <p>
+              The note leads. Urgency and the two likely actions follow. Rare
+              controls stay available without crowding the first view.
+            </p>
+          </div>
+
+          <div class="phone-stage">
+            <fieldset class="memory-card">
+              <legend>Supplier renewal</legend>
+              <div class="tag-row">
+                <span class="tag">Accounts</span>
+              </div>
+
+              <p class="memory-copy">
+                Review the hosting renewal before the current term ends.
+                Confirm the new rate and record the agreed renewal date.
+              </p>
+
+              <div class="signal-row">
+                <span class="due-state">Due in 12 days</span>
+                <span class="priority">
+                  <span class="meta-label">Priority</span>
+                  <span class="stars" aria-label="Four out of five stars">★★★★</span>
+                </span>
+              </div>
+
+              <div class="primary-actions">
+                <button class="complete-action" type="button">Mark complete</button>
+                <button class="edit-action" type="button">Edit</button>
+              </div>
+
+              <details>
+                <summary>Details and more actions</summary>
+                <div class="details-content">
+                  <dl class="history">
+                    <div>
+                      <dt class="meta-label">Created</dt>
+                      <dd>23 Aug 2026</dd>
+                    </div>
+                    <div>
+                      <dt class="meta-label">Updated</dt>
+                      <dd>3 Sep 2026</dd>
+                    </div>
+                  </dl>
+                  <div class="secondary-actions">
+                    <button type="button">Change image</button>
+                    <button type="button">Read aloud</button>
+                    <button class="full-row-action" type="button">Reminder settings</button>
+                    <button class="danger-action" type="button">Delete memory</button>
+                  </div>
+                </div>
+              </details>
+            </fieldset>
+          </div>
+
+          <p class="choice-note">
+            <strong>Why it works:</strong> it suits notes, reminders, and tasks.
+            A memory without a due date loses the urgency row instead of showing
+            empty status.
+          </p>
+        </section>
+
+        <section class="option" aria-labelledby="option-two-title">
+          <div class="option-heading">
+            <span class="option-label">Alternative for deadline-led use</span>
+            <h2 id="option-two-title">Urgency, then recall</h2>
+            <p>
+              The deadline becomes the entry point, followed by the memory and
+              one unmistakable completion action.
+            </p>
+          </div>
+
+          <div class="phone-stage">
+            <fieldset class="memory-card deadline-card">
+              <legend>Supplier renewal</legend>
+
+              <div class="deadline-banner">
+                <span class="meta-label">Next action</span>
+                <strong>Due in 12 days</strong>
+              </div>
+
+              <div class="tag-row">
+                <span class="tag">Accounts</span>
+              </div>
+
+              <p class="memory-copy">
+                Review the hosting renewal before the current term ends.
+                Confirm the new rate and record the agreed renewal date.
+              </p>
+
+              <div class="deadline-meta">
+                <span class="priority">
+                  <span class="meta-label">Priority</span>
+                  <span class="stars" aria-label="Four out of five stars">★★★★</span>
+                </span>
+                <span class="details-label">Reminder on</span>
+              </div>
+
+              <button class="complete-action" type="button">Mark complete</button>
+              <button class="edit-action" type="button">Edit memory</button>
+
+              <details>
+                <summary>Details and more actions</summary>
+                <div class="details-content">
+                  <dl class="history">
+                    <div>
+                      <dt class="meta-label">Created</dt>
+                      <dd>23 Aug 2026</dd>
+                    </div>
+                    <div>
+                      <dt class="meta-label">Updated</dt>
+                      <dd>3 Sep 2026</dd>
+                    </div>
+                  </dl>
+                  <div class="secondary-actions">
+                    <button type="button">Change image</button>
+                    <button type="button">Read aloud</button>
+                    <button class="full-row-action" type="button">Reminder settings</button>
+                    <button class="danger-action" type="button">Delete memory</button>
+                  </div>
+                </div>
+              </details>
+            </fieldset>
+          </div>
+
+          <p class="choice-note">
+            <strong>Tradeoff:</strong> this is excellent for tasks, but it gives
+            too much importance to dates if many memories are reference notes.
+          </p>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const surfaceToggle = document.querySelector('#surfaceToggle');
+
+      surfaceToggle.addEventListener('click', () => {
+        const isLight = document.body.classList.toggle('light-samples');
+        surfaceToggle.textContent = isLight
+          ? 'Show dark cards'
+          : 'Show light cards';
+      });
+    </script>
+  </body>
+</html>

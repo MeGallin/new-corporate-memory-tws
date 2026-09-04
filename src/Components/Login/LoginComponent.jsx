@@ -8,6 +8,7 @@ import {
 } from '../../Store/actions/userActions';
 import {
   USER_LOGIN_RESET,
+  GOOGLE_USER_LOGIN_FAILURE,
   GOOGLE_USER_LOGIN_RESET,
 } from '../../Store/constants/userConstants';
 import {
@@ -60,19 +61,25 @@ const LoginComponent = () => {
     return () => resizeObserver.disconnect();
   }, [googleLoading]);
 
+  useEffect(() => {
+    if (success) setFormData({ email: '', password: '' });
+  }, [success]);
+
   const handleLoginSubmit = (event) => {
     event.preventDefault();
     if (isFormInvalid) return;
     dispatch(loginAction(formData));
-    setFormData({ email: '', password: '' });
   };
 
   const googleSuccess = async (googleResponse) => {
     dispatch(googleUserLoginAction(googleResponse));
   };
 
-  const googleFailure = (googleErrorDetails) => {
-    console.error('Error with Google login:', googleErrorDetails);
+  const googleFailure = () => {
+    dispatch({
+      type: GOOGLE_USER_LOGIN_FAILURE,
+      payload: 'Google sign-in was cancelled or could not be completed.',
+    });
   };
 
   const handleOnchange = (event) => {

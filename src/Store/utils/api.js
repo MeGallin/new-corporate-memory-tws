@@ -8,7 +8,6 @@ const ENDPOINTS = {
   register: 'api/register',
   forgotPassword: 'api/forgot-password',
   resetPassword: 'api/resetpassword',
-  user: 'api/user',
 
   // Admin related
   adminGetAllUserDetails: 'api/admin/users',
@@ -27,7 +26,7 @@ const ENDPOINTS = {
 
   // Image Upload related
   userProfileUploadImage: 'api/user-profile-upload-image',
-  userProfileDeleteImage: 'api/user-profile-image-delete',
+  userProfileDeleteImage: 'api/user-profile-image',
   memoryUploadImage: 'api/memory-upload-image',
   
 

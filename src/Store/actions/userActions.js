@@ -9,6 +9,7 @@ import {
 import { MEMORIES_GET_RESET } from '../constants/memoriesConstants';
 import { CONTACT_FORM_RESET } from '../constants/contactFormConstants';
 import { AGENT_CHAT_RESET } from '../constants/agentConstants';
+import { getApiErrorMessage } from '../utils/errors';
 import {
   GOOGLE_USER_LOGIN_FAILURE,
   GOOGLE_USER_LOGIN_REQUEST,
@@ -68,23 +69,6 @@ const isTokenExpired = () => {
   return new Date().getTime() > parseInt(expiration);
 };
 
-// Utility function to handle API errors consistently
-const handleApiError = (error) => {
-  let errorMessage = 'An unexpected error occurred';
-
-  if (error.response) {
-    errorMessage =
-      error.response.data?.message || `Server Error: ${error.response.status}`;
-  } else if (error.request) {
-    errorMessage = 'Network error. Please check your connection.';
-  } else {
-    errorMessage = error.message;
-  }
-
-  console.error('API Error:', { error, errorMessage });
-  return errorMessage;
-};
-
 //GET: USER INFO DETAILS
 export const userInfoDetailsAction = () => async (dispatch, getState) => {
   try {
@@ -136,7 +120,7 @@ export const userInfoDetailsAction = () => async (dispatch, getState) => {
 
     dispatch({
       type: USER_INFO_DETAILS_FAILURE,
-      payload: handleApiError(error),
+      payload: getApiErrorMessage(error),
     });
   }
 };
@@ -185,7 +169,7 @@ export const loginAction = (formData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAILURE,
-      payload: handleApiError(error),
+      payload: getApiErrorMessage(error),
     });
   }
 };
@@ -226,7 +210,7 @@ export const googleUserLoginAction = (googleRes) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GOOGLE_USER_LOGIN_FAILURE,
-      payload: handleApiError(error),
+      payload: getApiErrorMessage(error),
     });
   }
 };
@@ -313,7 +297,7 @@ export const registerAction = (formData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAILURE,
-      payload: handleApiError(error),
+      payload: getApiErrorMessage(error),
     });
   }
 };
@@ -348,7 +332,7 @@ export const userForgotPWSendEmailAction = (email) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_FORGOT_PW_SEND_EMAIL_FAILURE,
-      payload: handleApiError(error),
+      payload: getApiErrorMessage(error),
     });
   }
 };
@@ -391,7 +375,7 @@ export const userResetPasswordAction = (updatedInfo) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_RESET_PASSWORD_FAILURE,
-      payload: handleApiError(error),
+      payload: getApiErrorMessage(error),
     });
   }
 };
@@ -458,7 +442,7 @@ export const userEditDetailAction =
     } catch (error) {
       dispatch({
         type: USER_EDIT_DETAILS_FAILURE,
-        payload: handleApiError(error),
+        payload: getApiErrorMessage(error),
       });
     }
   };

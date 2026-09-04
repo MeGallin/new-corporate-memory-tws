@@ -30,6 +30,7 @@ import {
 
 // Import logout action for session management
 import { logoutAction } from './userActions';
+import { getApiErrorMessage } from '../utils/errors';
 
 
 
@@ -42,25 +43,6 @@ const isValidDate = (dateString) => {
 };
 
 
-
-// Utility function to handle API errors consistently
-const handleMemoriesApiError = (error) => {
-  let errorMessage = 'An unexpected error occurred';
-
-  if (error.response) {
-    errorMessage =
-      error.response.data?.message ||
-      error.response.data?.error ||
-      `Server Error: ${error.response.status}`;
-  } else if (error.request) {
-    errorMessage = 'Network error. Please check your connection.';
-  } else {
-    errorMessage = error.message;
-  }
-
-  console.error('Memories API Error:', { error, errorMessage });
-  return errorMessage;
-};
 
 // Utility function to validate memory operations
 const validateMemoryOperation = (
@@ -157,7 +139,7 @@ export const memoriesGetAction = () => async (dispatch, getState) => {
 
     dispatch({
       type: MEMORIES_GET_FAILURE,
-      payload: handleMemoriesApiError(error),
+      payload: getApiErrorMessage(error),
     });
   }
 };
@@ -209,7 +191,7 @@ export const memoryCreateAction = (formData) => async (dispatch, getState) => {
 
     dispatch({
       type: MEMORIES_CREATE_FAILURE,
-      payload: handleMemoriesApiError(error),
+      payload: getApiErrorMessage(error),
     });
   }
 };
@@ -280,7 +262,7 @@ export const memoryEditAction = (formData) => async (dispatch, getState) => {
 
     dispatch({
       type: MEMORIES_EDIT_FAILURE,
-      payload: handleMemoriesApiError(error),
+      payload: getApiErrorMessage(error),
     });
   }
 };
@@ -346,7 +328,7 @@ export const memoryDeleteAction = (id) => async (dispatch, getState) => {
 
     dispatch({
       type: MEMORIES_DELETE_FAILURE,
-      payload: handleMemoriesApiError(error),
+      payload: getApiErrorMessage(error),
     });
   }
 };
@@ -416,7 +398,7 @@ export const memoryDeleteTagAction = (id) => async (dispatch, getState) => {
 
     dispatch({
       type: MEMORIES_DELETE_TAG_FAILURE,
-      payload: handleMemoriesApiError(error),
+      payload: getApiErrorMessage(error),
     });
   }
 };
@@ -510,7 +492,7 @@ export const memorySetDueDateAction =
 
       dispatch({
         type: MEMORIES_SET_DUE_DATE_FAILURE,
-        payload: handleMemoriesApiError(error),
+        payload: getApiErrorMessage(error),
       });
     }
   };
@@ -613,7 +595,7 @@ export const memoryIsCompleteAction =
 
       dispatch({
         type: MEMORIES_IS_COMPETE_FAILURE,
-        payload: handleMemoriesApiError(error),
+        payload: getApiErrorMessage(error),
       });
     }
   };

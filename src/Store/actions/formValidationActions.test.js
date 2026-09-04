@@ -1,11 +1,14 @@
 import { describe, expect, it, vi } from 'vitest';
+import axios from 'axios';
 
 import { agentChatAction } from './agentActions';
 import { contactFormAction } from './ContactFormActions';
 import { registerAction } from './userActions';
+import { userProfileImageDeleteAction } from './imageUploadActions';
 import { AGENT_CHAT_FAILURE } from '../constants/agentConstants';
 import { CONTACT_FORM_FAILURE } from '../constants/contactFormConstants';
 import { USER_REGISTER_FAILURE } from '../constants/userConstants';
+import { USER_PROFILE_IMAGE_DELETE_SUCCESS } from '../constants/imageUploadConstants';
 
 vi.mock('axios', () => ({
   default: {
@@ -56,6 +59,28 @@ describe('form action validation', () => {
     expect(dispatch).toHaveBeenCalledWith({
       type: AGENT_CHAT_FAILURE,
       payload: 'Please provide a question to ask the agent.',
+    });
+  });
+
+  it('deletes the authenticated profile image through the current API route', async () => {
+    axios.delete.mockResolvedValueOnce({ data: { success: true } });
+    const dispatch = vi.fn();
+    const getState = () => ({
+      userLogin: { userInfo: { token: 'test-token' } },
+    });
+
+    await userProfileImageDeleteAction()(dispatch, getState);
+
+    expect(axios.delete).toHaveBeenCalledWith(
+      expect.stringMatching(/api\/user-profile-image$/),
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Authorization: 'Bearer test-token',
+        }),
+      }),
+    );
+    expect(dispatch).toHaveBeenCalledWith({
+      type: USER_PROFILE_IMAGE_DELETE_SUCCESS,
     });
   });
 });

@@ -18,27 +18,11 @@ import {
 
 // Import logout action for session management
 import { logoutAction } from './userActions';
+import { getApiErrorMessage } from '../utils/errors';
 
 
 
 
-
-// Utility function to handle API errors consistently
-const handleAdminApiError = (error) => {
-  let errorMessage = 'An unexpected error occurred';
-
-  if (error.response) {
-    errorMessage =
-      error.response.data?.message || `Server Error: ${error.response.status}`;
-  } else if (error.request) {
-    errorMessage = 'Network error. Please check your connection.';
-  } else {
-    errorMessage = error.message;
-  }
-
-  console.error('Admin API Error:', { error, errorMessage });
-  return errorMessage;
-};
 
 // Utility function to validate admin operations
 const validateAdminOperation = (
@@ -99,7 +83,7 @@ export const adminGetAllUserDetailsAction =
 
       dispatch({
         type: ADMIN_GET_ALL_USER_DETAILS_FAILURE,
-        payload: handleAdminApiError(error),
+        payload: getApiErrorMessage(error),
       });
     }
   };
@@ -168,7 +152,7 @@ export const adminIsAdminAction =
 
       dispatch({
         type: ADMIN_IS_ADMIN_FAILURE,
-        payload: handleAdminApiError(error),
+        payload: getApiErrorMessage(error),
       });
     }
   };
@@ -236,7 +220,7 @@ export const adminIsSuspendedAction =
 
       dispatch({
         type: ADMIN_IS_SUSPENDED_FAILURE,
-        payload: handleAdminApiError(error),
+        payload: getApiErrorMessage(error),
       });
     }
   };
@@ -311,7 +295,7 @@ export const adminDeleteAllUserDataAction =
 
       dispatch({
         type: ADMIN_DELETE_ALL_USER_DATA_FAILURE,
-        payload: handleAdminApiError(error),
+        payload: getApiErrorMessage(error),
       });
     }
   };

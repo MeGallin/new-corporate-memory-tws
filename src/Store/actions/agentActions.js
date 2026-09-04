@@ -2,20 +2,13 @@ import axios from 'axios';
 import { buildApiUrl } from '../utils/api';
 import { getAuthenticatedUser, createAuthConfig } from '../utils/auth';
 import { logoutAction } from './userActions';
+import { getApiErrorMessage } from '../utils/errors';
 
 import {
   AGENT_CHAT_REQUEST,
   AGENT_CHAT_SUCCESS,
   AGENT_CHAT_FAILURE,
 } from '../constants/agentConstants';
-
-const normalizeError = (error) => {
-  if (error?.response?.data?.error) return error.response.data.error;
-  if (error?.response?.data?.message) return error.response.data.message;
-  if (error?.response?.status) return `Server Error: ${error.response.status}`;
-  if (error?.message) return error.message;
-  return 'An unexpected error occurred';
-};
 
 export const agentChatAction = (payload) => async (dispatch, getState) => {
   try {
@@ -72,6 +65,9 @@ export const agentChatAction = (payload) => async (dispatch, getState) => {
       dispatch(logoutAction());
       return;
     }
-    dispatch({ type: AGENT_CHAT_FAILURE, payload: normalizeError(error) });
+    dispatch({
+      type: AGENT_CHAT_FAILURE,
+      payload: getApiErrorMessage(error),
+    });
   }
 };

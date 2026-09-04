@@ -36,6 +36,18 @@
       border-color: $border-colour;
       background: $shell;
     }
+
+    .user-profile-image-delete {
+      border: 3px double $danger;
+      background: transparent;
+      color: $danger;
+
+      &:hover {
+        border-color: $danger-filled;
+        background: $danger-filled;
+        color: $ink;
+      }
+    }
   }
 
   > .image-wrapper > .upload-icon {

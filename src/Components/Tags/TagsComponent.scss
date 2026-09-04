@@ -24,15 +24,15 @@
     border: 0;
     border-radius: 3px;
     background: transparent;
-    color: inherit;
+    color: $danger;
     font-size: 0.85rem;
-    opacity: 0.65;
+    opacity: 1;
   }
 
   .tag-x:hover {
-    background: $surface;
+    background: transparent;
+    color: $danger-hover;
     cursor: pointer;
-    opacity: 1;
   }
 }
 

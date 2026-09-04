@@ -37,12 +37,19 @@ vi.mock('../EditMemory/EditMemoryComponent', () => ({
 }));
 
 vi.mock('../DeleteMemory/DeleteMemoryComponent', () => ({
-  default: () => null,
+  default: () => <button type="button">Delete</button>,
 }));
 
 vi.mock('../Button/ButtonComponent', () => ({
-  default: ({ onClick, text, type }) => (
-    <button type={type} onClick={onClick}>{text}</button>
+  default: ({ onClick, text, type, variant, className, ...buttonProps }) => (
+    <button
+      type={type}
+      onClick={onClick}
+      className={[variant, className].filter(Boolean).join(' ')}
+      {...buttonProps}
+    >
+      {text}
+    </button>
   ),
 }));
 
@@ -68,7 +75,12 @@ describe('CardComponent completion control', () => {
   test('offers to unmark a completed memory and requests the active state', () => {
     render(<CardComponent memory={completedMemory} />);
 
-    fireEvent.click(screen.getByLabelText('Unmark as complete'));
+    const completionButton = screen.getByRole('button', {
+      name: 'Unmark as complete',
+    });
+
+    expect(completionButton).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(completionButton);
 
     expect(memoryIsCompleteAction).toHaveBeenCalledWith({
       id: 'completed-memory',
@@ -81,5 +93,35 @@ describe('CardComponent completion control', () => {
         isComplete: false,
       },
     });
+  });
+
+  test('keeps supporting details and secondary actions in a disclosure', () => {
+    render(
+      <CardComponent
+        memory={{
+          ...completedMemory,
+          _id: 'active-memory',
+          title: 'Active memory',
+          setDueDate: true,
+          isComplete: false,
+          dueDate: '2026-10-01T10:00:00.000Z',
+        }}
+      />,
+    );
+
+    expect(screen.getByText('This memory is complete.')).toBeVisible();
+    expect(screen.queryByText('No date set.')).not.toBeInTheDocument();
+
+    const disclosureControl = screen.getByText('Details and more actions');
+    const disclosure = disclosureControl.closest('details');
+
+    expect(disclosure).not.toHaveAttribute('open');
+    fireEvent.click(disclosureControl);
+    expect(disclosure).toHaveAttribute('open');
+    expect(screen.getByText('Created')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Image action' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Read aloud' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Due date enabled')).toBeChecked();
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument();
   });
 });

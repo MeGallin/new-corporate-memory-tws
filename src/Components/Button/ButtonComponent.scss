@@ -71,13 +71,14 @@ button.warning {
 }
 
 button.danger {
-  border-color: $danger;
-  background: $danger;
-  color: $on-brand;
+  border: 3px double $danger;
+  background: transparent;
+  color: $danger;
 
   &:hover {
-    border-color: $brand-hover;
-    background: $brand-hover;
+    border-color: $danger-filled;
+    background: $danger-filled;
+    color: $ink;
   }
 }
 

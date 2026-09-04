@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment';
 
 const DateTime = () => {
-  const [dateTime, setDateTime] = useState('');
+  const [dateTime, setDateTime] = useState(() =>
+    moment().format('MMMM Do YYYY, h:mm:ss a'),
+  );
 
   useEffect(() => {
-    setInterval(() => {
+    const intervalId = window.setInterval(() => {
       setDateTime(moment().format('MMMM Do YYYY, h:mm:ss a'));
     }, 1000);
-  }, [dateTime]);
 
-  return <>{dateTime ? <div>{dateTime}</div> : null}</>;
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  return <div>{dateTime}</div>;
 };
 
 export default DateTime;

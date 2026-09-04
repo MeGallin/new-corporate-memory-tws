@@ -287,47 +287,65 @@
     }
   }
 
-  .card-header {
-    border-bottom-color: $border-colour-dark;
-    color: $surface;
-
-    .early {
-      color: $surface;
-    }
-  }
-
   .card-body {
-    > .card-copy {
+    .card-copy {
       color: $surface;
     }
 
-    .card-footer {
+    .card-signal-row,
+    .card-more-actions,
+    .card-footer,
+    .card-secondary-actions {
       border-top-color: $border-colour-dark;
+    }
+
+    .card-signal-row {
+      border-bottom-color: $border-colour-dark;
+    }
+
+    .card-due-state {
       color: $surface;
+
+      .early {
+        color: $brand-on-light;
+      }
     }
 
     .card-priority > span {
       color: $surface;
     }
 
-    .memories-priority-wrapper {
-      border-color: $border-colour-dark;
-      background: $surface-inverted;
+    .card-priority .start-component-wrapper {
+      color: $brand-on-light;
+    }
 
-      > legend {
+    .card-more-actions > summary {
+      color: $surface;
+
+      &::after {
         color: $brand-on-light;
       }
+    }
 
-      label,
-      > p {
-        background: color-mix(in srgb, $surface-inverted 86%, $surface);
-        color: $surface;
+    .card-footer {
+      color: $surface;
+
+      span {
+        color: color-mix(in srgb, $surface 70%, $surface-inverted);
       }
     }
-  }
 
-  .card-buttons {
-    border-top-color: $border-colour-dark;
+    .card-reminder-control,
+    .memories-image-wrapper > form,
+    .memories-image-wrapper .memories-image-selector {
+      border-color: $border-colour-dark;
+      background: color-mix(in srgb, $surface-inverted 86%, $surface);
+      color: $surface;
+
+      > span:first-child {
+        color: $brand-on-light;
+      }
+    }
   }
 
   .card-icon-button,
@@ -344,8 +362,8 @@
   }
 
   .tags-wrapper {
-    border-color: color-mix(in srgb, $danger 45%, transparent);
-    color: $danger;
+    border-color: color-mix(in srgb, $brand-on-light 45%, transparent);
+    color: $brand-on-light;
   }
 }
 
@@ -562,19 +580,6 @@
     }
   }
 
-  .memories-component-wrapper[data-card-order-ready='true']
-    > div[data-card-tone='light']
-    .card-wrapper
-    > .fieldSet {
-    .card-body > .card-copy {
-      background: color-mix(in srgb, $surface-inverted 86%, $surface);
-      color: $surface;
-    }
-
-    .card-body .card-footer {
-      border-top-color: $border-colour-dark;
-    }
-  }
 }
 
 @media (max-width: 420px) {

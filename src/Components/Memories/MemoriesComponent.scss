@@ -274,11 +274,11 @@
   color: $surface;
 
   .card-title {
-    color: $brand-strong;
+    color: $brand-on-light;
 
     .card-title-plate {
       background: $surface-inverted;
-      color: $brand-strong;
+      color: $brand-on-light;
       border-radius: 4px 4px 0 0;
 
       &::before {
@@ -315,7 +315,7 @@
       background: $surface-inverted;
 
       > legend {
-        color: $brand-strong;
+        color: $brand-on-light;
       }
 
       label,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './ThemeAccentSelectorComponent.scss';
 
 import {
@@ -8,6 +8,7 @@ import {
 } from '../../Utils/accentTheme';
 
 const ThemeAccentSelectorComponent = ({ authInfo, userDetails }) => {
+  const triggerRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAccent, setSelectedAccent] = useState(() =>
     getStoredAccent(authInfo, userDetails),
@@ -20,18 +21,28 @@ const ThemeAccentSelectorComponent = ({ authInfo, userDetails }) => {
   const selectedOption =
     ACCENT_OPTIONS.find(({ id }) => id === selectedAccent) || ACCENT_OPTIONS[0];
 
+  const closePalette = () => {
+    setIsOpen(false);
+    triggerRef.current?.focus();
+  };
+
   const selectAccent = (accent) => {
     setSelectedAccent(saveAccent(accent, authInfo, userDetails));
+    closePalette();
   };
 
   return (
     <div
       className="theme-accent-selector"
       onKeyDown={(event) => {
-        if (event.key === 'Escape') setIsOpen(false);
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          closePalette();
+        }
       }}
     >
       <button
+        ref={triggerRef}
         type="button"
         className="theme-accent-selector__trigger"
         aria-expanded={isOpen}
@@ -58,7 +69,9 @@ const ThemeAccentSelectorComponent = ({ authInfo, userDetails }) => {
                 key={id}
                 type="button"
                 className="theme-accent-selector__option"
+                aria-label={label}
                 aria-pressed={selectedAccent === id}
+                title={label}
                 onClick={() => selectAccent(id)}
               >
                 <span
@@ -66,14 +79,9 @@ const ThemeAccentSelectorComponent = ({ authInfo, userDetails }) => {
                   aria-hidden="true"
                   style={{ '--swatch-colour': colour }}
                 />
-                <span>{label}</span>
               </button>
             ))}
           </div>
-          <p>
-            Saves this account&apos;s accent and keeps it on public pages after
-            logout.
-          </p>
         </fieldset>
       )}
     </div>

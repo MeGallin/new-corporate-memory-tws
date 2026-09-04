@@ -11,6 +11,7 @@ $brand: var(--accent-colour);
 $brand-hover: var(--accent-hover);
 $brand-strong: var(--accent-colour);
 $brand-soft: var(--accent-soft);
+$brand-on-light: var(--accent-on-light);
 
 $shell: $palette-black;
 $canvas: color.mix($palette-blue, $palette-black, 38%);

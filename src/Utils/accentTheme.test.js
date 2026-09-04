@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
+  ACCENT_OPTIONS,
   DEFAULT_ACCENT,
   applyAccent,
   getAccentUserKey,
@@ -38,11 +39,29 @@ describe('accent theme preferences', () => {
     expect(getLastStoredAccent()).toBe('green');
   });
 
+  it('supports the expanded accent variants', () => {
+    expect(ACCENT_OPTIONS.map(({ id }) => id)).toEqual(
+      expect.arrayContaining([
+        'pink',
+        'purple',
+        'electric-blue',
+        'cyan',
+        'lime',
+        'coral',
+      ]),
+    );
+    expect(saveAccent('pink', null, { _id: 'colour-user' })).toBe('pink');
+    expect(getStoredAccent(null, { _id: 'colour-user' })).toBe('pink');
+    expect(saveAccent('purple', null, { _id: 'colour-user' })).toBe('purple');
+    expect(saveAccent('coral', null, { _id: 'colour-user' })).toBe('coral');
+    expect(getLastStoredAccent()).toBe('coral');
+  });
+
   it('rejects unknown stored and requested colours', () => {
-    localStorage.setItem('corporateMemory.accent.lastUsed', 'purple');
+    localStorage.setItem('corporateMemory.accent.lastUsed', 'blue');
 
     expect(getLastStoredAccent()).toBe(DEFAULT_ACCENT);
-    expect(applyAccent('purple')).toBe(DEFAULT_ACCENT);
+    expect(applyAccent('blue')).toBe(DEFAULT_ACCENT);
     expect(document.documentElement.dataset.accent).toBe(DEFAULT_ACCENT);
   });
 });

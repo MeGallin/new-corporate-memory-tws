@@ -9,6 +9,7 @@
   --accent-hover: color-mix(in srgb, #f7f9fc 16%, var(--accent-colour));
   --accent-soft: color-mix(in srgb, var(--accent-colour) 14%, #101d2f);
   --accent-deep: color-mix(in srgb, #080b10 18%, var(--accent-colour));
+  --accent-on-light: color-mix(in srgb, var(--accent-colour) 55%, #080b10);
 }
 
 :root[data-accent='yellow'] {
@@ -21,6 +22,30 @@
 
 :root[data-accent='indian-red'] {
   --accent-colour: #cd5c5c;
+}
+
+:root[data-accent='pink'] {
+  --accent-colour: #e66a9f;
+}
+
+:root[data-accent='purple'] {
+  --accent-colour: #9b7de5;
+}
+
+:root[data-accent='electric-blue'] {
+  --accent-colour: #5aa9ff;
+}
+
+:root[data-accent='cyan'] {
+  --accent-colour: #35c6d0;
+}
+
+:root[data-accent='lime'] {
+  --accent-colour: #9bd65c;
+}
+
+:root[data-accent='coral'] {
+  --accent-colour: #ff8a65;
 }
 
 *,

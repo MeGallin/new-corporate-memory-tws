@@ -5,6 +5,12 @@ export const ACCENT_OPTIONS = Object.freeze([
   { id: 'yellow', label: 'Yellow', colour: '#f4c542' },
   { id: 'green', label: 'Green', colour: '#35b779' },
   { id: 'indian-red', label: 'Indian Red', colour: '#cd5c5c' },
+  { id: 'pink', label: 'Pink', colour: '#e66a9f' },
+  { id: 'purple', label: 'Purple', colour: '#9b7de5' },
+  { id: 'electric-blue', label: 'Electric Blue', colour: '#5aa9ff' },
+  { id: 'cyan', label: 'Cyan', colour: '#35c6d0' },
+  { id: 'lime', label: 'Lime', colour: '#9bd65c' },
+  { id: 'coral', label: 'Coral', colour: '#ff8a65' },
 ]);
 
 const validAccents = new Set(ACCENT_OPTIONS.map(({ id }) => id));

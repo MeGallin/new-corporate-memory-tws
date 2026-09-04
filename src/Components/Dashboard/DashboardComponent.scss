@@ -3,6 +3,7 @@
 .dashboard-wrapper {
   display: grid;
   gap: 1rem;
+  isolation: isolate;
 }
 
 .dashboard-workbench,
@@ -14,6 +15,17 @@
   border-radius: $radius-control;
   background: $shell;
   box-shadow: 0 10px 28px rgba($shell, 0.28);
+}
+
+.dashboard-workbench {
+  position: relative;
+  z-index: 2;
+}
+
+.dashboard-account,
+.dashboard-completed {
+  position: relative;
+  z-index: 1;
 }
 
 .dashboard-workbench__header,
